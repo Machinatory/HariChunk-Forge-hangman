@@ -1,0 +1,16 @@
+{
+  "mappings": {
+    "com/hari/harichunk/tfthreadsafetyaddon/mixin/MixinNoiseChunkGenerator": {
+      "doCreateBiomes": "Lnet/minecraft/world/level/levelgen/NoiseBasedChunkGenerator;m_224291_(Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)V",
+      "Lnet/minecraft/world/level/levelgen/NoiseBasedChunkGenerator;biomeSource:Lnet/minecraft/world/level/biome/BiomeSource;": "Lnet/minecraft/world/level/levelgen/NoiseBasedChunkGenerator;f_62137_:Lnet/minecraft/world/level/biome/BiomeSource;"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/tfthreadsafetyaddon/mixin/MixinNoiseChunkGenerator": {
+        "doCreateBiomes": "Lnet/minecraft/world/level/levelgen/NoiseBasedChunkGenerator;m_224291_(Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)V",
+        "Lnet/minecraft/world/level/levelgen/NoiseBasedChunkGenerator;biomeSource:Lnet/minecraft/world/level/biome/BiomeSource;": "Lnet/minecraft/world/level/levelgen/NoiseBasedChunkGenerator;f_62137_:Lnet/minecraft/world/level/biome/BiomeSource;"
+      }
+    }
+  }
+}

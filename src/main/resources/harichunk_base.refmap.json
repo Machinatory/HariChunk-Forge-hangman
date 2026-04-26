@@ -1,0 +1,324 @@
+{
+  "mappings": {
+    "com/hari/harichunk/base/mixin/access/IRegionFile": {
+      "write": "m_63654_(Lnet/minecraft/world/level/ChunkPos;Ljava/nio/ByteBuffer;)V"
+    },
+    "com/hari/harichunk/base/mixin/access/IPerlinNoiseSampler": {
+      "P": "f_75324_:[B"
+    },
+    "com/hari/harichunk/base/mixin/access/IChunkTicket": {
+      "timedOut": "m_9434_(J)Z"
+    },
+    "com/hari/harichunk/base/mixin/util/log4j2shutdownhookisnomore/MixinMinecraftDedicatedServer": {
+      "onServerExit": "Lnet/minecraft/server/dedicated/DedicatedServer;m_6988_()V"
+    },
+    "com/hari/harichunk/base/mixin/access/IChunkHolder": {
+      "updateFutures": "m_143003_(Lnet/minecraft/server/level/ChunkMap;Ljava/util/concurrent/Executor;)V"
+    },
+    "com/hari/harichunk/base/mixin/access/IThreadedAnvilChunkStorage": {
+      "releaseLightTicket": "m_140375_(Lnet/minecraft/world/level/ChunkPos;)V",
+      "saveChunkIfNeeded": "m_198874_(Lnet/minecraft/server/level/ChunkHolder;)Z",
+      "level": "f_140133_:Lnet/minecraft/server/level/ServerLevel;",
+      "updatingChunkMap": "f_140129_:Lit/unimi/dsi/fastutil/longs/Long2ObjectLinkedOpenHashMap;",
+      "visibleChunkMap": "f_140130_:Lit/unimi/dsi/fastutil/longs/Long2ObjectLinkedOpenHashMap;",
+      "mainThreadExecutor": "f_140135_:Lnet/minecraft/util/thread/BlockableEventLoop;",
+      "promoteChunkMap": "m_140324_()Z"
+    },
+    "com/hari/harichunk/base/mixin/priority/MixinServerChunkManager": {
+      "Lnet/minecraft/server/level/ServerChunkCache$MainThreadExecutor;managedBlock(Ljava/util/function/BooleanSupplier;)V": "Lnet/minecraft/server/level/ServerChunkCache$MainThreadExecutor;m_18701_(Ljava/util/function/BooleanSupplier;)V",
+      "getChunk": "Lnet/minecraft/server/level/ServerChunkCache;m_7587_(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Lnet/minecraft/world/level/chunk/ChunkAccess;"
+    },
+    "com/hari/harichunk/base/mixin/access/INbtCompound": {
+      "entries": "m_128450_()Ljava/util/Map;"
+    },
+    "com/hari/harichunk/base/mixin/access/IBlockEntity": {
+      "saveAdditional": "m_183515_(Lnet/minecraft/nbt/CompoundTag;)V"
+    },
+    "com/hari/harichunk/base/mixin/profiling/MixinChunkHolder": {
+      "getOrScheduleFuture": "Lnet/minecraft/server/level/ChunkHolder;m_140049_(Lnet/minecraft/world/level/chunk/ChunkStatus;Lnet/minecraft/server/level/ChunkMap;)Ljava/util/concurrent/CompletableFuture;"
+    },
+    "com/hari/harichunk/base/mixin/access/IChunkTickScheduler": {
+      "pendingTicks": "f_193164_:Ljava/util/List;",
+      "tickQueue": "f_193163_:Ljava/util/Queue;"
+    },
+    "com/hari/harichunk/base/mixin/access/ISimpleTickScheduler": {
+      "ticks": "f_193291_:Ljava/util/List;"
+    },
+    "com/hari/harichunk/base/mixin/access/IWeightedList": {
+      "entries": "f_147917_:Ljava/util/List;"
+    },
+    "com/hari/harichunk/base/mixin/access/IBlendedNoise": {
+      "yFactor": "f_230459_:D",
+      "xzScale": "f_192799_:D",
+      "mainNoise": "f_164290_:Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;",
+      "maxValue": "f_210617_:D",
+      "minLimitNoise": "f_164288_:Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;",
+      "yScale": "f_192800_:D",
+      "yMultiplier": "f_230457_:D",
+      "smearScaleMultiplier": "f_230460_:D",
+      "maxLimitNoise": "f_164289_:Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;",
+      "xzMultiplier": "f_230456_:D",
+      "xzFactor": "f_230458_:D"
+    },
+    "com/hari/harichunk/base/mixin/access/ISerializingRegionBasedStorage": {
+      "worker": "f_63773_:Lnet/minecraft/world/level/chunk/storage/IOWorker;"
+    },
+    "com/hari/harichunk/base/mixin/access/ISimpleRandom": {
+      "seed": "f_189350_:J",
+      "setSeed": "m_188584_(J)V"
+    },
+    "com/hari/harichunk/base/mixin/access/IOctavePerlinNoiseSampler": {
+      "amplitudes": "f_75391_:Lit/unimi/dsi/fastutil/doubles/DoubleList;",
+      "noiseLevels": "f_75390_:[Lnet/minecraft/world/level/levelgen/synth/ImprovedNoise;",
+      "lowestFreqInputFactor": "f_75393_:D",
+      "lowestFreqValueFactor": "f_75392_:D"
+    },
+    "com/hari/harichunk/base/mixin/access/IState": {
+      "propertiesCodec": "f_61113_:Lcom/mojang/serialization/MapCodec;"
+    },
+    "com/hari/harichunk/base/mixin/access/IServerEntityManager": {
+      "getAllChunksToSave": "m_157587_()Lit/unimi/dsi/fastutil/longs/LongSet;"
+    },
+    "com/hari/harichunk/base/mixin/access/IChunkTicketManager": {
+      "playerTicketManager": "f_140764_:Lnet/minecraft/server/level/DistanceManager$PlayerTicketTracker;",
+      "tickets": "f_140761_:Lit/unimi/dsi/fastutil/longs/Long2ObjectOpenHashMap;",
+      "playersPerChunk": "f_140760_:Lit/unimi/dsi/fastutil/longs/Long2ObjectMap;",
+      "updatePlayerTickets": "m_140777_(I)V"
+    },
+    "com/hari/harichunk/base/mixin/access/IUpgradeData": {
+      "index": "f_63324_:[[I",
+      "sides": "f_63323_:Ljava/util/EnumSet;"
+    },
+    "com/hari/harichunk/base/mixin/access/IServerChunkManager": {
+      "mainThreadProcessor": "f_8332_:Lnet/minecraft/server/level/ServerChunkCache$MainThreadExecutor;",
+      "runDistanceManagerUpdates": "m_8489_()Z",
+      "distanceManager": "f_8327_:Lnet/minecraft/server/level/DistanceManager;"
+    },
+    "com/hari/harichunk/base/mixin/access/IWeightedListEntry": {
+      "getRandWeight": "m_147946_()D",
+      "setRandom": "m_147941_(F)V"
+    },
+    "com/hari/harichunk/base/mixin/access/IXoroshiro128PlusPlusRandomDeriver": {
+      "seedHi": "f_190124_:J",
+      "seedLo": "f_190123_:J"
+    },
+    "com/hari/harichunk/base/mixin/access/IBlender": {
+      "HEIGHT_BLENDING_RANGE_CHUNKS": "f_190140_:I"
+    },
+    "com/hari/harichunk/base/mixin/access/IAtomicSimpleRandomDeriver": {
+      "seed": "f_188586_:J"
+    },
+    "com/hari/harichunk/base/mixin/scheduler/MixinThreadedAnvilChunkStorage": {
+      "updateChunkScheduling": "Lnet/minecraft/server/level/ChunkMap;m_140176_(JILnet/minecraft/server/level/ChunkHolder;I)Lnet/minecraft/server/level/ChunkHolder;"
+    },
+    "com/hari/harichunk/base/mixin/access/IBelowZeroRetrogen": {
+      "missingBedrock": "f_188461_:Ljava/util/BitSet;",
+      "targetStatus": "m_188466_()Lnet/minecraft/world/level/chunk/ChunkStatus;"
+    },
+    "com/hari/harichunk/base/mixin/access/IXoroshiro128PlusPlusRandomImpl": {
+      "seedHi": "f_190090_:J",
+      "seedLo": "f_190089_:J"
+    },
+    "com/hari/harichunk/base/mixin/access/IStructurePiece": {
+      "boundingBox": "f_73383_:Lnet/minecraft/world/level/levelgen/structure/BoundingBox;",
+      "orientation": "f_73377_:Lnet/minecraft/core/Direction;",
+      "mirror": "f_73378_:Lnet/minecraft/world/level/block/Mirror;",
+      "genDepth": "f_73384_:I",
+      "rotation": "f_73379_:Lnet/minecraft/world/level/block/Rotation;",
+      "type": "f_73380_:Lnet/minecraft/world/level/levelgen/structure/pieces/StructurePieceType;"
+    },
+    "com/hari/harichunk/base/mixin/access/IStructureStart": {
+      "references": "f_73568_:I",
+      "pieceContainer": "f_192654_:Lnet/minecraft/world/level/levelgen/structure/pieces/PiecesContainer;",
+      "structure": "f_226844_:Lnet/minecraft/world/level/levelgen/structure/Structure;"
+    },
+    "com/hari/harichunk/base/mixin/access/IStorageIoWorker": {
+      "getOrCreateOldDataForRegion": "m_223463_(II)Ljava/util/concurrent/CompletableFuture;"
+    },
+    "com/hari/harichunk/base/mixin/access/IChunkSection": {
+      "biomes": "f_187995_:Lnet/minecraft/world/level/chunk/PalettedContainerRO;",
+      "states": "f_62972_:Lnet/minecraft/world/level/chunk/PalettedContainer;"
+    },
+    "com/hari/harichunk/base/mixin/access/IBlendingData": {
+      "heights": "f_190269_:[D",
+      "areaWithOldGeneration": "f_224738_:Lnet/minecraft/world/level/LevelHeightAccessor;"
+    },
+    "com/hari/harichunk/base/mixin/access/IVersionedChunkStorage": {
+      "worker": "f_63495_:Lnet/minecraft/world/level/chunk/storage/IOWorker;"
+    },
+    "com/hari/harichunk/base/mixin/access/ISimplexNoiseSampler": {
+      "P": "f_75460_:[I"
+    },
+    "com/hari/harichunk/base/mixin/access/IRegionBasedStorage": {
+      "getRegionFile": "m_63711_(Lnet/minecraft/world/level/ChunkPos;)Lnet/minecraft/world/level/chunk/storage/RegionFile;"
+    },
+    "com/hari/harichunk/base/mixin/access/IChunkTicketManagerNearbyChunkTicketUpdater": {
+      "queueLevels": "f_140906_:Lit/unimi/dsi/fastutil/longs/Long2IntMap;"
+    },
+    "com/hari/harichunk/base/mixin/access/IXoroshiro128PlusPlusRandom": {
+      "randomNumberGenerator": "f_190099_:Lnet/minecraft/world/level/levelgen/Xoroshiro128PlusPlus;"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/base/mixin/access/IRegionFile": {
+        "write": "m_63654_(Lnet/minecraft/world/level/ChunkPos;Ljava/nio/ByteBuffer;)V"
+      },
+      "com/hari/harichunk/base/mixin/access/IPerlinNoiseSampler": {
+        "P": "f_75324_:[B"
+      },
+      "com/hari/harichunk/base/mixin/access/IChunkTicket": {
+        "timedOut": "m_9434_(J)Z"
+      },
+      "com/hari/harichunk/base/mixin/util/log4j2shutdownhookisnomore/MixinMinecraftDedicatedServer": {
+        "onServerExit": "Lnet/minecraft/server/dedicated/DedicatedServer;m_6988_()V"
+      },
+      "com/hari/harichunk/base/mixin/access/IChunkHolder": {
+        "updateFutures": "m_143003_(Lnet/minecraft/server/level/ChunkMap;Ljava/util/concurrent/Executor;)V"
+      },
+      "com/hari/harichunk/base/mixin/access/IThreadedAnvilChunkStorage": {
+        "releaseLightTicket": "m_140375_(Lnet/minecraft/world/level/ChunkPos;)V",
+        "saveChunkIfNeeded": "m_198874_(Lnet/minecraft/server/level/ChunkHolder;)Z",
+        "level": "f_140133_:Lnet/minecraft/server/level/ServerLevel;",
+        "updatingChunkMap": "f_140129_:Lit/unimi/dsi/fastutil/longs/Long2ObjectLinkedOpenHashMap;",
+        "visibleChunkMap": "f_140130_:Lit/unimi/dsi/fastutil/longs/Long2ObjectLinkedOpenHashMap;",
+        "mainThreadExecutor": "f_140135_:Lnet/minecraft/util/thread/BlockableEventLoop;",
+        "promoteChunkMap": "m_140324_()Z"
+      },
+      "com/hari/harichunk/base/mixin/priority/MixinServerChunkManager": {
+        "Lnet/minecraft/server/level/ServerChunkCache$MainThreadExecutor;managedBlock(Ljava/util/function/BooleanSupplier;)V": "Lnet/minecraft/server/level/ServerChunkCache$MainThreadExecutor;m_18701_(Ljava/util/function/BooleanSupplier;)V",
+        "getChunk": "Lnet/minecraft/server/level/ServerChunkCache;m_7587_(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Lnet/minecraft/world/level/chunk/ChunkAccess;"
+      },
+      "com/hari/harichunk/base/mixin/access/INbtCompound": {
+        "entries": "m_128450_()Ljava/util/Map;"
+      },
+      "com/hari/harichunk/base/mixin/access/IBlockEntity": {
+        "saveAdditional": "m_183515_(Lnet/minecraft/nbt/CompoundTag;)V"
+      },
+      "com/hari/harichunk/base/mixin/profiling/MixinChunkHolder": {
+        "getOrScheduleFuture": "Lnet/minecraft/server/level/ChunkHolder;m_140049_(Lnet/minecraft/world/level/chunk/ChunkStatus;Lnet/minecraft/server/level/ChunkMap;)Ljava/util/concurrent/CompletableFuture;"
+      },
+      "com/hari/harichunk/base/mixin/access/IChunkTickScheduler": {
+        "pendingTicks": "f_193164_:Ljava/util/List;",
+        "tickQueue": "f_193163_:Ljava/util/Queue;"
+      },
+      "com/hari/harichunk/base/mixin/access/ISimpleTickScheduler": {
+        "ticks": "f_193291_:Ljava/util/List;"
+      },
+      "com/hari/harichunk/base/mixin/access/IWeightedList": {
+        "entries": "f_147917_:Ljava/util/List;"
+      },
+      "com/hari/harichunk/base/mixin/access/IBlendedNoise": {
+        "yFactor": "f_230459_:D",
+        "xzScale": "f_192799_:D",
+        "mainNoise": "f_164290_:Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;",
+        "maxValue": "f_210617_:D",
+        "minLimitNoise": "f_164288_:Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;",
+        "yScale": "f_192800_:D",
+        "yMultiplier": "f_230457_:D",
+        "smearScaleMultiplier": "f_230460_:D",
+        "maxLimitNoise": "f_164289_:Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;",
+        "xzMultiplier": "f_230456_:D",
+        "xzFactor": "f_230458_:D"
+      },
+      "com/hari/harichunk/base/mixin/access/ISerializingRegionBasedStorage": {
+        "worker": "f_63773_:Lnet/minecraft/world/level/chunk/storage/IOWorker;"
+      },
+      "com/hari/harichunk/base/mixin/access/ISimpleRandom": {
+        "seed": "f_189350_:J",
+        "setSeed": "m_188584_(J)V"
+      },
+      "com/hari/harichunk/base/mixin/access/IOctavePerlinNoiseSampler": {
+        "amplitudes": "f_75391_:Lit/unimi/dsi/fastutil/doubles/DoubleList;",
+        "noiseLevels": "f_75390_:[Lnet/minecraft/world/level/levelgen/synth/ImprovedNoise;",
+        "lowestFreqInputFactor": "f_75393_:D",
+        "lowestFreqValueFactor": "f_75392_:D"
+      },
+      "com/hari/harichunk/base/mixin/access/IState": {
+        "propertiesCodec": "f_61113_:Lcom/mojang/serialization/MapCodec;"
+      },
+      "com/hari/harichunk/base/mixin/access/IServerEntityManager": {
+        "getAllChunksToSave": "m_157587_()Lit/unimi/dsi/fastutil/longs/LongSet;"
+      },
+      "com/hari/harichunk/base/mixin/access/IChunkTicketManager": {
+        "playerTicketManager": "f_140764_:Lnet/minecraft/server/level/DistanceManager$PlayerTicketTracker;",
+        "tickets": "f_140761_:Lit/unimi/dsi/fastutil/longs/Long2ObjectOpenHashMap;",
+        "playersPerChunk": "f_140760_:Lit/unimi/dsi/fastutil/longs/Long2ObjectMap;",
+        "updatePlayerTickets": "m_140777_(I)V"
+      },
+      "com/hari/harichunk/base/mixin/access/IUpgradeData": {
+        "index": "f_63324_:[[I",
+        "sides": "f_63323_:Ljava/util/EnumSet;"
+      },
+      "com/hari/harichunk/base/mixin/access/IServerChunkManager": {
+        "mainThreadProcessor": "f_8332_:Lnet/minecraft/server/level/ServerChunkCache$MainThreadExecutor;",
+        "runDistanceManagerUpdates": "m_8489_()Z",
+        "distanceManager": "f_8327_:Lnet/minecraft/server/level/DistanceManager;"
+      },
+      "com/hari/harichunk/base/mixin/access/IWeightedListEntry": {
+        "getRandWeight": "m_147946_()D",
+        "setRandom": "m_147941_(F)V"
+      },
+      "com/hari/harichunk/base/mixin/access/IXoroshiro128PlusPlusRandomDeriver": {
+        "seedHi": "f_190124_:J",
+        "seedLo": "f_190123_:J"
+      },
+      "com/hari/harichunk/base/mixin/access/IBlender": {
+        "HEIGHT_BLENDING_RANGE_CHUNKS": "f_190140_:I"
+      },
+      "com/hari/harichunk/base/mixin/access/IAtomicSimpleRandomDeriver": {
+        "seed": "f_188586_:J"
+      },
+      "com/hari/harichunk/base/mixin/scheduler/MixinThreadedAnvilChunkStorage": {
+        "updateChunkScheduling": "Lnet/minecraft/server/level/ChunkMap;m_140176_(JILnet/minecraft/server/level/ChunkHolder;I)Lnet/minecraft/server/level/ChunkHolder;"
+      },
+      "com/hari/harichunk/base/mixin/access/IBelowZeroRetrogen": {
+        "missingBedrock": "f_188461_:Ljava/util/BitSet;",
+        "targetStatus": "m_188466_()Lnet/minecraft/world/level/chunk/ChunkStatus;"
+      },
+      "com/hari/harichunk/base/mixin/access/IXoroshiro128PlusPlusRandomImpl": {
+        "seedHi": "f_190090_:J",
+        "seedLo": "f_190089_:J"
+      },
+      "com/hari/harichunk/base/mixin/access/IStructurePiece": {
+        "boundingBox": "f_73383_:Lnet/minecraft/world/level/levelgen/structure/BoundingBox;",
+        "orientation": "f_73377_:Lnet/minecraft/core/Direction;",
+        "mirror": "f_73378_:Lnet/minecraft/world/level/block/Mirror;",
+        "genDepth": "f_73384_:I",
+        "rotation": "f_73379_:Lnet/minecraft/world/level/block/Rotation;",
+        "type": "f_73380_:Lnet/minecraft/world/level/levelgen/structure/pieces/StructurePieceType;"
+      },
+      "com/hari/harichunk/base/mixin/access/IStructureStart": {
+        "references": "f_73568_:I",
+        "pieceContainer": "f_192654_:Lnet/minecraft/world/level/levelgen/structure/pieces/PiecesContainer;",
+        "structure": "f_226844_:Lnet/minecraft/world/level/levelgen/structure/Structure;"
+      },
+      "com/hari/harichunk/base/mixin/access/IStorageIoWorker": {
+        "getOrCreateOldDataForRegion": "m_223463_(II)Ljava/util/concurrent/CompletableFuture;"
+      },
+      "com/hari/harichunk/base/mixin/access/IChunkSection": {
+        "biomes": "f_187995_:Lnet/minecraft/world/level/chunk/PalettedContainerRO;",
+        "states": "f_62972_:Lnet/minecraft/world/level/chunk/PalettedContainer;"
+      },
+      "com/hari/harichunk/base/mixin/access/IBlendingData": {
+        "heights": "f_190269_:[D",
+        "areaWithOldGeneration": "f_224738_:Lnet/minecraft/world/level/LevelHeightAccessor;"
+      },
+      "com/hari/harichunk/base/mixin/access/IVersionedChunkStorage": {
+        "worker": "f_63495_:Lnet/minecraft/world/level/chunk/storage/IOWorker;"
+      },
+      "com/hari/harichunk/base/mixin/access/ISimplexNoiseSampler": {
+        "P": "f_75460_:[I"
+      },
+      "com/hari/harichunk/base/mixin/access/IRegionBasedStorage": {
+        "getRegionFile": "m_63711_(Lnet/minecraft/world/level/ChunkPos;)Lnet/minecraft/world/level/chunk/storage/RegionFile;"
+      },
+      "com/hari/harichunk/base/mixin/access/IChunkTicketManagerNearbyChunkTicketUpdater": {
+        "queueLevels": "f_140906_:Lit/unimi/dsi/fastutil/longs/Long2IntMap;"
+      },
+      "com/hari/harichunk/base/mixin/access/IXoroshiro128PlusPlusRandom": {
+        "randomNumberGenerator": "f_190099_:Lnet/minecraft/world/level/levelgen/Xoroshiro128PlusPlus;"
+      }
+    }
+  }
+}

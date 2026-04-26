@@ -1,0 +1,20 @@
+{
+  "mappings": {
+    "com/hari/harichunk/opts/worldgen_biome_cache/mixin/MixinFixedBiomeSource": {
+      "getNoiseBiome": "Lnet/minecraft/world/level/biome/FixedBiomeSource;m_203407_(IIILnet/minecraft/world/level/biome/Climate$Sampler;)Lnet/minecraft/core/Holder;"
+    },
+    "com/hari/harichunk/opts/worldgen_biome_cache/mixin/MixinMultiNoiseBiomeSource": {
+      "getNoiseBiome": "Lnet/minecraft/world/level/biome/MultiNoiseBiomeSource;m_203407_(IIILnet/minecraft/world/level/biome/Climate$Sampler;)Lnet/minecraft/core/Holder;"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/opts/worldgen_biome_cache/mixin/MixinFixedBiomeSource": {
+        "getNoiseBiome": "Lnet/minecraft/world/level/biome/FixedBiomeSource;m_203407_(IIILnet/minecraft/world/level/biome/Climate$Sampler;)Lnet/minecraft/core/Holder;"
+      },
+      "com/hari/harichunk/opts/worldgen_biome_cache/mixin/MixinMultiNoiseBiomeSource": {
+        "getNoiseBiome": "Lnet/minecraft/world/level/biome/MultiNoiseBiomeSource;m_203407_(IIILnet/minecraft/world/level/biome/Climate$Sampler;)Lnet/minecraft/core/Holder;"
+      }
+    }
+  }
+}

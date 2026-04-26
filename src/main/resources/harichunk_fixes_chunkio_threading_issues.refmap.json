@@ -1,0 +1,14 @@
+{
+  "mappings": {
+    "com/hari/harichunk/fixes/chunkio/threading_issues/mixin/MixinChunkHolder": {
+      "updateFutures": "Lnet/minecraft/server/level/ChunkHolder;m_143003_(Lnet/minecraft/server/level/ChunkMap;Ljava/util/concurrent/Executor;)V"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/fixes/chunkio/threading_issues/mixin/MixinChunkHolder": {
+        "updateFutures": "Lnet/minecraft/server/level/ChunkHolder;m_143003_(Lnet/minecraft/server/level/ChunkMap;Ljava/util/concurrent/Executor;)V"
+      }
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "mappings": {
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinNetherFortressGeneratorStart": {
+      "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;placeCount:I": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;f_228436_:I",
+      "<init>(Lnet/minecraft/util/RandomSource;II)V": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$StartPiece;<init>(Lnet/minecraft/util/RandomSource;II)V"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinDesertTempleGenerator": {
+      "Lnet/minecraft/world/level/levelgen/structure/structures/DesertPyramidPiece;hasPlacedChest:[Z": "Lnet/minecraft/world/level/levelgen/structure/structures/DesertPyramidPiece;f_227397_:[Z"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinNetherFortressGeneratorPiece": {
+      "updatePieceWeight": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$NetherBridgePiece;m_228418_(Ljava/util/List;)I",
+      "generatePiece": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$NetherBridgePiece;m_228408_(Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$StartPiece;Ljava/util/List;Lnet/minecraft/world/level/levelgen/structure/StructurePieceAccessor;Lnet/minecraft/util/RandomSource;IIILnet/minecraft/core/Direction;I)Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$NetherBridgePiece;",
+      "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;placeCount:I": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;f_228436_:I"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/checks/MixinThreadedAnvilChunkStorage": {
+      "Lnet/minecraft/world/level/chunk/LevelChunk;runPostLoad()V": "Lnet/minecraft/world/level/chunk/LevelChunk;m_62952_()V"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinStrongholdGeneratorSpiralStaircase": {
+      "addChildren": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$StairsDown;m_214092_(Lnet/minecraft/world/level/levelgen/structure/StructurePiece;Lnet/minecraft/world/level/levelgen/structure/StructurePieceAccessor;Lnet/minecraft/util/RandomSource;)V",
+      "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;imposedPiece:Ljava/lang/Class;": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;f_229411_:Ljava/lang/Class;"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinStrongholdGenerator": {
+      "updatePieceWeight": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;m_229435_()Z",
+      "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;currentPieces:Ljava/util/List;": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;f_229410_:Ljava/util/List;",
+      "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;totalWeight:I": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;f_229412_:I",
+      "resetPieces": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;m_229416_()V",
+      "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$PieceWeight;placeCount:I": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$PieceWeight;f_229616_:I",
+      "generatePieceFromSmallDoor": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;m_229417_(Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$StartPiece;Lnet/minecraft/world/level/levelgen/structure/StructurePieceAccessor;Lnet/minecraft/util/RandomSource;IIILnet/minecraft/core/Direction;I)Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$StrongholdPiece;",
+      "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;imposedPiece:Ljava/lang/Class;": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;f_229411_:Ljava/lang/Class;"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinNetherFortressGeneratorPieceData": {
+      "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;placeCount:I": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;f_228436_:I"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinRandomizedIntBlockStateProvider": {
+      "getState": "Lnet/minecraft/world/level/levelgen/feature/stateproviders/RandomizedIntStateProvider;m_213972_(Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;",
+      "Lnet/minecraft/world/level/levelgen/feature/stateproviders/RandomizedIntStateProvider;property:Lnet/minecraft/world/level/block/state/properties/IntegerProperty;": "Lnet/minecraft/world/level/levelgen/feature/stateproviders/RandomizedIntStateProvider;f_161558_:Lnet/minecraft/world/level/block/state/properties/IntegerProperty;"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinJungleTempleGenerator": {
+      "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;placedMainChest:Z": "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;f_227661_:Z",
+      "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;placedTrap2:Z": "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;f_227664_:Z",
+      "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;placedHiddenChest:Z": "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;f_227662_:Z",
+      "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;placedTrap1:Z": "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;f_227663_:Z"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinStructureChecker": {
+      "storeFullResults": "Lnet/minecraft/world/level/levelgen/structure/StructureCheck;m_197263_(JLit/unimi/dsi/fastutil/objects/Object2IntMap;)V"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading_detections/random_instances/MixinWorld": {
+      "Lnet/minecraft/util/RandomSource;create()Lnet/minecraft/util/RandomSource;": "Lnet/minecraft/util/RandomSource;m_216327_()Lnet/minecraft/util/RandomSource;"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinStrongholdGeneratorPieceData": {
+      "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$PieceWeight;placeCount:I": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$PieceWeight;f_229616_:I"
+    },
+    "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinStructureStart": {
+      "Lnet/minecraft/world/level/levelgen/structure/StructureStart;references:I": "Lnet/minecraft/world/level/levelgen/structure/StructureStart;f_73568_:I"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinNetherFortressGeneratorStart": {
+        "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;placeCount:I": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;f_228436_:I",
+        "<init>(Lnet/minecraft/util/RandomSource;II)V": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$StartPiece;<init>(Lnet/minecraft/util/RandomSource;II)V"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinDesertTempleGenerator": {
+        "Lnet/minecraft/world/level/levelgen/structure/structures/DesertPyramidPiece;hasPlacedChest:[Z": "Lnet/minecraft/world/level/levelgen/structure/structures/DesertPyramidPiece;f_227397_:[Z"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinNetherFortressGeneratorPiece": {
+        "updatePieceWeight": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$NetherBridgePiece;m_228418_(Ljava/util/List;)I",
+        "generatePiece": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$NetherBridgePiece;m_228408_(Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$StartPiece;Ljava/util/List;Lnet/minecraft/world/level/levelgen/structure/StructurePieceAccessor;Lnet/minecraft/util/RandomSource;IIILnet/minecraft/core/Direction;I)Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$NetherBridgePiece;",
+        "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;placeCount:I": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;f_228436_:I"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/checks/MixinThreadedAnvilChunkStorage": {
+        "Lnet/minecraft/world/level/chunk/LevelChunk;runPostLoad()V": "Lnet/minecraft/world/level/chunk/LevelChunk;m_62952_()V"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinStrongholdGeneratorSpiralStaircase": {
+        "addChildren": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$StairsDown;m_214092_(Lnet/minecraft/world/level/levelgen/structure/StructurePiece;Lnet/minecraft/world/level/levelgen/structure/StructurePieceAccessor;Lnet/minecraft/util/RandomSource;)V",
+        "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;imposedPiece:Ljava/lang/Class;": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;f_229411_:Ljava/lang/Class;"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinStrongholdGenerator": {
+        "updatePieceWeight": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;m_229435_()Z",
+        "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;currentPieces:Ljava/util/List;": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;f_229410_:Ljava/util/List;",
+        "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;totalWeight:I": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;f_229412_:I",
+        "resetPieces": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;m_229416_()V",
+        "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$PieceWeight;placeCount:I": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$PieceWeight;f_229616_:I",
+        "generatePieceFromSmallDoor": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;m_229417_(Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$StartPiece;Lnet/minecraft/world/level/levelgen/structure/StructurePieceAccessor;Lnet/minecraft/util/RandomSource;IIILnet/minecraft/core/Direction;I)Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$StrongholdPiece;",
+        "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;imposedPiece:Ljava/lang/Class;": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces;f_229411_:Ljava/lang/Class;"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinNetherFortressGeneratorPieceData": {
+        "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;placeCount:I": "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;f_228436_:I"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinRandomizedIntBlockStateProvider": {
+        "getState": "Lnet/minecraft/world/level/levelgen/feature/stateproviders/RandomizedIntStateProvider;m_213972_(Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;",
+        "Lnet/minecraft/world/level/levelgen/feature/stateproviders/RandomizedIntStateProvider;property:Lnet/minecraft/world/level/block/state/properties/IntegerProperty;": "Lnet/minecraft/world/level/levelgen/feature/stateproviders/RandomizedIntStateProvider;f_161558_:Lnet/minecraft/world/level/block/state/properties/IntegerProperty;"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinJungleTempleGenerator": {
+        "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;placedMainChest:Z": "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;f_227661_:Z",
+        "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;placedTrap2:Z": "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;f_227664_:Z",
+        "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;placedHiddenChest:Z": "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;f_227662_:Z",
+        "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;placedTrap1:Z": "Lnet/minecraft/world/level/levelgen/structure/structures/JungleTemplePiece;f_227663_:Z"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinStructureChecker": {
+        "storeFullResults": "Lnet/minecraft/world/level/levelgen/structure/StructureCheck;m_197263_(JLit/unimi/dsi/fastutil/objects/Object2IntMap;)V"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading_detections/random_instances/MixinWorld": {
+        "Lnet/minecraft/util/RandomSource;create()Lnet/minecraft/util/RandomSource;": "Lnet/minecraft/util/RandomSource;m_216327_()Lnet/minecraft/util/RandomSource;"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinStrongholdGeneratorPieceData": {
+        "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$PieceWeight;placeCount:I": "Lnet/minecraft/world/level/levelgen/structure/structures/StrongholdPieces$PieceWeight;f_229616_:I"
+      },
+      "com/hari/harichunk/fixes/worldgen/threading_issues/mixin/threading/MixinStructureStart": {
+        "Lnet/minecraft/world/level/levelgen/structure/StructureStart;references:I": "Lnet/minecraft/world/level/levelgen/structure/StructureStart;f_73568_:I"
+      }
+    }
+  }
+}

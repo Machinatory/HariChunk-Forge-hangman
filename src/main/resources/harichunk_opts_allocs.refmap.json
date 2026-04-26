@@ -1,0 +1,48 @@
+{
+  "mappings": {
+    "com/hari/harichunk/opts/allocs/mixin/object_pooling_caching/MixinOreFeature": {
+      "doPlace": "Lnet/minecraft/world/level/levelgen/feature/OreFeature;m_225171_(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/util/RandomSource;Lnet/minecraft/world/level/levelgen/feature/configurations/OreConfiguration;DDDDDDIIIII)Z"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/asm/NbtOps$NbtRecordBuilderASM": {
+      "build(Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/nbt/Tag;)Lcom/mojang/serialization/DataResult;": "Lnet/minecraft/nbt/NbtOps$NbtRecordBuilder;build(Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/nbt/Tag;)Lcom/mojang/serialization/DataResult;"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/MixinNbtCompound": {
+      "<init>()V": "Lnet/minecraft/nbt/CompoundTag;<init>()V"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/MixinNbtCompound1": {
+      "load(Ljava/io/DataInput;ILnet/minecraft/nbt/NbtAccounter;)Lnet/minecraft/nbt/CompoundTag;": "Lnet/minecraft/nbt/CompoundTag$1;m_7300_(Ljava/io/DataInput;ILnet/minecraft/nbt/NbtAccounter;)Lnet/minecraft/nbt/CompoundTag;",
+      "net.minecraft.nbt.CompoundTag$1": "net/minecraft/nbt/CompoundTag$1"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/MixinNbtList1": {
+      "load(Ljava/io/DataInput;ILnet/minecraft/nbt/NbtAccounter;)Lnet/minecraft/nbt/ListTag;": "Lnet/minecraft/nbt/ListTag$1;m_7300_(Ljava/io/DataInput;ILnet/minecraft/nbt/NbtAccounter;)Lnet/minecraft/nbt/ListTag;",
+      "net.minecraft.nbt.ListTag$1": "net/minecraft/nbt/ListTag$1"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/MixinNbtList": {
+      "<init>()V": "Lnet/minecraft/nbt/ListTag;<init>()V"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/opts/allocs/mixin/object_pooling_caching/MixinOreFeature": {
+        "doPlace": "Lnet/minecraft/world/level/levelgen/feature/OreFeature;m_225171_(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/util/RandomSource;Lnet/minecraft/world/level/levelgen/feature/configurations/OreConfiguration;DDDDDDIIIII)Z"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/asm/NbtOps$NbtRecordBuilderASM": {
+        "build(Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/nbt/Tag;)Lcom/mojang/serialization/DataResult;": "Lnet/minecraft/nbt/NbtOps$NbtRecordBuilder;build(Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/nbt/Tag;)Lcom/mojang/serialization/DataResult;"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/MixinNbtCompound": {
+        "<init>()V": "Lnet/minecraft/nbt/CompoundTag;<init>()V"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/MixinNbtCompound1": {
+        "load(Ljava/io/DataInput;ILnet/minecraft/nbt/NbtAccounter;)Lnet/minecraft/nbt/CompoundTag;": "Lnet/minecraft/nbt/CompoundTag$1;m_7300_(Ljava/io/DataInput;ILnet/minecraft/nbt/NbtAccounter;)Lnet/minecraft/nbt/CompoundTag;",
+        "net.minecraft.nbt.CompoundTag$1": "net/minecraft/nbt/CompoundTag$1"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/MixinNbtList1": {
+        "load(Ljava/io/DataInput;ILnet/minecraft/nbt/NbtAccounter;)Lnet/minecraft/nbt/ListTag;": "Lnet/minecraft/nbt/ListTag$1;m_7300_(Ljava/io/DataInput;ILnet/minecraft/nbt/NbtAccounter;)Lnet/minecraft/nbt/ListTag;",
+        "net.minecraft.nbt.ListTag$1": "net/minecraft/nbt/ListTag$1"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/MixinNbtList": {
+        "<init>()V": "Lnet/minecraft/nbt/ListTag;<init>()V"
+      }
+    }
+  }
+}

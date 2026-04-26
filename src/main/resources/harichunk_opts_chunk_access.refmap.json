@@ -1,0 +1,14 @@
+{
+  "mappings": {
+    "com/hari/harichunk/opts/chunk_access/mixin/async_chunk_request/MixinServerChunkManager": {
+      "getChunk": "Lnet/minecraft/server/level/ServerChunkCache;m_7587_(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Lnet/minecraft/world/level/chunk/ChunkAccess;"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/opts/chunk_access/mixin/async_chunk_request/MixinServerChunkManager": {
+        "getChunk": "Lnet/minecraft/server/level/ServerChunkCache;m_7587_(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Lnet/minecraft/world/level/chunk/ChunkAccess;"
+      }
+    }
+  }
+}

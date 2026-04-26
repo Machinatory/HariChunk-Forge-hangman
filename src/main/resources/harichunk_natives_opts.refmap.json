@@ -1,0 +1,44 @@
+{
+  "mappings": {
+    "com/hari/harichunk/opts/natives_math/mixin/MixinInterpolatedNoiseSampler": {
+      "compute": "Lnet/minecraft/world/level/levelgen/synth/BlendedNoise;m_207386_(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D"
+    },
+    "com/hari/harichunk/opts/natives_math/mixin/df/MixinDFTNoise": {
+      "net.minecraft.world.level.levelgen.DensityFunctions$Noise": "net/minecraft/world/level/levelgen/DensityFunctions$Noise"
+    },
+    "com/hari/harichunk/opts/natives_math/mixin/df/MixinDFTShiftB": {
+      "net.minecraft.world.level.levelgen.DensityFunctions$ShiftB": "net/minecraft/world/level/levelgen/DensityFunctions$ShiftB"
+    },
+    "com/hari/harichunk/opts/natives_math/mixin/df/MixinDFTShiftA": {
+      "net.minecraft.world.level.levelgen.DensityFunctions$ShiftA": "net/minecraft/world/level/levelgen/DensityFunctions$ShiftA"
+    },
+    "com/hari/harichunk/opts/natives_math/mixin/MixinDFTypesEndIslands": {
+      "net.minecraft.world.level.levelgen.DensityFunctions$EndIslandDensityFunction": "net/minecraft/world/level/levelgen/DensityFunctions$EndIslandDensityFunction"
+    },
+    "com/hari/harichunk/opts/natives_math/mixin/df/MixinDFTShift": {
+      "net.minecraft.world.level.levelgen.DensityFunctions$Shift": "net/minecraft/world/level/levelgen/DensityFunctions$Shift"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/opts/natives_math/mixin/MixinInterpolatedNoiseSampler": {
+        "compute": "Lnet/minecraft/world/level/levelgen/synth/BlendedNoise;m_207386_(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D"
+      },
+      "com/hari/harichunk/opts/natives_math/mixin/df/MixinDFTNoise": {
+        "net.minecraft.world.level.levelgen.DensityFunctions$Noise": "net/minecraft/world/level/levelgen/DensityFunctions$Noise"
+      },
+      "com/hari/harichunk/opts/natives_math/mixin/df/MixinDFTShiftB": {
+        "net.minecraft.world.level.levelgen.DensityFunctions$ShiftB": "net/minecraft/world/level/levelgen/DensityFunctions$ShiftB"
+      },
+      "com/hari/harichunk/opts/natives_math/mixin/df/MixinDFTShiftA": {
+        "net.minecraft.world.level.levelgen.DensityFunctions$ShiftA": "net/minecraft/world/level/levelgen/DensityFunctions$ShiftA"
+      },
+      "com/hari/harichunk/opts/natives_math/mixin/MixinDFTypesEndIslands": {
+        "net.minecraft.world.level.levelgen.DensityFunctions$EndIslandDensityFunction": "net/minecraft/world/level/levelgen/DensityFunctions$EndIslandDensityFunction"
+      },
+      "com/hari/harichunk/opts/natives_math/mixin/df/MixinDFTShift": {
+        "net.minecraft.world.level.levelgen.DensityFunctions$Shift": "net/minecraft/world/level/levelgen/DensityFunctions$Shift"
+      }
+    }
+  }
+}

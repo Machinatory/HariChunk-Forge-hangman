@@ -1,0 +1,16 @@
+{
+  "mappings": {
+    "com/hari/harichunk/threading/lighting/mixin/MixinThreadedAnvilChunkStorage": {
+      "Lnet/minecraft/util/thread/ProcessorMailbox;create(Ljava/util/concurrent/Executor;Ljava/lang/String;)Lnet/minecraft/util/thread/ProcessorMailbox;": "Lnet/minecraft/util/thread/ProcessorMailbox;m_18751_(Ljava/util/concurrent/Executor;Ljava/lang/String;)Lnet/minecraft/util/thread/ProcessorMailbox;",
+      "close": "Lnet/minecraft/server/level/ChunkMap;close()V"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/threading/lighting/mixin/MixinThreadedAnvilChunkStorage": {
+        "Lnet/minecraft/util/thread/ProcessorMailbox;create(Ljava/util/concurrent/Executor;Ljava/lang/String;)Lnet/minecraft/util/thread/ProcessorMailbox;": "Lnet/minecraft/util/thread/ProcessorMailbox;m_18751_(Ljava/util/concurrent/Executor;Ljava/lang/String;)Lnet/minecraft/util/thread/ProcessorMailbox;",
+        "close": "Lnet/minecraft/server/level/ChunkMap;close()V"
+      }
+    }
+  }
+}

@@ -65,8 +65,11 @@ def moduleProjects = [
         ':harichunk_natives_opts',
         ':harichunk_opts_worldgen_biome_cache',
         ':harichunk_quantified',
+        ':quantified_admany_dag_scheduler',
+        ':quantified_harichunk_opts_vk_gpu_accel',
         ':harichunk_opts_dfc',
         ':harichunk_compat_immersivepetroleum',
+        ':harichunk_brs_gpu_noise',
 ]
 
 if (findProject(':harichunk_flowsched') != null) {
@@ -127,6 +130,10 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    maven {
+        name = 'SpongePowered'
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+    }
     mavenCentral()
     maven {
         name = 'ArclightPowered'
@@ -139,6 +146,10 @@ allprojects {
     apply plugin: 'java-library'
 
     repositories {
+        maven {
+            name = 'SpongePowered'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
         mavenCentral()
         maven {
             name = 'ArclightPowered'
@@ -173,6 +184,11 @@ configure(moduleProjects.collect { project(it) }) {
     dependencies {
         minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    }
+
+    tasks.named('compileJava', JavaCompile).configure {
+        outputs.file(layout.buildDirectory.file('tmp/compileJava/compileJava-mappings.tsrg'))
+        outputs.file(layout.buildDirectory.file('tmp/compileJava/compileJava-refmap.json'))
     }
 }
 
@@ -227,17 +243,6 @@ moduleProjects.each { moduleName ->
     compileJava.dependsOn "${moduleName}:build"
     processResources.dependsOn "${moduleName}:build"
 }
-
-tasks.register('renameRefmaps') {
-    doLast {
-        fileTree(dir: "${buildDir}/resources/main", includes: ['c2me_*.refmap.json']).each { f ->
-            def newName = f.name.replace('c2me_', 'harichunk_')
-            f.renameTo(new File(f.parent, newName))
-        }
-    }
-}
-jar.dependsOn renameRefmaps
-shadowJar.dependsOn renameRefmaps
 
 tasks.named('jar', Jar).configure {
     moduleProjects.each { moduleName ->

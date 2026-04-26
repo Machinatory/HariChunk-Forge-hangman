@@ -1,0 +1,68 @@
+{
+  "mappings": {
+    "com/hari/harichunk/threading/chunkio/mixin/MixinStorageIoWorker": {
+      "close": "Lnet/minecraft/world/level/chunk/storage/IOWorker;close()V",
+      "Lnet/minecraft/Util;ioPool()Ljava/util/concurrent/ExecutorService;": "Lnet/minecraft/Util;m_183992_()Ljava/util/concurrent/ExecutorService;"
+    },
+    "com/hari/harichunk/threading/chunkio/mixin/MixinChunkSerializer": {
+      "read": "Lnet/minecraft/world/level/chunk/storage/ChunkSerializer;m_188230_(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/ai/village/poi/PoiManager;Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/level/chunk/ProtoChunk;",
+      "Lnet/minecraft/world/level/chunk/ChunkAccess;getBlockEntitiesPos()Ljava/util/Set;": "Lnet/minecraft/world/level/chunk/ChunkAccess;m_5928_()Ljava/util/Set;",
+      "Lnet/minecraft/world/level/chunk/ChunkAccess;getBlockEntityNbtForSaving(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/nbt/CompoundTag;": "Lnet/minecraft/world/level/chunk/ChunkAccess;m_8051_(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/nbt/CompoundTag;",
+      "Lnet/minecraft/world/entity/ai/village/poi/PoiManager;checkConsistencyWithBlocks(Lnet/minecraft/core/SectionPos;Lnet/minecraft/world/level/chunk/LevelChunkSection;)V": "Lnet/minecraft/world/entity/ai/village/poi/PoiManager;m_280570_(Lnet/minecraft/core/SectionPos;Lnet/minecraft/world/level/chunk/LevelChunkSection;)V",
+      "Lnet/minecraft/world/level/lighting/LevelLightEngine;getLayerListener(Lnet/minecraft/world/level/LightLayer;)Lnet/minecraft/world/level/lighting/LayerLightEventListener;": "Lnet/minecraft/world/level/lighting/LevelLightEngine;m_75814_(Lnet/minecraft/world/level/LightLayer;)Lnet/minecraft/world/level/lighting/LayerLightEventListener;",
+      "write": "Lnet/minecraft/world/level/chunk/storage/ChunkSerializer;m_63454_(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ChunkAccess;)Lnet/minecraft/nbt/CompoundTag;"
+    },
+    "com/hari/harichunk/threading/chunkio/mixin/MixinThreadedAnvilChunkStorage": {
+      "schedule": "Lnet/minecraft/server/level/ChunkMap;m_140292_(Lnet/minecraft/server/level/ChunkHolder;Lnet/minecraft/world/level/chunk/ChunkStatus;)Ljava/util/concurrent/CompletableFuture;",
+      "tick(Ljava/util/function/BooleanSupplier;)V": "Lnet/minecraft/server/level/ChunkMap;m_140280_(Ljava/util/function/BooleanSupplier;)V",
+      "Lnet/minecraft/server/level/ChunkMap;save(Lnet/minecraft/world/level/chunk/ChunkAccess;)Z": "Lnet/minecraft/server/level/ChunkMap;m_140258_(Lnet/minecraft/world/level/chunk/ChunkAccess;)Z"
+    },
+    "com/hari/harichunk/threading/chunkio/mixin/gc_free_serializer/MixinChunkDataSerializer": {
+      "Lnet/minecraft/world/level/chunk/ChunkAccess;getBlockEntitiesPos()Ljava/util/Set;": "Lnet/minecraft/world/level/chunk/ChunkAccess;m_5928_()Ljava/util/Set;",
+      "Lnet/minecraft/world/level/chunk/ChunkAccess;getBlockEntityNbtForSaving(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/nbt/CompoundTag;": "Lnet/minecraft/world/level/chunk/ChunkAccess;m_8051_(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/nbt/CompoundTag;",
+      "Lnet/minecraft/world/level/lighting/LevelLightEngine;getLayerListener(Lnet/minecraft/world/level/LightLayer;)Lnet/minecraft/world/level/lighting/LayerLightEventListener;": "Lnet/minecraft/world/level/lighting/LevelLightEngine;m_75814_(Lnet/minecraft/world/level/LightLayer;)Lnet/minecraft/world/level/lighting/LayerLightEventListener;"
+    },
+    "com/hari/harichunk/threading/chunkio/mixin/MixinChunkRegion": {
+      "Lnet/minecraft/server/level/ServerLevel;onBlockStateChange(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;)V": "Lnet/minecraft/server/level/ServerLevel;m_6559_(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;)V",
+      "setBlock": "Lnet/minecraft/server/level/WorldGenRegion;m_6933_(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;II)Z"
+    },
+    "com/hari/harichunk/threading/chunkio/mixin/MixinBlender": {
+      "Lnet/minecraft/server/level/WorldGenRegion;isOldChunkAround(Lnet/minecraft/world/level/ChunkPos;I)Z": "Lnet/minecraft/server/level/WorldGenRegion;m_215159_(Lnet/minecraft/world/level/ChunkPos;I)Z",
+      "of": "Lnet/minecraft/world/level/levelgen/blending/Blender;m_190202_(Lnet/minecraft/server/level/WorldGenRegion;)Lnet/minecraft/world/level/levelgen/blending/Blender;"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/threading/chunkio/mixin/MixinStorageIoWorker": {
+        "close": "Lnet/minecraft/world/level/chunk/storage/IOWorker;close()V",
+        "Lnet/minecraft/Util;ioPool()Ljava/util/concurrent/ExecutorService;": "Lnet/minecraft/Util;m_183992_()Ljava/util/concurrent/ExecutorService;"
+      },
+      "com/hari/harichunk/threading/chunkio/mixin/MixinChunkSerializer": {
+        "read": "Lnet/minecraft/world/level/chunk/storage/ChunkSerializer;m_188230_(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/ai/village/poi/PoiManager;Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/level/chunk/ProtoChunk;",
+        "Lnet/minecraft/world/level/chunk/ChunkAccess;getBlockEntitiesPos()Ljava/util/Set;": "Lnet/minecraft/world/level/chunk/ChunkAccess;m_5928_()Ljava/util/Set;",
+        "Lnet/minecraft/world/level/chunk/ChunkAccess;getBlockEntityNbtForSaving(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/nbt/CompoundTag;": "Lnet/minecraft/world/level/chunk/ChunkAccess;m_8051_(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/nbt/CompoundTag;",
+        "Lnet/minecraft/world/entity/ai/village/poi/PoiManager;checkConsistencyWithBlocks(Lnet/minecraft/core/SectionPos;Lnet/minecraft/world/level/chunk/LevelChunkSection;)V": "Lnet/minecraft/world/entity/ai/village/poi/PoiManager;m_280570_(Lnet/minecraft/core/SectionPos;Lnet/minecraft/world/level/chunk/LevelChunkSection;)V",
+        "Lnet/minecraft/world/level/lighting/LevelLightEngine;getLayerListener(Lnet/minecraft/world/level/LightLayer;)Lnet/minecraft/world/level/lighting/LayerLightEventListener;": "Lnet/minecraft/world/level/lighting/LevelLightEngine;m_75814_(Lnet/minecraft/world/level/LightLayer;)Lnet/minecraft/world/level/lighting/LayerLightEventListener;",
+        "write": "Lnet/minecraft/world/level/chunk/storage/ChunkSerializer;m_63454_(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ChunkAccess;)Lnet/minecraft/nbt/CompoundTag;"
+      },
+      "com/hari/harichunk/threading/chunkio/mixin/MixinThreadedAnvilChunkStorage": {
+        "schedule": "Lnet/minecraft/server/level/ChunkMap;m_140292_(Lnet/minecraft/server/level/ChunkHolder;Lnet/minecraft/world/level/chunk/ChunkStatus;)Ljava/util/concurrent/CompletableFuture;",
+        "tick(Ljava/util/function/BooleanSupplier;)V": "Lnet/minecraft/server/level/ChunkMap;m_140280_(Ljava/util/function/BooleanSupplier;)V",
+        "Lnet/minecraft/server/level/ChunkMap;save(Lnet/minecraft/world/level/chunk/ChunkAccess;)Z": "Lnet/minecraft/server/level/ChunkMap;m_140258_(Lnet/minecraft/world/level/chunk/ChunkAccess;)Z"
+      },
+      "com/hari/harichunk/threading/chunkio/mixin/gc_free_serializer/MixinChunkDataSerializer": {
+        "Lnet/minecraft/world/level/chunk/ChunkAccess;getBlockEntitiesPos()Ljava/util/Set;": "Lnet/minecraft/world/level/chunk/ChunkAccess;m_5928_()Ljava/util/Set;",
+        "Lnet/minecraft/world/level/chunk/ChunkAccess;getBlockEntityNbtForSaving(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/nbt/CompoundTag;": "Lnet/minecraft/world/level/chunk/ChunkAccess;m_8051_(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/nbt/CompoundTag;",
+        "Lnet/minecraft/world/level/lighting/LevelLightEngine;getLayerListener(Lnet/minecraft/world/level/LightLayer;)Lnet/minecraft/world/level/lighting/LayerLightEventListener;": "Lnet/minecraft/world/level/lighting/LevelLightEngine;m_75814_(Lnet/minecraft/world/level/LightLayer;)Lnet/minecraft/world/level/lighting/LayerLightEventListener;"
+      },
+      "com/hari/harichunk/threading/chunkio/mixin/MixinChunkRegion": {
+        "Lnet/minecraft/server/level/ServerLevel;onBlockStateChange(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;)V": "Lnet/minecraft/server/level/ServerLevel;m_6559_(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;)V",
+        "setBlock": "Lnet/minecraft/server/level/WorldGenRegion;m_6933_(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;II)Z"
+      },
+      "com/hari/harichunk/threading/chunkio/mixin/MixinBlender": {
+        "Lnet/minecraft/server/level/WorldGenRegion;isOldChunkAround(Lnet/minecraft/world/level/ChunkPos;I)Z": "Lnet/minecraft/server/level/WorldGenRegion;m_215159_(Lnet/minecraft/world/level/ChunkPos;I)Z",
+        "of": "Lnet/minecraft/world/level/levelgen/blending/Blender;m_190202_(Lnet/minecraft/server/level/WorldGenRegion;)Lnet/minecraft/world/level/levelgen/blending/Blender;"
+      }
+    }
+  }
+}
