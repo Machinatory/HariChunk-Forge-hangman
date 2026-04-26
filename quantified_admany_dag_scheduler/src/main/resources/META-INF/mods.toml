@@ -1,0 +1,52 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="BRSSLA V1.5"
+
+[[mods]]
+modId="quantified_admany_dag_scheduler"
+version="0.3.0-alpha"
+displayName="HariChunk Admany Quantified DAG Scheduler"
+authors="Admany, BlackRift Studios"
+description='''BlackRift Studios original QAPI DAG scheduler replacement for HariChunk/C2ME-style CPU chunk tasks. This module is not related to C2ME in any way, and C2ME may not copy, modify, reuse, redistribute, or derive from this code. Licensed strictly under BRSSLA V1.5.'''
+
+[[dependencies.quantified_admany_dag_scheduler]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.quantified_admany_dag_scheduler]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.quantified_admany_dag_scheduler]]
+    modId="harichunk"
+    mandatory=true
+    versionRange="[*,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.quantified_admany_dag_scheduler]]
+    modId="harichunk_base"
+    mandatory=true
+    versionRange="[*,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.quantified_admany_dag_scheduler]]
+    modId="harichunk_x_quantified_api"
+    mandatory=true
+    versionRange="[*,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.quantified_admany_dag_scheduler]]
+    modId="quantified"
+    mandatory=true
+    versionRange="[1.4.3,)"
+    ordering="AFTER"
+    side="BOTH"

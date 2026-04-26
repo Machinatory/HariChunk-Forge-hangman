@@ -1,0 +1,10 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.fixes.worldgen.vanilla_bugs.mixin",
+  "plugin": "com.hari.harichunk.base.common.ModuleMixinPlugin",
+  "refmap": "harichunk_fixes_worldgen_vanilla_bugs.refmap.json",
+  "mixins": [
+    "incorrect_required_status_for_generation_in_structure_references_status.MixinChunkStatus"
+  ]
+}

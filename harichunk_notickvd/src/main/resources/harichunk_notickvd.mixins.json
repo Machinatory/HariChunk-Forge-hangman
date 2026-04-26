@@ -1,0 +1,16 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.notickvd.mixin",
+  "plugin": "com.hari.harichunk.notickvd.MixinPlugin",
+  "refmap": "harichunk_notickvd.refmap.json",
+  "mixins": [
+    "MixinChunkHolder",
+    "MixinChunkTicketManager",
+    "MixinPlayerManager",
+    "MixinServerChunkManager",
+    "MixinThreadedAnvilChunkStorage",
+    "MixinWorld",
+    "MixinWorldChunk"
+  ]
+}

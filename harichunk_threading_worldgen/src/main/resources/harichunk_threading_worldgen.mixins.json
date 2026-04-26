@@ -1,0 +1,19 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.threading.worldgen.mixin",
+  "plugin": "com.hari.harichunk.base.common.ModuleMixinPlugin",
+  "refmap": "harichunk_threading_worldgen.refmap.json",
+  "mixins": [
+    "MixinChunkGenerator",
+    "MixinChunkHolder",
+    "MixinChunkRegion",
+    "MixinChunkStatus",
+    "MixinNoiseChunkGenerator",
+    "MixinServerWorld",
+    "MixinThreadedAnvilChunkStorage",
+    "cancellation.MixinChunkHolder",
+    "cancellation.MixinThreadedAnvilChunkStorage",
+    "progresslogger.MixinWorldGenerationProgressLogger"
+  ]
+}

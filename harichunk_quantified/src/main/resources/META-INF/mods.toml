@@ -1,0 +1,45 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+
+[[mods]]
+modId="harichunk_x_quantified_api"
+version="0.3.0-alpha"
+displayName="Quantified API X HariChunk Integration"
+authors="Admany, BlackRift Studios"
+description='''Quantified API bridge for HariChunk. Requires the standalone Quantified API mod.'''
+
+[[dependencies.harichunk_x_quantified_api]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.harichunk_x_quantified_api]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.harichunk_x_quantified_api]]
+    modId="harichunk_base"
+    mandatory=true
+    versionRange="[*,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.harichunk_x_quantified_api]]
+    modId="harichunk"
+    mandatory=true
+    versionRange="[*,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.harichunk_x_quantified_api]]
+    modId="quantified"
+    mandatory=true
+    versionRange="[1.4.0,)"
+    ordering="AFTER"
+    side="BOTH"

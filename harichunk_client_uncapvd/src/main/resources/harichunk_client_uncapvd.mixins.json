@@ -1,0 +1,12 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": false,
+  "package": "com.hari.harichunk.client.uncapvd.mixin",
+  "plugin": "com.hari.harichunk.client.uncapvd.mixin.ClientMixinPlugin",
+  "refmap": "harichunk_client_uncapvd.refmap.json",
+  "mixins": [
+    "ISimpleOption",
+    "MixinGameOptions",
+    "MixinSodiumUserConfigCategories"
+  ]
+}

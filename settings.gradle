@@ -1,0 +1,46 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.7.0'
+}
+
+rootProject.name = 'harichunk'
+
+include(":harichunk_base")
+include(":harichunk_client_uncapvd")
+include(":harichunk_fixes_chunkio_threading_issues")
+include(":harichunk_fixes_general_threading_issues")
+include(":harichunk_fixes_worldgen_threading_issues")
+include(":harichunk_fixes_worldgen_vanilla_bugs")
+include(":harichunk_notickvd")
+include(":harichunk_opts_allocs")
+include(":harichunk_opts_chunk_access")
+include(":harichunk_opts_chunkio")
+include(":harichunk_opts_math")
+include(":harichunk_opts_gpu_noise")
+include(":harichunk_opts_scheduling")
+include(":harichunk_opts_worldgen_general")
+include(":harichunk_opts_worldgen_vanilla")
+include(":harichunk_rewrites_chunk_serializer")
+include(":harichunk_rewrites_chunkio")
+include(":harichunk_server_utils")
+include(":harichunk_threading_chunkio")
+include(":harichunk_threading_lighting")
+include(":harichunk_threading_worldgen")
+include(":harichunk_natives_opts")
+include(":harichunk_opts_worldgen_biome_cache")
+include(":harichunk_quantified")
+include(":quantified_admany_dag_scheduler")
+include(":quantified_harichunk_opts_vk_gpu_accel")
+include(":harichunk_brs_gpu_noise")
+include(":harichunk_opts_dfc")
+include(":harichunk_compat_immersivepetroleum")
+//include(":harichunk_compat_twilightforest") // TF compat handled by tfthreadsafetyaddon in root src

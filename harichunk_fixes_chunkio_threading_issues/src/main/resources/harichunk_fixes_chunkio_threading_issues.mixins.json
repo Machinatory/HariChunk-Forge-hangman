@@ -1,0 +1,11 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.fixes.chunkio.threading_issues.mixin",
+  "plugin": "com.hari.harichunk.base.common.ModuleMixinPlugin",
+  "refmap": "harichunk_fixes_chunkio_threading_issues.refmap.json",
+  "mixins": [
+    "MixinChunkHolder",
+    "MixinStructurePoolElement"
+  ]
+}

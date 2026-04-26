@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.hari.harichunk.opts.natives_math.mixin",
+  "plugin": "com.hari.harichunk.opts.natives_math.mixin.MixinPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "harichunk_natives_opts.refmap.json",
+  "mixins": [
+    "MixinDoublePerlinNoiseSampler",
+    "MixinInterpolatedNoiseSampler",
+    "MixinDFTypesEndIslands",
+    "df.MixinDFTNoise",
+    "df.MixinDFTShift",
+    "df.MixinDFTShiftA",
+    "df.MixinDFTShiftB"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

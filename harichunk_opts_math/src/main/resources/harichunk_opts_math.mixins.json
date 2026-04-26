@@ -1,0 +1,11 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.opts.math.mixin",
+  "plugin": "com.hari.harichunk.base.common.ModuleMixinPlugin",
+  "refmap": "harichunk_opts_math.refmap.json",
+  "mixins": [
+    "MixinOctavePerlinNoiseSampler",
+    "MixinPerlinNoiseSampler"
+  ]
+}

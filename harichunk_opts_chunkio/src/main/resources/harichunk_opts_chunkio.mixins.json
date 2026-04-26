@@ -1,0 +1,12 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.opts.chunkio.mixin",
+  "plugin": "com.hari.harichunk.opts.chunkio.MixinPlugin",
+  "refmap": "harichunk_opts_chunkio.refmap.json",
+  "mixins": [
+    "compression.modify_default_chunk_compression.MixinRegionFile",
+    "hide_sync_disk_writes_behind_flag.MixinRegionBasedStorage",
+    "limit_nbt_cache.MixinStorageIoWorker"
+  ]
+}

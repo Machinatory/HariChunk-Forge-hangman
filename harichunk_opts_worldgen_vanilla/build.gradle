@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
+
+
+base {
+    archivesName = "${mod_id}F-opts-worldgen-vanilla-mc${minecraft_version}-${mod_version}"
+}
+
+
+
+dependencies {
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    api project(":harichunk_base")
+    api project(":harichunk_opts_worldgen_general")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
+                             forge_version       : forge_version, forge_version_range: forge_version_range,
+                             loader_version_range: loader_version_range,
+                             mod_id              : "harichunk_opts_worldgen_vanilla", mod_name: "Concurrent Chunk Management Engine (Optimizations/Vanilla WorldGen)", mod_license: mod_license, mod_version: mod_version,
+                             mod_authors         : mod_authors, mod_description: "Optimizations targeting vanilla world generation",]
+
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}

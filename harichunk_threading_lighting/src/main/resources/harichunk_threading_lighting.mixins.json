@@ -1,0 +1,11 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.threading.lighting.mixin",
+  "plugin": "com.hari.harichunk.base.common.ModuleMixinPlugin",
+  "refmap": "harichunk_threading_lighting.refmap.json",
+  "mixins": [
+    "MixinServerLightingProvider",
+    "MixinThreadedAnvilChunkStorage"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.fixes.general.threading_issues.mixin",
+  "plugin": "com.hari.harichunk.base.common.ModuleMixinPlugin",
+  "refmap": "harichunk_fixes_general_threading_issues.refmap.json",
+  "mixins": [
+    "MixinChunkHolder",
+    "MixinChunkTicketManager",
+    "MixinThreadedAnvilChunkStorage",
+    "asynccatchers.MixinMinecraftServer",
+    "asynccatchers.MixinServerChunkManager",
+    "asynccatchers.MixinThreadedAnvilChunkStorage"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.rewrites.chunk_serializer.mixin",
+  "plugin": "com.hari.harichunk.base.common.ModuleMixinPlugin",
+  "refmap": "harichunk_rewrites_chunk_serializer.refmap.json",
+  "mixins": [
+    "ChunkStatusMixin",
+    "GenerationStepCarverMixin",
+    "HeightMapTypeMixin",
+    "IdentifierMixin",
+    "IStarlightSaveState",
+    "MixinThreadedAnvilChunkStorage"
+  ]
+}

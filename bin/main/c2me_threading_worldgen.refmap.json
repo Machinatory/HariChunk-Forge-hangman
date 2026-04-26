@@ -1,0 +1,72 @@
+{
+  "mappings": {
+    "com/hari/harichunk/threading/worldgen/mixin/MixinChunkGenerator": {
+      "createBiomes": "Lnet/minecraft/world/level/chunk/ChunkGenerator;m_213908_(Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)Ljava/util/concurrent/CompletableFuture;",
+      "Lnet/minecraft/Util;backgroundExecutor()Ljava/util/concurrent/ExecutorService;": "Lnet/minecraft/Util;m_183991_()Ljava/util/concurrent/ExecutorService;"
+    },
+    "com/hari/harichunk/threading/worldgen/mixin/MixinChunkRegion": {
+      "hasChunk": "Lnet/minecraft/server/level/WorldGenRegion;m_7232_(II)Z",
+      "getChunk(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Lnet/minecraft/world/level/chunk/ChunkAccess;": "Lnet/minecraft/server/level/WorldGenRegion;m_6522_(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Lnet/minecraft/world/level/chunk/ChunkAccess;"
+    },
+    "com/hari/harichunk/threading/worldgen/mixin/progresslogger/MixinWorldGenerationProgressLogger": {
+      "updateSpawnPos": "Lnet/minecraft/server/level/progress/LoggerChunkProgressListener;m_7647_(Lnet/minecraft/world/level/ChunkPos;)V",
+      "onStatusChange": "Lnet/minecraft/server/level/progress/LoggerChunkProgressListener;m_5511_(Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/world/level/chunk/ChunkStatus;)V"
+    },
+    "com/hari/harichunk/threading/worldgen/mixin/MixinThreadedAnvilChunkStorage": {
+      "Lnet/minecraft/CrashReport;forThrowable(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/CrashReport;": "Lnet/minecraft/CrashReport;m_127521_(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/CrashReport;",
+      "scheduleChunkGeneration": "Lnet/minecraft/server/level/ChunkMap;m_140360_(Lnet/minecraft/server/level/ChunkHolder;Lnet/minecraft/world/level/chunk/ChunkStatus;)Ljava/util/concurrent/CompletableFuture;",
+      "Lnet/minecraft/server/level/ChunkMap;getChunkRangeFuture(Lnet/minecraft/server/level/ChunkHolder;ILjava/util/function/IntFunction;)Ljava/util/concurrent/CompletableFuture;": "Lnet/minecraft/server/level/ChunkMap;m_280541_(Lnet/minecraft/server/level/ChunkHolder;ILjava/util/function/IntFunction;)Ljava/util/concurrent/CompletableFuture;",
+      "getChunkRangeFuture": "Lnet/minecraft/server/level/ChunkMap;m_280541_(Lnet/minecraft/server/level/ChunkHolder;ILjava/util/function/IntFunction;)Ljava/util/concurrent/CompletableFuture;",
+      "Lnet/minecraft/server/level/ChunkMap;getUpdatingChunkIfPresent(J)Lnet/minecraft/server/level/ChunkHolder;": "Lnet/minecraft/server/level/ChunkMap;m_140174_(J)Lnet/minecraft/server/level/ChunkHolder;"
+    },
+    "com/hari/harichunk/threading/worldgen/mixin/cancellation/MixinThreadedAnvilChunkStorage": {
+      "schedule": "Lnet/minecraft/server/level/ChunkMap;m_140292_(Lnet/minecraft/server/level/ChunkHolder;Lnet/minecraft/world/level/chunk/ChunkStatus;)Ljava/util/concurrent/CompletableFuture;",
+      "Lnet/minecraft/server/level/ChunkLevel;byStatus(Lnet/minecraft/world/level/chunk/ChunkStatus;)I": "Lnet/minecraft/server/level/ChunkLevel;m_287141_(Lnet/minecraft/world/level/chunk/ChunkStatus;)I"
+    },
+    "com/hari/harichunk/threading/worldgen/mixin/MixinNoiseChunkGenerator": {
+      "createBiomes": "Lnet/minecraft/world/level/levelgen/NoiseBasedChunkGenerator;m_213908_(Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)Ljava/util/concurrent/CompletableFuture;",
+      "fillFromNoise": "Lnet/minecraft/world/level/levelgen/NoiseBasedChunkGenerator;m_213974_(Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)Ljava/util/concurrent/CompletableFuture;",
+      "Lnet/minecraft/Util;backgroundExecutor()Ljava/util/concurrent/ExecutorService;": "Lnet/minecraft/Util;m_183991_()Ljava/util/concurrent/ExecutorService;"
+    },
+    "com/hari/harichunk/threading/worldgen/mixin/MixinChunkHolder": {
+      "Lnet/minecraft/server/level/ChunkMap;schedule(Lnet/minecraft/server/level/ChunkHolder;Lnet/minecraft/world/level/chunk/ChunkStatus;)Ljava/util/concurrent/CompletableFuture;": "Lnet/minecraft/server/level/ChunkMap;m_140292_(Lnet/minecraft/server/level/ChunkHolder;Lnet/minecraft/world/level/chunk/ChunkStatus;)Ljava/util/concurrent/CompletableFuture;",
+      "getOrScheduleFuture": "Lnet/minecraft/server/level/ChunkHolder;m_140049_(Lnet/minecraft/world/level/chunk/ChunkStatus;Lnet/minecraft/server/level/ChunkMap;)Ljava/util/concurrent/CompletableFuture;"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/threading/worldgen/mixin/MixinChunkGenerator": {
+        "createBiomes": "Lnet/minecraft/world/level/chunk/ChunkGenerator;m_213908_(Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)Ljava/util/concurrent/CompletableFuture;",
+        "Lnet/minecraft/Util;backgroundExecutor()Ljava/util/concurrent/ExecutorService;": "Lnet/minecraft/Util;m_183991_()Ljava/util/concurrent/ExecutorService;"
+      },
+      "com/hari/harichunk/threading/worldgen/mixin/MixinChunkRegion": {
+        "hasChunk": "Lnet/minecraft/server/level/WorldGenRegion;m_7232_(II)Z",
+        "getChunk(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Lnet/minecraft/world/level/chunk/ChunkAccess;": "Lnet/minecraft/server/level/WorldGenRegion;m_6522_(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Lnet/minecraft/world/level/chunk/ChunkAccess;"
+      },
+      "com/hari/harichunk/threading/worldgen/mixin/progresslogger/MixinWorldGenerationProgressLogger": {
+        "updateSpawnPos": "Lnet/minecraft/server/level/progress/LoggerChunkProgressListener;m_7647_(Lnet/minecraft/world/level/ChunkPos;)V",
+        "onStatusChange": "Lnet/minecraft/server/level/progress/LoggerChunkProgressListener;m_5511_(Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/world/level/chunk/ChunkStatus;)V"
+      },
+      "com/hari/harichunk/threading/worldgen/mixin/MixinThreadedAnvilChunkStorage": {
+        "Lnet/minecraft/CrashReport;forThrowable(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/CrashReport;": "Lnet/minecraft/CrashReport;m_127521_(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/CrashReport;",
+        "scheduleChunkGeneration": "Lnet/minecraft/server/level/ChunkMap;m_140360_(Lnet/minecraft/server/level/ChunkHolder;Lnet/minecraft/world/level/chunk/ChunkStatus;)Ljava/util/concurrent/CompletableFuture;",
+        "Lnet/minecraft/server/level/ChunkMap;getChunkRangeFuture(Lnet/minecraft/server/level/ChunkHolder;ILjava/util/function/IntFunction;)Ljava/util/concurrent/CompletableFuture;": "Lnet/minecraft/server/level/ChunkMap;m_280541_(Lnet/minecraft/server/level/ChunkHolder;ILjava/util/function/IntFunction;)Ljava/util/concurrent/CompletableFuture;",
+        "getChunkRangeFuture": "Lnet/minecraft/server/level/ChunkMap;m_280541_(Lnet/minecraft/server/level/ChunkHolder;ILjava/util/function/IntFunction;)Ljava/util/concurrent/CompletableFuture;",
+        "Lnet/minecraft/server/level/ChunkMap;getUpdatingChunkIfPresent(J)Lnet/minecraft/server/level/ChunkHolder;": "Lnet/minecraft/server/level/ChunkMap;m_140174_(J)Lnet/minecraft/server/level/ChunkHolder;"
+      },
+      "com/hari/harichunk/threading/worldgen/mixin/cancellation/MixinThreadedAnvilChunkStorage": {
+        "schedule": "Lnet/minecraft/server/level/ChunkMap;m_140292_(Lnet/minecraft/server/level/ChunkHolder;Lnet/minecraft/world/level/chunk/ChunkStatus;)Ljava/util/concurrent/CompletableFuture;",
+        "Lnet/minecraft/server/level/ChunkLevel;byStatus(Lnet/minecraft/world/level/chunk/ChunkStatus;)I": "Lnet/minecraft/server/level/ChunkLevel;m_287141_(Lnet/minecraft/world/level/chunk/ChunkStatus;)I"
+      },
+      "com/hari/harichunk/threading/worldgen/mixin/MixinNoiseChunkGenerator": {
+        "createBiomes": "Lnet/minecraft/world/level/levelgen/NoiseBasedChunkGenerator;m_213908_(Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)Ljava/util/concurrent/CompletableFuture;",
+        "fillFromNoise": "Lnet/minecraft/world/level/levelgen/NoiseBasedChunkGenerator;m_213974_(Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)Ljava/util/concurrent/CompletableFuture;",
+        "Lnet/minecraft/Util;backgroundExecutor()Ljava/util/concurrent/ExecutorService;": "Lnet/minecraft/Util;m_183991_()Ljava/util/concurrent/ExecutorService;"
+      },
+      "com/hari/harichunk/threading/worldgen/mixin/MixinChunkHolder": {
+        "Lnet/minecraft/server/level/ChunkMap;schedule(Lnet/minecraft/server/level/ChunkHolder;Lnet/minecraft/world/level/chunk/ChunkStatus;)Ljava/util/concurrent/CompletableFuture;": "Lnet/minecraft/server/level/ChunkMap;m_140292_(Lnet/minecraft/server/level/ChunkHolder;Lnet/minecraft/world/level/chunk/ChunkStatus;)Ljava/util/concurrent/CompletableFuture;",
+        "getOrScheduleFuture": "Lnet/minecraft/server/level/ChunkHolder;m_140049_(Lnet/minecraft/world/level/chunk/ChunkStatus;Lnet/minecraft/server/level/ChunkMap;)Ljava/util/concurrent/CompletableFuture;"
+      }
+    }
+  }
+}

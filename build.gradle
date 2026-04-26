@@ -1,0 +1,270 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
+plugins {
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+    id 'com.gradleup.shadow' version '8.3.6'
+}
+
+@SuppressWarnings('unused')
+static def moduleDependencies(project, List<String> depNames) {
+    project.dependencies {
+        depNames.each {
+            api project.dependencies.project(path: ":$it", configuration: 'namedElements')
+        }
+    }
+}
+
+jarJar.enable()
+
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'com.gradleup.shadow'
+
+group = mod_group_id
+version = mod_version
+
+base {
+    archivesName = "${mod_id}"
+}
+
+def moduleProjects = [
+        ':harichunk_base',
+        ':harichunk_client_uncapvd',
+        ':harichunk_fixes_chunkio_threading_issues',
+        ':harichunk_fixes_general_threading_issues',
+        ':harichunk_fixes_worldgen_threading_issues',
+        ':harichunk_fixes_worldgen_vanilla_bugs',
+        ':harichunk_notickvd',
+        ':harichunk_opts_allocs',
+        ':harichunk_opts_chunk_access',
+        ':harichunk_opts_chunkio',
+        ':harichunk_opts_math',
+        ':harichunk_opts_gpu_noise',
+        ':harichunk_opts_scheduling',
+        ':harichunk_opts_worldgen_general',
+        ':harichunk_opts_worldgen_vanilla',
+        ':harichunk_rewrites_chunk_serializer',
+        ':harichunk_rewrites_chunkio',
+        ':harichunk_server_utils',
+        ':harichunk_threading_chunkio',
+        ':harichunk_threading_lighting',
+        ':harichunk_threading_worldgen',
+        ':harichunk_natives_opts',
+        ':harichunk_opts_worldgen_biome_cache',
+        ':harichunk_quantified',
+        ':harichunk_opts_dfc',
+        ':harichunk_compat_immersivepetroleum',
+]
+
+if (findProject(':harichunk_flowsched') != null) {
+    moduleProjects.add(':harichunk_flowsched')
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+    copyIdeResources = true
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'mixin.debug', 'true'
+            property 'mixin.checks.interfaces', 'true'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
+        }
+
+        gameTestServer {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        data {
+            workingDirectory project.file('run-data')
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        }
+    }
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
+    config "harichunk.mixins.json"
+    config "tfthreadsafetyaddon.mixins.json"
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'ArclightPowered'
+        url = 'https://maven.izzel.io/releases'
+    }
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'ArclightPowered'
+            url = 'https://maven.izzel.io/releases'
+        }
+    }
+
+    dependencies {
+        compileOnly("com.ibm.async:asyncutil:${async_util_version}")
+        compileOnly("org.threadly:threadly:${threadly_version}")
+        compileOnly("net.objecthunter:exp4j:${exp4j_version}")
+        compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
+        compileOnly("io.izzel.arclight:mixin-tools:${mixin_tools_version}")
+    }
+}
+
+configure(moduleProjects.collect { project(it) }) {
+    apply plugin: 'net.minecraftforge.gradle'
+    apply plugin: 'org.spongepowered.mixin'
+
+    minecraft {
+        mappings channel: mapping_channel, version: mapping_version
+        copyIdeResources = true
+        accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
+
+    mixin {
+        add sourceSets.main, "${project.name}.refmap.json"
+        config "${project.name}.mixins.json"
+    }
+
+    dependencies {
+        minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+        annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    implementation(jarJar("com.ibm.async:asyncutil:${async_util_version}")) {
+        jarJar.ranged(it, "[${async_util_version},)")
+    }
+    implementation(jarJar("org.threadly:threadly:${threadly_version}")) {
+        jarJar.ranged(it, "[${threadly_version},)")
+    }
+    implementation(jarJar("net.objecthunter:exp4j:${exp4j_version}")) {
+        jarJar.ranged(it, "[${exp4j_version},)")
+    }
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixinextras_version}")) {
+        jarJar.ranged(it, "[${mixinextras_version},)")
+        transitive = false
+    }
+    implementation(jarJar("io.izzel.arclight:mixin-tools:${mixin_tools_version}")) {
+        jarJar.ranged(it, "[${mixin_tools_version},)")
+        transitive = false
+    }
+
+    compileOnly files('libs/twilightforest-1.20.1-4.3.2508-universal.jar')
+
+    moduleProjects.each { moduleName ->
+        jarJar(project(moduleName)) {
+            transitive = false
+            jarJar.ranged(it, '[*,)')
+        }
+    }
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
+                             forge_version       : forge_version, forge_version_range: forge_version_range,
+                             loader_version_range: loader_version_range,
+                             mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+                             mod_authors         : mod_authors, mod_description: mod_description,]
+
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+moduleProjects.each { moduleName ->
+    compileJava.dependsOn "${moduleName}:build"
+    processResources.dependsOn "${moduleName}:build"
+}
+
+tasks.register('renameRefmaps') {
+    doLast {
+        fileTree(dir: "${buildDir}/resources/main", includes: ['c2me_*.refmap.json']).each { f ->
+            def newName = f.name.replace('c2me_', 'harichunk_')
+            f.renameTo(new File(f.parent, newName))
+        }
+    }
+}
+jar.dependsOn renameRefmaps
+shadowJar.dependsOn renameRefmaps
+
+tasks.named('jar', Jar).configure {
+    moduleProjects.each { moduleName ->
+        dependsOn "${moduleName}:build"
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes(["Specification-Title"     : mod_id,
+                    "Specification-Vendor"    : mod_authors,
+                    "Specification-Version"   : "1",
+                    "Implementation-Title"    : project.name,
+                    "Implementation-Version"  : project.jar.archiveVersion,
+                    "Implementation-Vendor"   : mod_authors,
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
+    }
+
+    finalizedBy 'reobfJar'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+if (project.hasProperty('shadowJar')) {
+    moduleProjects.each { moduleName ->
+        shadowJar.dependsOn "${moduleName}:build"
+    }
+}

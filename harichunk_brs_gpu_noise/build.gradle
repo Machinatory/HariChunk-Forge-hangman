@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
+
+base {
+    archivesName = "${mod_id}F-brs-gpu-noise-mc${minecraft_version}-${mod_version}"
+}
+
+
+dependencies {
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    api project(":harichunk_base")
+    api project(":harichunk_quantified")
+    api project(":quantified_harichunk_opts_vk_gpu_accel")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
+                             forge_version       : forge_version, forge_version_range: forge_version_range,
+                             loader_version_range: loader_version_range,
+                             mod_id              : "harichunk_brs_gpu_noise",
+                             mod_name            : "HariChunk BlackRift Studios Vulkan GPU Noise",
+                             mod_license         : "BRSSLA V1.5",
+                             mod_version         : mod_version,
+                             mod_authors         : "Admany, BlackRift Studios",
+                             mod_description     : "BlackRift Studios original custom Vulkan GPU noise layer for HariChunk, powered by Quantified API. This module is not related to C2ME in any way, and C2ME may not copy, modify, reuse, redistribute, or derive from this code. Licensed strictly under BRSSLA V1.5.",]
+
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

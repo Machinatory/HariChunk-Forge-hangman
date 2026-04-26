@@ -1,0 +1,19 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.opts.dfc.mixin",
+  "plugin": "com.hari.harichunk.base.common.ModuleMixinPlugin",
+  "refmap": "harichunk_opts_dfc.refmap.json",
+  "mixins": [
+    "MixinNoiseBasedChunkGenerator",
+    "MixinNoiseChunk",
+    "MixinNoiseChunkCache2D",
+    "MixinNoiseChunkCacheOnce",
+    "MixinNoiseChunkCacheAllInCell",
+    "MixinNoiseChunkNoiseInterpolator",
+    "MixinNoiseChunkFlatCache",
+    "MixinTwoArgumentSimpleFunction",
+    "MixinMarker",
+    "MixinCubicSpline"
+  ]
+}

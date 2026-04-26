@@ -1,0 +1,44 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
+
+
+base {
+    archivesName = "harichunk-harichunk_natives_opts-mc${minecraft_version}-${mod_version}"
+}
+
+
+
+dependencies {
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    // Module dependencies
+    api project(":harichunk_base")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
+                             forge_version: forge_version, forge_version_range: forge_version_range,
+                             loader_version_range: loader_version_range,
+                             mod_id: "harichunk_natives_opts", mod_name: "HariChunk Native Optimizations", mod_license: mod_license, mod_version: mod_version,
+                             mod_authors: mod_authors, mod_description: "Native Optimizations",]
+
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}

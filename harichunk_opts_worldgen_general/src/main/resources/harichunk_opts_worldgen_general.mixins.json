@@ -1,0 +1,12 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.opts.worldgen.general.mixin",
+  "plugin": "com.hari.harichunk.base.common.ModuleMixinPlugin",
+  "refmap": "harichunk_opts_worldgen_general.refmap.json",
+  "mixins": [
+    "random_instances.MixinAtomicSimpleRandomFactory",
+    "random_instances.MixinRedirectAtomicSimpleRandom",
+    "random_instances.MixinRedirectAtomicSimpleRandomStatic"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "mappings": {
+    "com/hari/harichunk/server/utils/mixin/MixinAdvancementCommands": {
+      "register": "Lnet/minecraft/server/commands/AdvancementCommands;m_136310_(Lcom/mojang/brigadier/CommandDispatcher;)V"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/server/utils/mixin/MixinAdvancementCommands": {
+        "register": "Lnet/minecraft/server/commands/AdvancementCommands;m_136310_(Lcom/mojang/brigadier/CommandDispatcher;)V"
+      }
+    }
+  }
+}

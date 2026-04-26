@@ -1,0 +1,68 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
+
+apply plugin: 'com.gradleup.shadow'
+
+def quantifiedApiDirs = [rootProject.file('libs'), project.file('libs')]
+def quantifiedApiJars = quantifiedApiDirs.collectMany { dir ->
+    dir.exists()
+        ? fileTree(dir: dir, include: ['quantified*.jar', 'quantified api*.jar']).files
+        : []
+}
+if (quantifiedApiJars.isEmpty()) {
+    throw new GradleException("Missing Quantified API jar. Put quantified-api-forge-*.jar in ${rootProject.file('libs')} or ${project.file('libs')}.")
+}
+def quantifiedApiJar = quantifiedApiJars.sort { it.lastModified() }.last()
+println "sing Quantified API jar: ${quantifiedApiJar}"
+
+base {
+    archivesName = "${mod_id}F-quantified-mc${minecraft_version}-${mod_version}"
+}
+
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    api project(":harichunk_base")
+
+    // Real dependency, not vendored source. Export it so downstream modules compile
+    // against the Quantified API without each one duplicating the local jar lookup.
+    api files(quantifiedApiJar)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
+                             forge_version       : forge_version, forge_version_range: forge_version_range,
+                             loader_version_range: loader_version_range,
+                             mod_id              : "harichunk_x_quantified_api", mod_name: "Quantified API X HariChunk Integration", mod_license: mod_license, mod_version: mod_version,
+                             mod_authors         : mod_authors, mod_description: "Quantified API bridge for HariChunk. Requires the standalone Quantified API mod.",]
+
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

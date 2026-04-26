@@ -1,0 +1,24 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.opts.allocs.mixin",
+  "plugin": "com.hari.harichunk.opts.allocs.MixinPlugin",
+  "refmap": "harichunk_opts_allocs.refmap.json",
+  "mixins": [
+    "MixinIdentifier",
+    "MixinNbtCompound",
+    "MixinNbtList",
+    "MixinUtil",
+    "asm.NbtOps$NbtRecordBuilderASM",
+    "noise.MixinChainedBlockSource",
+    "object_pooling_caching.MixinConfiguredFeature",
+    "object_pooling_caching.MixinOreFeature",
+    "surfacebuilder.MixinMaterialRuleContext",
+    "surfacebuilder.MixinMaterialRulesSequenceBlockStateRule",
+    "surfacebuilder.MixinMaterialRulesSequenceMaterialRule",
+    "predicates.MixinCombinedBlockPredicate",
+    "predicates.MixinAllOfBlockPredicate",
+    "predicates.MixinAnyOfBlockPredicate",
+    "predicates.MixinOffsetPredicate"
+  ]
+}

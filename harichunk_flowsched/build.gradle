@@ -1,0 +1,35 @@
+plugins {
+    id 'java-library'
+}
+
+base {
+    archivesName = "${mod_id}F-flowsched-mc${minecraft_version}-${mod_version}"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+dependencies {
+    implementation "it.unimi.dsi:fastutil:${fastutil_version}"
+    implementation "io.reactivex.rxjava3:rxjava:${rxjava_version}"
+    implementation "org.slf4j:slf4j-api:${slf4j_version}"
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes(["Specification-Title"     : "flowsched",
+                    "Specification-Vendor"    : mod_authors,
+                    "Specification-Version"   : "1",
+                    "Implementation-Title"    : project.name,
+                    "Implementation-Version"  : project.jar.archiveVersion,
+                    "Implementation-Vendor"   : mod_authors,
+                    "Implementation-Timestamp": new Date().format("yyyy-MM'T'HH:mm:ssZ")])
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

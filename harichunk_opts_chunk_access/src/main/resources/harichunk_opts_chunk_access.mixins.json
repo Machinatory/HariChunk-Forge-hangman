@@ -1,0 +1,11 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.opts.chunk_access.mixin",
+  "plugin": "com.hari.harichunk.opts.chunk_access.MixinPlugin",
+  "refmap": "harichunk_opts_chunk_access.refmap.json",
+  "mixins": [
+    "async_chunk_request.MixinServerChunkManager",
+    "region_capture.MixinChunkStatus"
+  ]
+}

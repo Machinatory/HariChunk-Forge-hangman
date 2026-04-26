@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.admany.quantifiedintegration.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "harichunk_quantified.refmap.json",
+  "plugin": "org.admany.quantifiedintegration.mixin.MixinPlugin",
+  "parent": "harichunk.mixins.json",
+  "mixins": [],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

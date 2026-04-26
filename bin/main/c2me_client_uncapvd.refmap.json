@@ -1,0 +1,16 @@
+{
+  "mappings": {
+    "com/hari/harichunk/client/uncapvd/mixin/ISimpleOption": {
+      "codec": "f_231477_:Lcom/mojang/serialization/Codec;",
+      "values": "f_231476_:Lnet/minecraft/client/OptionInstance$ValueSet;"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/client/uncapvd/mixin/ISimpleOption": {
+        "codec": "f_231477_:Lcom/mojang/serialization/Codec;",
+        "values": "f_231476_:Lnet/minecraft/client/OptionInstance$ValueSet;"
+      }
+    }
+  }
+}

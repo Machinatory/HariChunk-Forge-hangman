@@ -1,0 +1,13 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.rewrites.chunkio.mixin",
+  "plugin": "com.hari.harichunk.base.common.ModuleMixinPlugin",
+  "refmap": "harichunk_rewrites_chunkio.refmap.json",
+  "mixins": [
+    "MixinEntityChunkDataAccess",
+    "MixinSerializingRegionBasedStorage",
+    "MixinStorageIoWorker",
+    "MixinVersionedChunkStorage"
+  ]
+}

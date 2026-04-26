@@ -1,0 +1,45 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="BRSSLA V1.5"
+
+[[mods]]
+modId="quantified_harichunk_opts_vk_gpu_accel"
+version="0.3.0-alpha"
+displayName="HariChunk Quantified Vulkan GPU Acceleration by Admany"
+authors="Admany, BlackRift Studios"
+description='''BlackRift Studios original HariChunk Vulkan GPU acceleration layer powered by Quantified API. This module owns the VK density/noise acceleration bridge, is not related to C2ME in any way, and C2ME may not copy, modify, reuse, redistribute, or derive from this code. Licensed strictly under BRSSLA V1.5.'''
+
+[[dependencies.quantified_harichunk_opts_vk_gpu_accel]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.quantified_harichunk_opts_vk_gpu_accel]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.quantified_harichunk_opts_vk_gpu_accel]]
+    modId="harichunk"
+    mandatory=true
+    versionRange="[*,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.quantified_harichunk_opts_vk_gpu_accel]]
+    modId="harichunk_x_quantified_api"
+    mandatory=true
+    versionRange="[*,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.quantified_harichunk_opts_vk_gpu_accel]]
+    modId="quantified"
+    mandatory=true
+    versionRange="[1.4.3,)"
+    ordering="AFTER"
+    side="BOTH"

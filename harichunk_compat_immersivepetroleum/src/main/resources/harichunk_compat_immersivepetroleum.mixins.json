@@ -1,0 +1,10 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.compat.immersivepetroleum.mixin",
+  "plugin": "com.hari.harichunk.compat.immersivepetroleum.mixin.MixinPlugin",
+  "refmap": "harichunk_compat_immersivepetroleum.refmap.json",
+  "mixins": [
+    "MixinReservoirHandler"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.opts.gpu_noise.mixin",
+  "plugin": "com.hari.harichunk.opts.gpu_noise.mixin.MixinPlugin",
+  "refmap": "harichunk_opts_gpu_noise.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "server": [
+  ]
+}

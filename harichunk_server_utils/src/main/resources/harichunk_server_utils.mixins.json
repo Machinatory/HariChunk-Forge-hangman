@@ -1,0 +1,11 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.server.utils.mixin",
+  "plugin": "com.hari.harichunk.base.common.ModuleMixinPlugin",
+  "refmap": "harichunk_server_utils.refmap.json",
+  "mixins": [
+    "MixinAdvancementCommands",
+    "MixinCommandManager"
+  ]
+}

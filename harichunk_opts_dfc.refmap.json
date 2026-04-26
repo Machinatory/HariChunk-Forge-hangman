@@ -1,0 +1,50 @@
+{
+  "mappings": {
+    "com/hari/harichunk/opts/dfc/mixin/MixinNoiseChunkNoiseInterpolator": {
+      "compute": "Lnet/minecraft/world/level/levelgen/NoiseChunk$NoiseInterpolator;m_207386_(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D"
+    },
+    "com/hari/harichunk/opts/dfc/mixin/MixinTwoArgumentSimpleFunction": {
+      "fillArray": "Lnet/minecraft/world/level/levelgen/DensityFunctions$Ap2;m_207362_([DLnet/minecraft/world/level/levelgen/DensityFunction$ContextProvider;)V"
+    },
+    "com/hari/harichunk/opts/dfc/mixin/MixinNoiseChunk": {
+      "Lnet/minecraft/world/level/levelgen/DensityFunction;mapAll(Lnet/minecraft/world/level/levelgen/DensityFunction$Visitor;)Lnet/minecraft/world/level/levelgen/DensityFunction;": "Lnet/minecraft/world/level/levelgen/DensityFunction;m_207456_(Lnet/minecraft/world/level/levelgen/DensityFunction$Visitor;)Lnet/minecraft/world/level/levelgen/DensityFunction;",
+      "Lnet/minecraft/world/level/levelgen/NoiseRouter;mapAll(Lnet/minecraft/world/level/levelgen/DensityFunction$Visitor;)Lnet/minecraft/world/level/levelgen/NoiseRouter;": "Lnet/minecraft/world/level/levelgen/NoiseRouter;m_224412_(Lnet/minecraft/world/level/levelgen/DensityFunction$Visitor;)Lnet/minecraft/world/level/levelgen/NoiseRouter;"
+    },
+    "com/hari/harichunk/opts/dfc/mixin/MixinNoiseChunkCacheAllInCell": {
+      "compute": "Lnet/minecraft/world/level/levelgen/NoiseChunk$CacheAllInCell;m_207386_(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D"
+    },
+    "com/hari/harichunk/opts/dfc/mixin/MixinNoiseChunkCacheOnce": {
+      "compute": "Lnet/minecraft/world/level/levelgen/NoiseChunk$CacheOnce;m_207386_(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D",
+      "fillArray": "Lnet/minecraft/world/level/levelgen/NoiseChunk$CacheOnce;m_207362_([DLnet/minecraft/world/level/levelgen/DensityFunction$ContextProvider;)V"
+    },
+    "com/hari/harichunk/opts/dfc/mixin/MixinMarker": {
+      "hashCode": "Lnet/minecraft/world/level/levelgen/DensityFunctions$Marker;hashCode()I",
+      "equals": "Lnet/minecraft/world/level/levelgen/DensityFunctions$Marker;equals(Ljava/lang/Object;)Z"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/hari/harichunk/opts/dfc/mixin/MixinNoiseChunkNoiseInterpolator": {
+        "compute": "Lnet/minecraft/world/level/levelgen/NoiseChunk$NoiseInterpolator;m_207386_(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D"
+      },
+      "com/hari/harichunk/opts/dfc/mixin/MixinTwoArgumentSimpleFunction": {
+        "fillArray": "Lnet/minecraft/world/level/levelgen/DensityFunctions$Ap2;m_207362_([DLnet/minecraft/world/level/levelgen/DensityFunction$ContextProvider;)V"
+      },
+      "com/hari/harichunk/opts/dfc/mixin/MixinNoiseChunk": {
+        "Lnet/minecraft/world/level/levelgen/DensityFunction;mapAll(Lnet/minecraft/world/level/levelgen/DensityFunction$Visitor;)Lnet/minecraft/world/level/levelgen/DensityFunction;": "Lnet/minecraft/world/level/levelgen/DensityFunction;m_207456_(Lnet/minecraft/world/level/levelgen/DensityFunction$Visitor;)Lnet/minecraft/world/level/levelgen/DensityFunction;",
+        "Lnet/minecraft/world/level/levelgen/NoiseRouter;mapAll(Lnet/minecraft/world/level/levelgen/DensityFunction$Visitor;)Lnet/minecraft/world/level/levelgen/NoiseRouter;": "Lnet/minecraft/world/level/levelgen/NoiseRouter;m_224412_(Lnet/minecraft/world/level/levelgen/DensityFunction$Visitor;)Lnet/minecraft/world/level/levelgen/NoiseRouter;"
+      },
+      "com/hari/harichunk/opts/dfc/mixin/MixinNoiseChunkCacheAllInCell": {
+        "compute": "Lnet/minecraft/world/level/levelgen/NoiseChunk$CacheAllInCell;m_207386_(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D"
+      },
+      "com/hari/harichunk/opts/dfc/mixin/MixinNoiseChunkCacheOnce": {
+        "compute": "Lnet/minecraft/world/level/levelgen/NoiseChunk$CacheOnce;m_207386_(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D",
+        "fillArray": "Lnet/minecraft/world/level/levelgen/NoiseChunk$CacheOnce;m_207362_([DLnet/minecraft/world/level/levelgen/DensityFunction$ContextProvider;)V"
+      },
+      "com/hari/harichunk/opts/dfc/mixin/MixinMarker": {
+        "hashCode": "Lnet/minecraft/world/level/levelgen/DensityFunctions$Marker;hashCode()I",
+        "equals": "Lnet/minecraft/world/level/levelgen/DensityFunctions$Marker;equals(Ljava/lang/Object;)Z"
+      }
+    }
+  }
+}

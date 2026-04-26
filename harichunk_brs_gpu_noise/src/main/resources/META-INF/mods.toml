@@ -1,0 +1,52 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="BRSSLA V1.5"
+
+[[mods]]
+modId="harichunk_brs_gpu_noise"
+version="0.3.0-alpha"
+displayName="HariChunk BlackRift Studios Vulkan GPU Noise"
+authors="Admany, BlackRift Studios"
+description='''BlackRift Studios original custom Vulkan GPU noise layer for HariChunk, powered by Quantified API. This module is not related to C2ME in any way, and C2ME may not copy, modify, reuse, redistribute, or derive from this code. Licensed strictly under BRSSLA V1.5.'''
+
+[[dependencies.harichunk_brs_gpu_noise]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.harichunk_brs_gpu_noise]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.harichunk_brs_gpu_noise]]
+    modId="harichunk"
+    mandatory=true
+    versionRange="[*,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.harichunk_brs_gpu_noise]]
+    modId="harichunk_x_quantified_api"
+    mandatory=true
+    versionRange="[*,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.harichunk_brs_gpu_noise]]
+    modId="quantified_harichunk_opts_vk_gpu_accel"
+    mandatory=true
+    versionRange="[*,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.harichunk_brs_gpu_noise]]
+    modId="quantified"
+    mandatory=true
+    versionRange="[1.4.3,)"
+    ordering="AFTER"
+    side="BOTH"

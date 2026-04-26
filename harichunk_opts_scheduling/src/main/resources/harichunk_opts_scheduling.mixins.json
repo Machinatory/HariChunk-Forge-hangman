@@ -1,0 +1,28 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.opts.scheduling.mixin",
+  "plugin": "com.hari.harichunk.opts.scheduling.mixin.MixinPlugin",
+  "refmap": "harichunk_opts_scheduling.refmap.json",
+  "mixins": [
+    "fix_unload.MixinThreadedAnvilChunkStorage",
+    "general_overheads.MixinThreadedAnvilChunkStorage",
+    "idle_tasks.autosave.disable_vanilla_mid_tick_autosave.MixinThreadedAnvilChunkStorage",
+    "idle_tasks.autosave.enhanced_autosave.MixinChunk",
+    "idle_tasks.autosave.enhanced_autosave.MixinMinecraftServer",
+    "idle_tasks.autosave.enhanced_autosave.MixinThreadedAnvilChunkStorage",
+    "idle_tasks.autosave.enhanced_autosave.MixinWorldChunk",
+    "mid_tick_chunk_tasks.MixinMinecraftServer",
+    "mid_tick_chunk_tasks.MixinServerChunkManager",
+    "mid_tick_chunk_tasks.MixinServerWorld",
+    "mid_tick_chunk_tasks.MixinWorld",
+    "ordering.player_move.MixinServerPlayNetworkHandler",
+    "shutdown.MixinMinecraftServer",
+    "shutdown.MixinServerEntityManager",
+    "shutdown.MixinServerWorld",
+    "task_scheduling.MixinChunkHolder",
+    "task_scheduling.MixinEntityChunkDataAccess",
+    "task_scheduling.MixinServerChunkManagerLightBatch",
+    "task_scheduling.MixinThreadedAnvilChunkStorage"
+  ]
+}

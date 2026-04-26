@@ -1,0 +1,31 @@
+package com.hari.harichunk.threading.chunkio.common;
+
+import com.ibm.asyncutil.util.Combinators;
+import com.hari.harichunk.base.mixin.access.IBlender;
+import com.hari.harichunk.base.mixin.access.IStorageIoWorker;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.stream.Collectors;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.storage.IOWorker;
+
+public class BlendingInfoUtil {
+
+    public static CompletionStage<List<BitSet>> getBlendingInfos(IOWorker worker, ChunkPos pos) {
+        final int radius = IBlender.getBLENDING_CHUNK_DISTANCE_THRESHOLD();
+        List<CompletableFuture<BitSet>> futures = new ArrayList<>((radius * 2 + 1) * (radius * 2 + 1));
+        ChunkPos chunkPos2 = new ChunkPos(pos.x - radius, pos.z - radius);
+        ChunkPos chunkPos3 = new ChunkPos(pos.x + radius, pos.z + radius);
+        for(int i = chunkPos2.getRegionX(); i <= chunkPos3.getRegionX(); ++i) {
+            for(int j = chunkPos2.getRegionZ(); j <= chunkPos3.getRegionZ(); ++j) {
+                final CompletableFuture<BitSet> future = ((IStorageIoWorker) worker).invokeGetOrComputeBlendingStatus(i, j);
+                futures.add(future);
+            }
+        }
+        return Combinators.collect(futures, Collectors.toList());
+    }
+
+}

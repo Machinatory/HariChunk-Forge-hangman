@@ -1,0 +1,12 @@
+{
+  "parent": "harichunk.mixins.json",
+  "required": true,
+  "package": "com.hari.harichunk.opts.worldgen.vanilla.mixin",
+  "plugin": "com.hari.harichunk.opts.worldgen.vanilla.MixinPlugin",
+  "refmap": "harichunk_opts_worldgen_vanilla.refmap.json",
+  "mixins": [
+    "aquifer.MixinAquiferSamplerImpl",
+    "aquifer.MixinNoiseChunkGenerator",
+    "the_end_biome_cache.MixinTheEndBiomeSource"
+  ]
+}
