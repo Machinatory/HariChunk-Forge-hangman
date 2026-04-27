@@ -91,14 +91,31 @@ public final class AdmanyDagScheduler {
                                                            double priority,
                                                            boolean foreground,
                                                            Supplier<T> work) {
+        return submitChunkTask(description, priority, foreground, null, work);
+    }
+
+    /**
+     * Submits a chunk generation task with an explicit locality key so the QAPI DAG
+     * can group spatially coherent chunks into dense GPU batches.
+     *
+     * @param localityKey spatial grouping key (e.g. "worldgen-noise:r3.-2"); {@code null}
+     *                    falls back to the normalized description
+     */
+    public static <T> CompletableFuture<T> submitChunkTask(String description,
+                                                           double priority,
+                                                           boolean foreground,
+                                                           String localityKey,
+                                                           Supplier<T> work) {
         initialize();
         SUBMITTED.incrementAndGet();
         PENDING.incrementAndGet();
 
+        String resolvedLocality = localityKey != null ? localityKey : normalize(description);
+
         CompletableFuture<T> future;
         if (ENABLED && isQuantifiedAvailable()) {
             try {
-                future = submitGraphNode(description, priority, foreground, work);
+                future = submitGraphNode(description, priority, foreground, resolvedLocality, work);
                 QAPI_SUBMITTED.incrementAndGet();
             } catch (Throwable throwable) {
                 quantifiedAvailable = false;
@@ -161,6 +178,7 @@ public final class AdmanyDagScheduler {
     private static <T> CompletableFuture<T> submitGraphNode(String description,
                                                             double priority,
                                                             boolean foreground,
+                                                            String localityKey,
                                                             Supplier<T> work) {
         if (!QuantifiedIntegration.register()) {
             throw new IllegalStateException("Quantified API registration failed");
@@ -168,14 +186,14 @@ public final class AdmanyDagScheduler {
 
         String scope = normalize(description);
         QuantifiedTaskGraph.Builder graph = QuantifiedAPI.graph(QuantifiedIntegration.MOD_ID, "admany-dag-" + scope);
-        graph.localityKey(scope);
+        graph.localityKey(localityKey);
 
         QuantifiedTaskGraph.NodeHandle<T> node = graph.node("run", work)
                 .priority(mapPriority(priority, foreground))
                 .threadSafe(true)
                 .timeout(TASK_TIMEOUT)
                 .batchKey(scope)
-                .localityKey(scope);
+                .localityKey(localityKey);
 
         return QuantifiedAPI.submitGraph(graph, node);
     }

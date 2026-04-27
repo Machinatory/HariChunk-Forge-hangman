@@ -51,6 +51,8 @@ public final class GpuDensityFunction {
         if (batchSize < GPU_BATCH_THRESHOLD) {
             return false;
         }
+        // Fast path: avoid repeated reflection probe once GPU is confirmed available.
+        if (gpuAvailable) return true;
         boolean available = queryBackendShouldUseGpu(batchSize);
         gpuAvailable = available;
         return available;

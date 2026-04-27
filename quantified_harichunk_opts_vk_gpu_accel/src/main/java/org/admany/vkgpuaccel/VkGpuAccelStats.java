@@ -19,6 +19,7 @@ public final class VkGpuAccelStats {
     private static final AtomicLong densitySubmissions = new AtomicLong();
     private static final AtomicLong densityItems = new AtomicLong();
     private static final AtomicLong fallbacks = new AtomicLong();
+    private static final AtomicLong compiledShaders = new AtomicLong();
 
     private VkGpuAccelStats() {
     }
@@ -37,9 +38,14 @@ public final class VkGpuAccelStats {
         fallbacks.incrementAndGet();
     }
 
+    static void recordCompiledShader() {
+        compiledShaders.incrementAndGet();
+    }
+
     public static String summary() {
         return "features=" + featureSubmissions.get() + "/" + featureItems.get()
                 + " density=" + densitySubmissions.get() + "/" + densityItems.get()
+                + " compiled=" + compiledShaders.get()
                 + " fallback=" + fallbacks.get();
     }
 }

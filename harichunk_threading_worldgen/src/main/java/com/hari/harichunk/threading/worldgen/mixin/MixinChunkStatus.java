@@ -33,6 +33,7 @@ import net.minecraft.server.level.ThreadedLevelLightEngine;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.profiling.jfr.JvmProfiler;
 import net.minecraft.util.profiling.jfr.callback.ProfiledDuration;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkStatus;
@@ -133,7 +134,11 @@ public abstract class MixinChunkStatus implements IChunkStatus {
                                 ((IVanillaChunkManager) tacs).harichunk$getSchedulingManager(),
                         (Object) this == ChunkStatus.LIGHT, // lighting is async so don't hold the slot TODO make this check less dirty
                                 ((IWorldGenLockable) world).getWorldGenChunkLock(),
-                                () -> ChunkStatusUtils.getThreadingType(thiz).runTask(((IWorldGenLockable) world).getWorldGenSingleThreadedLock(), generationTask))
+                                () -> ChunkStatusUtils.getThreadingType(thiz).runTask(
+                                        ((IWorldGenLockable) world).getWorldGenSingleThreadedLock(),
+                                        generationTask,
+                                        thiz,
+                                        targetChunk.getPos()))
                         .exceptionally(t -> {
                             Throwable actual = t;
                             while (actual instanceof CompletionException) actual = t.getCause();

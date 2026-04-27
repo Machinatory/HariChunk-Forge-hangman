@@ -40,6 +40,6 @@ description='''BlackRift Studios original HariChunk Vulkan GPU acceleration laye
 [[dependencies.quantified_harichunk_opts_vk_gpu_accel]]
     modId="quantified"
     mandatory=true
-    versionRange="[1.4.3,)"
+    versionRange="[1.4.4,)"
     ordering="AFTER"
     side="BOTH"

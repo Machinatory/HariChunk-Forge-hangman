@@ -13,6 +13,8 @@ package org.admany.vkgpuaccel;
 import org.admany.quantified.api.QuantifiedAPI;
 import org.admany.quantified.api.compute.GpuBackendPreference;
 import org.admany.quantified.api.vulkan.QuantifiedVulkan;
+import org.admany.quantified.core.common.util.TaskScheduler;
+import org.admany.quantified.core.common.vulkan.core.McDensityVulkanTask;
 import org.admany.quantifiedintegration.QuantifiedIntegration;
 import org.admany.quantifiedintegration.gpu.QuantifiedGpuRuntime;
 import org.slf4j.Logger;
@@ -20,6 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -31,6 +35,34 @@ public final class VkGpuAccel {
     private static final AtomicBoolean initialized = new AtomicBoolean(false);
     private static volatile boolean ready;
     private static volatile String unavailableReason = "not initialized";
+
+    /**
+     * Semaphore limiting concurrent in-flight GPU workloads fed into QAPI's
+     * GpuTaskDispatcher. QAPI accumulates tasks in a BatchBucket keyed by
+     * affinityKey ("harichunk-vk-mc-density") and dispatches them as a single
+     * CompositeVulkanBatchTask via mcDensityFunctionsBatch. MAX_IN_FLIGHT_WORKSPACES
+     * must be large enough to let the bucket fill up (preferredBatchSize ~25-64)
+     * before flushing — otherwise tasks fall back to CPU.
+     */
+    private static final Semaphore IN_FLIGHT_SEMAPHORE =
+            new Semaphore(VkGpuAccelConfig.MAX_IN_FLIGHT_WORKSPACES);
+
+    /**
+     * Per-thread packed coordinate buffer pool. Reusing the buffer avoids a
+     * float[length*3] allocation on every GPU density dispatch. Safe because
+     * tryComputeEncodedDensityBatch blocks on .get() before returning, so
+     * the buffer is always idle when it would next be overwritten.
+     */
+    private static final ThreadLocal<float[]> PACKED_COORD_POOL = new ThreadLocal<>();
+
+    private static float[] acquirePackedBuffer(int floatCount) {
+        float[] buf = PACKED_COORD_POOL.get();
+        if (buf == null || buf.length < floatCount) {
+            buf = new float[floatCount];
+            PACKED_COORD_POOL.set(buf);
+        }
+        return buf;
+    }
 
     private VkGpuAccel() {
     }
@@ -117,6 +149,11 @@ public final class VkGpuAccel {
         int items = inputCoords.length / 3;
         VkGpuAccelStats.recordFeatureBatch(items);
 
+        if (!IN_FLIGHT_SEMAPHORE.tryAcquire()) {
+            VkGpuAccelStats.recordFallback();
+            return CompletableFuture.completedFuture(null);
+        }
+
         return QuantifiedAPI.<float[]>vulkan(QAPI_MOD_ID, "harichunk-vk-terrain-features")
                 .cpuFallback(() -> null)
                 .workload(new QuantifiedVulkan.Workload<>() {
@@ -141,7 +178,8 @@ public final class VkGpuAccel {
                 .kind(QuantifiedVulkan.WorkloadKind.SPATIAL_ANALYSIS)
                 .timeout(VkGpuAccelConfig.TASK_TIMEOUT)
                 .allowMainThreadRerouting(false)
-                .submit();
+                .submit()
+                .whenComplete((result, throwable) -> IN_FLIGHT_SEMAPHORE.release());
     }
 
     public static CompletableFuture<float[]> submitMcDensityFunctionBatch(float[] packedCoords,
@@ -175,32 +213,24 @@ public final class VkGpuAccel {
         long dataSize = (long) (packedCoords.length + encodedProgram.length + samples
                 + (long) auxValueCount * samples) * Float.BYTES;
 
-        return QuantifiedAPI.<float[]>vulkan(QAPI_MOD_ID, "harichunk-vk-mc-density")
-                .cpuFallback(() -> null)
-                .workload(new QuantifiedVulkan.Workload<>() {
-                    @Override
-                    public long estimatedVramBytes() {
-                        return dataSize;
-                    }
+        if (!IN_FLIGHT_SEMAPHORE.tryAcquire()) {
+            VkGpuAccelStats.recordFallback();
+            return CompletableFuture.completedFuture(null);
+        }
 
-                    @Override
-                    public int estimatedComputeUnits() {
-                        return Math.max(1, samples);
-                    }
-
-                    @Override
-                    public float[] execute(QuantifiedVulkan.Context context) {
-                        return context.mcDensityFunctions(packedCoords, encodedProgram, instructionCount,
-                                auxValues, auxValueCount);
-                    }
-                })
-                .dataSizeBytes(dataSize)
-                .parallelUnits(Math.max(1, samples))
-                .complexity(QuantifiedVulkan.Complexity.MASSIVE)
-                .kind(QuantifiedVulkan.WorkloadKind.SPATIAL_ANALYSIS)
-                .timeout(VkGpuAccelConfig.TASK_TIMEOUT)
-                .allowMainThreadRerouting(false)
-                .submit();
+        long taskKey = ThreadLocalRandom.current().nextLong();
+        String shaderKey = CompiledDensityCache.getOrRegister(encodedProgram, instructionCount);
+        McDensityVulkanTask densityTask = new McDensityVulkanTask(
+                QAPI_MOD_ID, "harichunk-vk-mc-density", taskKey,
+                packedCoords, encodedProgram, instructionCount,
+                auxValues, auxValueCount, shaderKey,
+                () -> null, VkGpuAccelConfig.TASK_TIMEOUT);
+        return TaskScheduler.<float[]>submitComputeTask(
+                QAPI_MOD_ID, "harichunk-vk-mc-density", taskKey,
+                () -> null, densityTask, dataSize, Math.max(1, samples),
+                TaskScheduler.TaskComplexity.MASSIVE, TaskScheduler.TaskType.SPATIAL_ANALYSIS,
+                VkGpuAccelConfig.TASK_TIMEOUT, false, GpuBackendPreference.VULKAN_REQUIRED)
+                .whenComplete((result, throwable) -> IN_FLIGHT_SEMAPHORE.release());
     }
 
     public static double[] tryComputeEncodedDensityBatch(double[] xCoords,
@@ -228,7 +258,7 @@ public final class VkGpuAccel {
             return null;
         }
 
-        float[] packed = new float[length * 3];
+        float[] packed = acquirePackedBuffer(length * 3);
         for (int i = 0; i < length; i++) {
             int source = offset + i;
             int target = i * 3;
@@ -283,7 +313,7 @@ public final class VkGpuAccel {
             return null;
         }
 
-        float[] packed = new float[length * 3];
+        float[] packed = acquirePackedBuffer(length * 3);
         for (int i = 0; i < length; i++) {
             int source = offset + i;
             int target = i * 3;

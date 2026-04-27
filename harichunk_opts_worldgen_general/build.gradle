@@ -21,6 +21,7 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     api project(":harichunk_base")
+    api project(":quantified_harichunk_opts_vk_gpu_accel")
 }
 
 java {

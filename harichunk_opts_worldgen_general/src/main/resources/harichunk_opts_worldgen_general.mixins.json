@@ -7,6 +7,7 @@
   "mixins": [
     "random_instances.MixinAtomicSimpleRandomFactory",
     "random_instances.MixinRedirectAtomicSimpleRandom",
-    "random_instances.MixinRedirectAtomicSimpleRandomStatic"
+    "random_instances.MixinRedirectAtomicSimpleRandomStatic",
+    "surface_height.MixinNoiseChunk"
   ]
 }

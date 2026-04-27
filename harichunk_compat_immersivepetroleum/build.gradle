@@ -30,6 +30,15 @@ java {
     }
 }
 
+// Exclude the compile-only stub from the packaged jar.
+// When Immersive Petroleum is present both this module and IP would otherwise
+// export flaxbeard.immersivepetroleum.api.reservoir, causing a split-package
+// ResolutionException. The stub is only needed for compilation; at runtime the
+// real IP class is used as the mixin target.
+jar {
+    exclude 'flaxbeard/**'
+}
+
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
                              forge_version: forge_version, forge_version_range: forge_version_range,
