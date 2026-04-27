@@ -16,7 +16,7 @@ public abstract class MixinUtil {
      * @author Hari
      * @reason use another impl
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static <V> CompletableFuture<List<V>> m_137567_(List<CompletableFuture<V>> futures) {
         return Combinators.collect(futures, Collectors.toList()).toCompletableFuture();
     }
@@ -25,7 +25,7 @@ public abstract class MixinUtil {
      * @author Hari
      * @reason use another impl
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static <V> CompletableFuture<List<V>> m_143840_(List<CompletableFuture<V>> futures) {
         final CompletableFuture<List<V>> future = Combinators.collect(futures, Collectors.toList()).toCompletableFuture();
         CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)).exceptionally(e -> {
@@ -39,7 +39,7 @@ public abstract class MixinUtil {
      * @author Hari
      * @reason use another impl
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static <V> CompletableFuture<List<V>> m_214684_(List<CompletableFuture<V>> futures) {
         final CompletableFuture<List<V>> future = Combinators.collect(futures, Collectors.toList()).toCompletableFuture();
         CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)).exceptionally(e -> {
