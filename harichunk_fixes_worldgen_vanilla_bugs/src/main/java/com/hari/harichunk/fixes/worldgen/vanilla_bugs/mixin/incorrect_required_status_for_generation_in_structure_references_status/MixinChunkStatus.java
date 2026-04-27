@@ -18,14 +18,14 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 public class MixinChunkStatus {
 
     @Mutable
-    @Shadow @Final private static List<ChunkStatus> STATUS_BY_RANGE;
+    @Shadow(remap = false) @Final private static List<ChunkStatus> f_62330_; // STATUS_BY_RANGE
 
     @Dynamic
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void appendStructureStarts(CallbackInfo info) {
-        final List<ChunkStatus> distanceToStatus = new ArrayList<>(STATUS_BY_RANGE);
+        final List<ChunkStatus> distanceToStatus = new ArrayList<>(f_62330_);
         distanceToStatus.add(ChunkStatus.STRUCTURE_STARTS);
-        STATUS_BY_RANGE = ImmutableList.copyOf(distanceToStatus);
+        f_62330_ = ImmutableList.copyOf(distanceToStatus);
     }
 
 }
