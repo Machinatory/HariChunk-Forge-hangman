@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(ResourceLocation.class)
 public class MixinIdentifier {
 
-    @Shadow @Final protected String namespace;
-    @Shadow @Final protected String path;
+    @Shadow(remap = false) @Final protected String f_135820_; // namespace
+    @Shadow(remap = false) @Final protected String f_135821_; // path
     @Unique
     private String cachedString = null;
 
@@ -22,7 +22,7 @@ public class MixinIdentifier {
     @Overwrite
     public String toString() {
         if (this.cachedString != null) return this.cachedString;
-        final String s = this.namespace + ":" + this.path;
+        final String s = this.f_135820_ + ":" + this.f_135821_;
         this.cachedString = s;
         return s;
     }

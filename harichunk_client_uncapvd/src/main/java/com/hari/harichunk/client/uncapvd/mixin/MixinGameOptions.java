@@ -13,13 +13,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Options.class)
 public class MixinGameOptions {
 
-    @Shadow @Final private OptionInstance<Integer> renderDistance;
+    @Shadow(remap = false) @Final private OptionInstance<Integer> f_231482_; // renderDistance
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
         final OptionInstance.IntRange callbacks = new OptionInstance.IntRange(2, Config.maxViewDistance);
-        ((ISimpleOption<Integer>) (Object) this.renderDistance).setCallbacks(callbacks);
-        ((ISimpleOption<Integer>) (Object) this.renderDistance).setCodec(callbacks.codec());
+        ((ISimpleOption<Integer>) (Object) this.f_231482_).setCallbacks(callbacks);
+        ((ISimpleOption<Integer>) (Object) this.f_231482_).setCodec(callbacks.codec());
     }
 
 }
