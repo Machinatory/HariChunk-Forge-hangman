@@ -26,16 +26,16 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 @Mixin(value = ChunkStatus.class, priority = 990)
 public abstract class MixinChunkStatus {
 
-    @Shadow @Final private ChunkStatus.GenerationTask generationTask;
+    @Shadow(remap = false) @Final private ChunkStatus.GenerationTask f_62335_; // generationTask
 
-    @Shadow public abstract String toString();
+    @Shadow(remap = false) public abstract String toString();
 
     /**
      * @author Hari
      * @reason capture chunk regions
      */
-    @Overwrite
-    public CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> generate(Executor executor,
+    @Overwrite(remap = false)
+    public CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> m_280308_(Executor executor,
                                                                                     ServerLevel world,
                                                                                     ChunkGenerator generator,
                                                                                     StructureTemplateManager structureTemplateManager,
@@ -47,7 +47,7 @@ public abstract class MixinChunkStatus {
             CurrentWorldGenState.setCurrentRegion(new WorldGenRegion(world,chunks, thiz, -1));
             ChunkAccess chunk = chunks.get(chunks.size() / 2);
             ProfiledDuration finishable = JvmProfiler.INSTANCE.onChunkGenerate(chunk.getPos(), world.dimension(), this.toString());
-            CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> completableFuture = this.generationTask.doWork(thiz, executor, world, generator, structureTemplateManager, lightingProvider, fullChunkConverter, chunks, chunk);
+            CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> completableFuture = this.f_62335_.doWork(thiz, executor, world, generator, structureTemplateManager, lightingProvider, fullChunkConverter, chunks, chunk);
             return completableFuture.thenApply((either) -> {
                 if (either.left().isPresent()) {
                     if (either.left().get() instanceof ProtoChunk protoChunk && !protoChunk.getStatus().isOrAfter(thiz)) {

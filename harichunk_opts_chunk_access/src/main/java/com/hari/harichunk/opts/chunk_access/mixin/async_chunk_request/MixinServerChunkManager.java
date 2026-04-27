@@ -32,35 +32,35 @@ import net.minecraft.world.level.chunk.ImposterProtoChunk;
 @Mixin(ServerChunkCache.class)
 public abstract class MixinServerChunkManager {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private Thread mainThread;
+    private Thread f_8330_; // mainThread
 
-    @Shadow
+    @Shadow(remap = false)
     @Nullable
-    protected abstract ChunkHolder getVisibleChunkIfPresent(long pos);
+    protected abstract ChunkHolder m_8364_(long pos); // getVisibleChunkIfPresent
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private DistanceManager distanceManager;
+    private DistanceManager f_8327_; // distanceManager
 
-    @Shadow
-    protected abstract boolean chunkAbsent(@Nullable ChunkHolder holder, int maxLevel);
+    @Shadow(remap = false)
+    protected abstract boolean m_8416_(@Nullable ChunkHolder holder, int maxLevel); // chunkAbsent
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    ServerLevel level;
+    ServerLevel f_8329_; // level
 
-    @Shadow
-    public abstract boolean runDistanceManagerUpdates();
+    @Shadow(remap = false)
+    public abstract boolean m_8489_(); // runDistanceManagerUpdates
 
-    @Shadow @Final public ChunkMap chunkMap;
-    @Shadow @Final public ServerChunkCache.MainThreadExecutor mainThreadProcessor;
+    @Shadow(remap = false) @Final public ChunkMap f_8325_; // chunkMap
+    @Shadow(remap = false) @Final public ServerChunkCache.MainThreadExecutor f_8332_; // mainThreadProcessor
     private static final TicketType<ChunkPos> ASYNC_LOAD = TicketType.create("async_load", Comparator.comparingLong(ChunkPos::toLong));
 
     @Inject(method = "getChunk", at = @At("HEAD"), cancellable = true)
     private void onGetChunk(int chunkX, int chunkZ, ChunkStatus leastStatus, boolean create, CallbackInfoReturnable<ChunkAccess> cir) {
-        if (Thread.currentThread() != this.mainThread) {
+        if (Thread.currentThread() != this.f_8330_) {
             cir.setReturnValue(harichunk$getChunkOffThread(chunkX, chunkZ, leastStatus, create));
         }
     }
@@ -88,30 +88,30 @@ public abstract class MixinServerChunkManager {
             ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
             long chunkPosLong = chunkPos.toLong();
             int ticketLevel = 33 + ChunkStatus.getDistance(leastStatus);
-            ChunkHolder chunkHolder = this.getVisibleChunkIfPresent(chunkPosLong);
-            boolean doCreate = create && (chunkHolder == null || this.chunkAbsent(chunkHolder, ticketLevel));
+            ChunkHolder chunkHolder = this.m_8364_(chunkPosLong);
+            boolean doCreate = create && (chunkHolder == null || this.m_8416_(chunkHolder, ticketLevel));
             if (doCreate) {
-                this.distanceManager.addTicket(ASYNC_LOAD, chunkPos, ticketLevel, chunkPos);
-                if (this.chunkAbsent(chunkHolder, ticketLevel)) {
-                    ProfilerFiller profiler = this.level.getProfiler();
+                this.f_8327_.addTicket(ASYNC_LOAD, chunkPos, ticketLevel, chunkPos);
+                if (this.m_8416_(chunkHolder, ticketLevel)) {
+                    ProfilerFiller profiler = this.f_8329_.getProfiler();
                     profiler.push("chunkLoad");
-                    this.runDistanceManagerUpdates();
-                    chunkHolder = this.getVisibleChunkIfPresent(chunkPosLong);
+                    this.m_8489_();
+                    chunkHolder = this.m_8364_(chunkPosLong);
                     profiler.pop();
-                    if (this.chunkAbsent(chunkHolder, ticketLevel)) {
+                    if (this.m_8416_(chunkHolder, ticketLevel)) {
                         throw Util.pauseInIde(new IllegalStateException("No chunk holder after ticket has been added"));
                     }
                 }
             }
 
-            final CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> future = this.chunkAbsent(chunkHolder, ticketLevel) ? ChunkHolder.UNLOADED_CHUNK_FUTURE : chunkHolder.getOrScheduleFuture(leastStatus, this.chunkMap);
+            final CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> future = this.m_8416_(chunkHolder, ticketLevel) ? ChunkHolder.UNLOADED_CHUNK_FUTURE : chunkHolder.getOrScheduleFuture(leastStatus, this.f_8325_);
             if (doCreate && future != null) {
                 future.exceptionally(__ -> null).thenRunAsync(() -> {
-                    this.distanceManager.removeTicket(ASYNC_LOAD, chunkPos, ticketLevel, chunkPos);
-                }, this.mainThreadProcessor);
+                    this.f_8327_.removeTicket(ASYNC_LOAD, chunkPos, ticketLevel, chunkPos);
+                }, this.f_8332_);
             }
             return future;
-        }, this.mainThreadProcessor).thenCompose(Function.identity()).thenApply(either -> either.map(Function.identity(), unloaded -> {
+        }, this.f_8332_).thenCompose(Function.identity()).thenApply(either -> either.map(Function.identity(), unloaded -> {
             if (create) {
                 throw Util.pauseInIde(new IllegalStateException("Chunk not there when requested: " + unloaded));
             } else {
