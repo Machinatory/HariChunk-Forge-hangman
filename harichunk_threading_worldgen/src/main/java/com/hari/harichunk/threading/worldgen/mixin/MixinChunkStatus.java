@@ -43,31 +43,31 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 @Mixin(ChunkStatus.class)
 public abstract class MixinChunkStatus implements IChunkStatus {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private ChunkStatus.GenerationTask generationTask;
+    private ChunkStatus.GenerationTask f_62335_; // generationTask
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private int range;
+    private int f_62337_; // range
 
-    @Shadow
-    public static List<ChunkStatus> getStatusList() {
+    @Shadow(remap = false)
+    public static List<ChunkStatus> m_62349_() { // getStatusList
         throw new AbstractMethodError();
     }
 
-    @Shadow public abstract String toString();
+    @Shadow(remap = false) public abstract String toString();
 
     private int reducedTaskRadius = -1;
 
     public void calculateReducedTaskRadius() {
-        if (this.range == 0) {
+        if (this.f_62337_ == 0) {
             this.reducedTaskRadius = 0;
         } else {
-            for (int i = 0; i <= this.range; i++) {
+            for (int i = 0; i <= this.f_62337_; i++) {
                 final ChunkStatus status = ChunkStatus.getStatusAroundFullChunk(ChunkStatus.getDistance((ChunkStatus) (Object) this) + i); // TODO [VanillaCopy] from TACS getRequiredStatusForGeneration
                 if (status.getIndex() <= ChunkStatus.BIOMES.getIndex()) {
-                    this.reducedTaskRadius = Math.min(this.range, Math.max(0, i - 1));
+                    this.reducedTaskRadius = Math.min(this.f_62337_, Math.max(0, i - 1));
                     break;
                 }
             }
@@ -76,7 +76,7 @@ public abstract class MixinChunkStatus implements IChunkStatus {
         if ((Object) this == ChunkStatus.LIGHT) {
             this.reducedTaskRadius = 1;
         }
-        System.out.printf("%s task radius: %d -> %d%n", this, this.range, this.reducedTaskRadius);
+        System.out.printf("%s task radius: %d -> %d%n", this, this.f_62337_, this.reducedTaskRadius);
     }
 
     @Override
@@ -87,7 +87,7 @@ public abstract class MixinChunkStatus implements IChunkStatus {
     @Dynamic
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void onCLInit(CallbackInfo info) {
-        for (ChunkStatus chunkStatus : getStatusList()) {
+        for (ChunkStatus chunkStatus : m_62349_()) {
             ((IChunkStatus) chunkStatus).calculateReducedTaskRadius();
         }
     }
@@ -96,8 +96,8 @@ public abstract class MixinChunkStatus implements IChunkStatus {
      * @author Hari
      * @reason take over generation
      */
-    @Overwrite
-    public CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> generate(Executor executor, ServerLevel world, ChunkGenerator chunkGenerator, StructureTemplateManager structureManager, ThreadedLevelLightEngine lightingProvider, Function<ChunkAccess, CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> function, List<ChunkAccess> list) {
+    @Overwrite(remap = false)
+    public CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> m_280308_(Executor executor, ServerLevel world, ChunkGenerator chunkGenerator, StructureTemplateManager structureManager, ThreadedLevelLightEngine lightingProvider, Function<ChunkAccess, CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> function, List<ChunkAccess> list) {
         final ChunkStatus thiz = (ChunkStatus) (Object) this;
         final ChunkAccess targetChunk = list.get(list.size() / 2);
 
@@ -106,7 +106,7 @@ public abstract class MixinChunkStatus implements IChunkStatus {
         final Supplier<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> generationTask = () -> {
             try {
                 CurrentWorldGenState.setCurrentRegion(new WorldGenRegion(world, list, thiz, -1));
-                return this.generationTask.doWork(thiz, executor, world, chunkGenerator, structureManager, lightingProvider, function, list, targetChunk);
+                return this.f_62335_.doWork(thiz, executor, world, chunkGenerator, structureManager, lightingProvider, function, list, targetChunk);
             } finally {
                 CurrentWorldGenState.clearCurrentRegion();
             }
@@ -124,7 +124,7 @@ public abstract class MixinChunkStatus implements IChunkStatus {
                 ((IThreadedAnvilChunkStorage) tacs).invokeReleaseLightTicket(targetChunk.getPos()); // vanilla behavior
 //                System.out.println(String.format("%s: %s is already done or cancelled, skipping generation", this, targetChunk.getPos()));
             } else {
-                int lockRadius = Config.reduceLockRadius && this.reducedTaskRadius != -1 ? this.reducedTaskRadius : this.range;
+                int lockRadius = Config.reduceLockRadius && this.reducedTaskRadius != -1 ? this.reducedTaskRadius : this.f_62337_;
                 //noinspection ConstantConditions
                 completableFuture = ChunkStatusUtils.runChunkGenWithLock(
                                 targetChunk.getPos(),
