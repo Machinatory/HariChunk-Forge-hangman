@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -28,8 +30,24 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Upload build artifacts
+      - name: Find -all jar
+        id: find_jar
+        run: |
+          JAR=$(find build/libs -name '*-all.jar' | head -n 1)
+          echo "jar=$JAR" >> "$GITHUB_OUTPUT"
+
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: HariChunk
-          path: build/libs/*.jar
+          path: ${{ steps.find_jar.outputs.jar }}
+
+      - name: Publish release (push only)
+        if: github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.ref_name }}-${{ github.event.head_commit.timestamp }}
+          name: "[${{ github.ref_name }}] ${{ github.event.head_commit.timestamp }}"
+          body: "Automated build from commit ${{ github.sha }}\n\n${{ github.event.head_commit.message }}"
+          prerelease: true
+          files: ${{ steps.find_jar.outputs.jar }}
