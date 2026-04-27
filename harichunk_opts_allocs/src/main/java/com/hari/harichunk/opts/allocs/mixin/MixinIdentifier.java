@@ -19,7 +19,7 @@ public class MixinIdentifier {
      * @author Hari
      * @reason cache toString
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public String toString() {
         if (this.cachedString != null) return this.cachedString;
         final String s = this.f_135804_ + ":" + this.f_135805_;
