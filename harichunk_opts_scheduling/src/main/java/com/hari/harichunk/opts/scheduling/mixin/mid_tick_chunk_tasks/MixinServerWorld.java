@@ -13,11 +13,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerLevel.class)
 public class MixinServerWorld {
 
-    @Shadow @Final private MinecraftServer server;
+    @Shadow(remap = false) @Final private MinecraftServer f_8548_; // server
 
     @Inject(method = {"tickBlock", "tickFluid"}, at = @At("RETURN"), require = 2)
     private void onPostTickBlockAndFluid(CallbackInfo info) {
-        ((ServerMidTickTask) this.server).executeTasksMidTick((ServerLevel) (Object) this);
+        ((ServerMidTickTask) this.f_8548_).executeTasksMidTick((ServerLevel) (Object) this);
     }
 
 }
