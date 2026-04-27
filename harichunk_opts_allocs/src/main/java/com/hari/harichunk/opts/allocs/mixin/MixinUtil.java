@@ -17,7 +17,7 @@ public abstract class MixinUtil {
      * @reason use another impl
      */
     @Overwrite
-    public static <V> CompletableFuture<List<V>> sequence(List<CompletableFuture<V>> futures) {
+    public static <V> CompletableFuture<List<V>> m_137567_(List<CompletableFuture<V>> futures) {
         return Combinators.collect(futures, Collectors.toList()).toCompletableFuture();
     }
 
@@ -26,7 +26,7 @@ public abstract class MixinUtil {
      * @reason use another impl
      */
     @Overwrite
-    public static <V> CompletableFuture<List<V>> sequenceFailFast(List<CompletableFuture<V>> futures) {
+    public static <V> CompletableFuture<List<V>> m_143840_(List<CompletableFuture<V>> futures) {
         final CompletableFuture<List<V>> future = Combinators.collect(futures, Collectors.toList()).toCompletableFuture();
         CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)).exceptionally(e -> {
             future.completeExceptionally(e);
@@ -40,7 +40,7 @@ public abstract class MixinUtil {
      * @reason use another impl
      */
     @Overwrite
-    public static <V> CompletableFuture<List<V>> sequenceFailFastAndCancel(List<CompletableFuture<V>> futures) {
+    public static <V> CompletableFuture<List<V>> m_214684_(List<CompletableFuture<V>> futures) {
         final CompletableFuture<List<V>> future = Combinators.collect(futures, Collectors.toList()).toCompletableFuture();
         CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)).exceptionally(e -> {
             future.completeExceptionally(e);
