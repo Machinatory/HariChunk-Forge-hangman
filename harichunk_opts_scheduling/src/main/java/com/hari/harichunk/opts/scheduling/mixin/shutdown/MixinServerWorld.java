@@ -19,17 +19,17 @@ import java.util.concurrent.locks.LockSupport;
 @Mixin(ServerLevel.class)
 public class MixinServerWorld {
 
-    @Shadow @Final private MinecraftServer server;
+    @Shadow(remap = false) @Final private MinecraftServer f_8548_; // server
 
-    @Shadow @Final private ServerChunkCache chunkSource;
+    @Shadow(remap = false) @Final private ServerChunkCache f_8547_; // chunkSource
 
-    @Shadow @Final private PersistentEntitySectionManager<Entity> entityManager;
+    @Shadow(remap = false) @Final private PersistentEntitySectionManager<Entity> f_143244_; // entityManager
 
     @Inject(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/entity/PersistentEntitySectionManager;saveAll()V", shift = At.Shift.BEFORE))
     private void replaceEntityFlushLogic(ProgressListener progressListener, boolean flush, boolean savingDisabled, CallbackInfo ci) {
-        while (!((ITryFlushable) this.entityManager).harichunk$tryFlush()) {
-            this.server.pollTask();
-            this.chunkSource.pollTask();
+        while (!((ITryFlushable) this.f_143244_).harichunk$tryFlush()) {
+            this.f_8548_.pollTask();
+            this.f_8547_.pollTask();
             LockSupport.parkNanos("waiting for completion", 10_000_000);
         }
     }
