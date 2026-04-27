@@ -35,6 +35,8 @@ jobs:
         run: |
           JAR=$(find build/libs -name '*-all.jar' | head -n 1)
           echo "jar=$JAR" >> "$GITHUB_OUTPUT"
+          TS=$(echo "${{ github.event.head_commit.timestamp }}" | tr -d ':' | tr 'T' '-' | tr -d 'Z')
+          echo "ts=$TS" >> "$GITHUB_OUTPUT"
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -46,7 +48,7 @@ jobs:
         if: github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: build-${{ github.ref_name }}-${{ github.event.head_commit.timestamp }}
+          tag_name: build-${{ github.ref_name }}-${{ steps.find_jar.outputs.ts }}
           name: "[${{ github.ref_name }}] ${{ github.event.head_commit.timestamp }}"
           body: "Automated build from commit ${{ github.sha }}\n\n${{ github.event.head_commit.message }}"
           prerelease: true
