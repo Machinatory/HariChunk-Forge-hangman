@@ -16,14 +16,14 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(ChunkMap.class)
 public class MixinThreadedAnvilChunkStorage {
 
-    @Shadow @Final private BlockableEventLoop<Runnable> mainThreadExecutor;
+    @Shadow(remap = false) @Final private BlockableEventLoop<Runnable> f_140135_; // mainThreadExecutor
 
-    @Shadow @Final ServerLevel level;
+    @Shadow(remap = false) @Final ServerLevel f_140133_; // level
 
     @Redirect(method = "schedule", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkMap$DistanceManager;addTicket(Lnet/minecraft/server/level/TicketType;Lnet/minecraft/world/level/ChunkPos;ILjava/lang/Object;)V"))
     private <T> void redirectAddLightTicket(ChunkMap.DistanceManager ticketManager, TicketType<T> type, ChunkPos pos, int level, T argument) {
-        if (this.level.getServer().getRunningThread() != Thread.currentThread()) {
-            this.mainThreadExecutor.execute(() -> ticketManager.addTicket(type, pos, level, argument));
+        if (this.f_140133_.getServer().getRunningThread() != Thread.currentThread()) {
+            this.f_140135_.execute(() -> ticketManager.addTicket(type, pos, level, argument));
         } else {
             ticketManager.addTicket(type, pos, level, argument);
         }

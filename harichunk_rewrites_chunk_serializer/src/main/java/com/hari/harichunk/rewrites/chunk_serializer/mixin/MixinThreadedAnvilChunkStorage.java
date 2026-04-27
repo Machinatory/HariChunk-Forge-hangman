@@ -25,22 +25,22 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 @Mixin(ChunkMap.class)
 public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage {
     @Final
-    @Shadow
-    private static Logger LOGGER;
+    @Shadow(remap = false)
+    private static Logger f_140128_; // LOGGER
 
     @Final
-    @Shadow
-    private PoiManager poiManager;
+    @Shadow(remap = false)
+    private PoiManager f_140138_; // poiManager
 
     @Final
-    @Shadow
-    ServerLevel level;
+    @Shadow(remap = false)
+    ServerLevel f_140133_; // level
 
-    @Shadow
-    private native boolean isExistingChunkFull(ChunkPos chunkPos);
+    @Shadow(remap = false)
+    private native boolean m_140425_(ChunkPos chunkPos); // isExistingChunkFull
 
-    @Shadow
-    private native byte markPosition(ChunkPos chunkPos, ChunkStatus.ChunkType chunkType);
+    @Shadow(remap = false)
+    private native byte m_140229_(ChunkPos chunkPos, ChunkStatus.ChunkType chunkType); // markPosition
 
     public MixinThreadedAnvilChunkStorage(Path directory, DataFixer dataFixer, boolean dsync) {
         super(directory, dataFixer, dsync);
@@ -50,10 +50,10 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage {
      * @author Kroppeb
      * @reason Reduces allocations
      */
-    @Overwrite()
-    private boolean save(ChunkAccess chunk) {
+    @Overwrite(remap = false)
+    private boolean m_140258_(ChunkAccess chunk) { // save
         // [VanillaCopy]
-        this.poiManager.flush(chunk.getPos());
+        this.f_140138_.flush(chunk.getPos());
         if (!chunk.isUnsaved()) {
             return false;
         }
@@ -64,7 +64,7 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage {
         try {
             ChunkStatus chunkStatus = chunk.getStatus();
             if (chunkStatus.getChunkType() != ChunkStatus.ChunkType.LEVELCHUNK) {
-                if (this.isExistingChunkFull(chunkPos)) {
+                if (this.m_140425_(chunkPos)) {
                     return false;
                 }
 
@@ -73,13 +73,13 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage {
                 }
             }
 
-            this.level.getProfiler().incrementCounter("chunkSave");
+            this.f_140133_.getProfiler().incrementCounter("chunkSave");
 
             //region start replaced code
             // NbtCompound nbtCompound = ChunkSerializer.serialize(this.world, chunk);
             NbtWriter nbtWriter = new NbtWriter();
             nbtWriter.start(Tag.TAG_COMPOUND);
-            ChunkDataSerializer.write(this.level, chunk, nbtWriter);
+            ChunkDataSerializer.write(this.f_140133_, chunk, nbtWriter);
             nbtWriter.finishCompound();
 
             // this.setNbt(chunkPos, nbtCompound);
@@ -102,10 +102,10 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage {
 
             //endregion end replaced code
 
-            this.markPosition(chunkPos, chunkStatus.getChunkType());
+            this.m_140229_(chunkPos, chunkStatus.getChunkType());
             return true;
         } catch (Exception var5) {
-            LOGGER.error("Failed to save chunk {},{}", chunkPos.x, chunkPos.z, var5);
+            f_140128_.error("Failed to save chunk {},{}", chunkPos.x, chunkPos.z, var5);
             return false;
         }
     }

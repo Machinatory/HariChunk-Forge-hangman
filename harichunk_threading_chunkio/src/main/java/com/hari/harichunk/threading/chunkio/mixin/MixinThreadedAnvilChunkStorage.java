@@ -70,62 +70,62 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
         super(path, dataFixer, bl);
     }
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private ServerLevel level;
+    private ServerLevel f_140133_; // level
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private PoiManager poiManager;
+    private PoiManager f_140138_; // poiManager
 
-    @Shadow
-    protected abstract byte markPosition(ChunkPos chunkPos, ChunkStatus.ChunkType chunkType);
+    @Shadow(remap = false)
+    protected abstract byte m_140229_(ChunkPos chunkPos, ChunkStatus.ChunkType chunkType); // markPosition
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private static Logger LOGGER;
+    private static Logger f_140128_; // LOGGER
 
-    @Shadow
-    protected abstract void markPositionReplaceable(ChunkPos chunkPos);
+    @Shadow(remap = false)
+    protected abstract void m_140422_(ChunkPos chunkPos); // markPositionReplaceable
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private Supplier<DimensionDataStorage> overworldDataStorage;
+    private Supplier<DimensionDataStorage> f_140137_; // overworldDataStorage
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private BlockableEventLoop<Runnable> mainThreadExecutor;
+    private BlockableEventLoop<Runnable> f_140135_; // mainThreadExecutor
 
-    @Shadow
-    protected abstract boolean isExistingChunkFull(ChunkPos chunkPos);
+    @Shadow(remap = false)
+    protected abstract boolean m_140425_(ChunkPos chunkPos); // isExistingChunkFull
 
-    @Shadow
-    private ChunkGenerator generator;
+    @Shadow(remap = false)
+    private ChunkGenerator f_140136_; // generator
 
-    @Shadow
-    protected abstract boolean save(ChunkAccess chunk);
+    @Shadow(remap = false)
+    protected abstract boolean m_140258_(ChunkAccess chunk); // save
 
-    @Shadow
-    protected abstract void saveAllChunks(boolean flush);
+    @Shadow(remap = false)
+    protected abstract void m_140318_(boolean flush); // saveAllChunks
 
-    @Shadow
-    private static boolean isChunkDataValid(CompoundTag nbtCompound) {
+    @Shadow(remap = false)
+    private static boolean m_214940_(CompoundTag nbtCompound) { // isChunkDataValid
         throw new AbstractMethodError();
     }
 
-    @Shadow protected abstract ChunkAccess createEmptyChunk(ChunkPos chunkPos);
+    @Shadow(remap = false) protected abstract ChunkAccess m_214961_(ChunkPos chunkPos); // createEmptyChunk
 
     @Mutable
-    @Shadow @Final private Long2ByteMap chunkTypeCache;
+    @Shadow(remap = false) @Final private Long2ByteMap f_140151_; // chunkTypeCache
 
-    @Shadow protected abstract CompoundTag upgradeChunkTag(CompoundTag nbt);
+    @Shadow(remap = false) protected abstract CompoundTag m_214947_(CompoundTag nbt); // upgradeChunkTag
 
     private AsyncNamedLock<ChunkPos> chunkLock = AsyncNamedLock.createFair();
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
         chunkLock = AsyncNamedLock.createFair();
-        this.chunkTypeCache = Long2ByteMaps.synchronize(this.chunkTypeCache);
+        this.f_140151_ = Long2ByteMaps.synchronize(this.f_140151_);
     }
 
     private Set<ChunkPos> scheduledChunks = new HashSet<>();
@@ -134,8 +134,8 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
      * @author Hari
      * @reason async io and deserialization
      */
-    @Overwrite
-    private CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> scheduleChunkLoad(ChunkPos pos) {
+    @Overwrite(remap = false)
+    private CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> m_140417_(ChunkPos pos) { // scheduleChunkLoad
         if (scheduledChunks == null) scheduledChunks = new HashSet<>();
         synchronized (scheduledChunks) {
             if (scheduledChunks.contains(pos)) throw new IllegalArgumentException("Already scheduled");
@@ -143,11 +143,11 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
         }
 
         final CompletableFuture<Optional<CompoundTag>> poiData =
-                ((IAsyncChunkStorage) ((com.hari.harichunk.base.mixin.access.ISerializingRegionBasedStorage) this.poiManager).getWorker()).getNbtAtAsync(pos)
+                ((IAsyncChunkStorage) ((com.hari.harichunk.base.mixin.access.ISerializingRegionBasedStorage) this.f_140138_).getWorker()).getNbtAtAsync(pos)
                         .exceptionally(throwable -> {
                             //noinspection IfStatementWithIdenticalBranches
                             if (Config.recoverFromErrors) {
-                                LOGGER.error("Couldn't load poi data for chunk {}, poi data will be lost!", pos, throwable);
+                                f_140128_.error("Couldn't load poi data for chunk {}, poi data will be lost!", pos, throwable);
                                 return Optional.empty();
                             } else {
                                 SneakyThrow.sneaky(throwable);
@@ -159,9 +159,9 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
 
         final CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> future = getUpdatedChunkNbtAtAsync(pos)
                 .thenApply(optional -> optional.filter(nbtCompound -> {
-                    boolean bl = isChunkDataValid(nbtCompound);
+                    boolean bl = m_214940_(nbtCompound);
                     if (!bl) {
-                        LOGGER.error("Chunk file at {} is missing level data, skipping", pos);
+                        f_140128_.error("Chunk file at {} is missing level data, skipping", pos);
                     }
 
                     return bl;
@@ -170,7 +170,7 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
                     if (optional.isPresent()) {
                         ChunkIoMainThreadTaskUtils.push(mainThreadQueue);
                         try {
-                            return ChunkSerializer.read(this.level, this.poiManager, pos, optional.get());
+                            return ChunkSerializer.read(this.f_140133_, this.f_140138_, pos, optional.get());
                         } finally {
                             ChunkIoMainThreadTaskUtils.pop(mainThreadQueue);
                         }
@@ -181,7 +181,7 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
                 .exceptionally(throwable -> {
                     //noinspection IfStatementWithIdenticalBranches
                     if (Config.recoverFromErrors) {
-                        LOGGER.error("Couldn't load chunk {}, chunk data will be lost!", pos, throwable);
+                        f_140128_.error("Couldn't load chunk {}, chunk data will be lost!", pos, throwable);
                         return null;
                     } else {
                         SneakyThrow.sneaky(throwable);
@@ -195,7 +195,7 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
 //                })
                 .thenApplyAsync(protoChunk -> {
                     // blending
-                    protoChunk = protoChunk != null ? protoChunk : (ProtoChunk) this.createEmptyChunk(pos);
+                    protoChunk = protoChunk != null ? protoChunk : (ProtoChunk) this.m_214961_(pos);
                     if (protoChunk.getBelowZeroRetrogen() != null || protoChunk.getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK) {
                         final CompletionStage<List<BitSet>> blendingInfos = BlendingInfoUtil.getBlendingInfos((IOWorker) this.chunkScanner(), pos);
                         ProtoChunk finalProtoChunk = protoChunk;
@@ -206,22 +206,22 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
 
                     ((ProtoChunkExtension) protoChunk).setInitialMainThreadComputeFuture(poiData.thenAcceptAsync(poiDataNbt -> {
                         try {
-                            ((ISerializingRegionBasedStorage) this.poiManager).update(pos, poiDataNbt.orElse(null));
+                            ((ISerializingRegionBasedStorage) this.f_140138_).update(pos, poiDataNbt.orElse(null));
                         } catch (Throwable t) {
                             if (Config.recoverFromErrors) {
-                                LOGGER.error("Couldn't load poi data for chunk {}, poi data will be lost!", pos, t);
+                                f_140128_.error("Couldn't load poi data for chunk {}, poi data will be lost!", pos, t);
                             } else {
                                 SneakyThrow.sneaky(t);
                             }
                         }
                         ChunkIoMainThreadTaskUtils.drainQueue(mainThreadQueue);
-                    }, this.mainThreadExecutor));
+                    }, this.f_140135_));
 
-                    this.markPosition(pos, protoChunk.getStatus().getChunkType());
+                    this.m_140229_(pos, protoChunk.getStatus().getChunkType());
                     return Either.left(protoChunk);
                 }, GlobalExecutors.invokingExecutor);
         future.exceptionally(throwable -> {
-            LOGGER.error("Couldn't load chunk {}", pos, throwable);
+            f_140128_.error("Couldn't load chunk {}", pos, throwable);
             return null;
         });
         future.exceptionally(throwable -> null).thenRun(() -> {
@@ -266,21 +266,21 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
     }
 
     private CompletableFuture<Optional<CompoundTag>> getUpdatedChunkNbtAtAsync(ChunkPos pos) {
-        return readChunk(pos);
+        return m_214963_(pos);
     }
 
     /**
      * @author Hari
      * @reason skip datafixer if possible
      */
-    @Overwrite
-    public CompletableFuture<Optional<CompoundTag>> readChunk(ChunkPos chunkPos) {
+    @Overwrite(remap = false)
+    public CompletableFuture<Optional<CompoundTag>> m_214963_(ChunkPos chunkPos) { // readChunk
 //        return this.getNbt(chunkPos).thenApplyAsync(nbt -> nbt.map(this::updateChunkNbt), Util.getMainWorkerExecutor());
         return this.read(chunkPos).thenCompose(nbt -> {
             if (nbt.isPresent()) {
                 final CompoundTag compound = nbt.get();
                 if (ChunkStorage.getVersion(compound) != SharedConstants.getCurrentVersion().getDataVersion().getVersion()) {
-                    return CompletableFuture.supplyAsync(() -> Optional.of(upgradeChunkTag(compound)), Util.backgroundExecutor());
+                    return CompletableFuture.supplyAsync(() -> Optional.of(m_214947_(compound)), Util.backgroundExecutor());
                 } else {
                     return CompletableFuture.completedFuture(nbt);
                 }
@@ -317,7 +317,7 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
     // method: consumer in tryUnloadChunk
     private boolean asyncSave(ChunkMap tacs, ChunkAccess chunk, ChunkHolder holder) {
         // TODO [VanillaCopy] - check when updating minecraft version
-        this.poiManager.flush(chunk.getPos());
+        this.f_140138_.flush(chunk.getPos());
         if (!chunk.isUnsaved()) {
             return false;
         } else {
@@ -327,7 +327,7 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
             try {
                 ChunkStatus chunkStatus = chunk.getStatus();
                 if (chunkStatus.getChunkType() != ChunkStatus.ChunkType.LEVELCHUNK) {
-                    if (this.isExistingChunkFull(chunkPos)) {
+                    if (this.m_140425_(chunkPos)) {
                         return false;
                     }
 
@@ -338,25 +338,25 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
 
                 final CompletableFuture<ChunkAccess> originalSavingFuture = holder.getChunkToSave();
                 if (!originalSavingFuture.isDone()) {
-                    originalSavingFuture.handleAsync((_unused, __unused) -> asyncSave(tacs, chunk, holder), this.mainThreadExecutor);
+                    originalSavingFuture.handleAsync((_unused, __unused) -> asyncSave(tacs, chunk, holder), this.f_140135_);
                     return false;
                 }
 
-                this.level.getProfiler().incrementCounter("chunkSave");
+                this.f_140133_.getProfiler().incrementCounter("chunkSave");
                 // HariChunk start - async serialization
                 if (saveFutures == null) saveFutures = new ConcurrentLinkedQueue<>();
-                AsyncSerializationManager.Scope scope = new AsyncSerializationManager.Scope(chunk, level);
+                AsyncSerializationManager.Scope scope = new AsyncSerializationManager.Scope(chunk, f_140133_);
 
                 saveFutures.add(chunkLock.acquireLock(chunk.getPos()).toCompletableFuture().thenCompose(lockToken ->
                         CompletableFuture.supplyAsync(() -> {
                                     scope.open();
                                     if (holder.getChunkToSave() != originalSavingFuture) {
-                                        this.mainThreadExecutor.execute(() -> asyncSave(tacs, chunk, holder));
+                                        this.f_140135_.execute(() -> asyncSave(tacs, chunk, holder));
                                         throw new TaskCancellationException();
                                     }
                                     AsyncSerializationManager.push(scope);
                                     try {
-                                        return SerializerAccess.getSerializer().serialize(level, chunk);
+                                        return SerializerAccess.getSerializer().serialize(f_140133_, chunk);
                                     } finally {
                                         AsyncSerializationManager.pop(scope);
                                     }
@@ -374,23 +374,23 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
                                         Throwable actual = throwable;
                                         while (actual instanceof CompletionException e) actual = e.getCause();
                                         if (!(actual instanceof TaskCancellationException)) {
-                                            LOGGER.error("Failed to save chunk {},{} asynchronously, falling back to sync saving", chunkPos.x, chunkPos.z, throwable);
+                                            f_140128_.error("Failed to save chunk {},{} asynchronously, falling back to sync saving", chunkPos.x, chunkPos.z, throwable);
                                             final CompletableFuture<ChunkAccess> savingFuture = holder.getChunkToSave();
                                             if (savingFuture != originalSavingFuture) {
-                                                savingFuture.handleAsync((_unused, __unused) -> save(chunk), this.mainThreadExecutor);
+                                                savingFuture.handleAsync((_unused, __unused) -> m_140258_(chunk), this.f_140135_);
                                             } else {
-                                                this.mainThreadExecutor.execute(() -> this.save(chunk));
+                                                this.f_140135_.execute(() -> this.m_140258_(chunk));
                                             }
                                         }
                                     }
                                     return unused;
                                 })
                 ));
-                this.markPosition(chunkPos, chunkStatus.getChunkType());
+                this.m_140229_(chunkPos, chunkStatus.getChunkType());
                 // HariChunk end
                 return true;
             } catch (Exception var5) {
-                LOGGER.error((String) "Failed to save chunk {},{}", (Object) chunkPos.x, chunkPos.z, var5);
+                f_140128_.error((String) "Failed to save chunk {},{}", (Object) chunkPos.x, chunkPos.z, var5);
                 return false;
             }
         }
@@ -404,7 +404,7 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
     @Override
     public void flushWorker() {
         final CompletableFuture<Void> future = CompletableFuture.allOf(saveFutures.toArray(new CompletableFuture[0]));
-        this.mainThreadExecutor.managedBlock(future::isDone); // wait for serialization to complete
+        this.f_140135_.managedBlock(future::isDone); // wait for serialization to complete
         super.flushWorker();
     }
 }

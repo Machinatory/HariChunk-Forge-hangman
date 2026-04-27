@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(value = Level.class, priority = 1101)
 public class MixinWorld {
 
-    @Shadow @Final public boolean isClientSide;
+    @Shadow(remap = false) @Final public boolean f_46443_; // isClientSide
 
     @Dynamic
     @ModifyArg(method = {"setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;II)Z", "markAndNotifyBlock"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/FullChunkStatus;isOrAfter(Lnet/minecraft/server/level/FullChunkStatus;)Z"))

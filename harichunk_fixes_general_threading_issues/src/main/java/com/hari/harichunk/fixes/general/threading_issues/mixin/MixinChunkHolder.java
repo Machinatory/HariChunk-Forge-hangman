@@ -23,19 +23,19 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 @Mixin(ChunkHolder.class)
 public abstract class MixinChunkHolder {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    public static CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> UNLOADED_CHUNK_FUTURE;
-    @Shadow
-    private int ticketLevel;
+    public static CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> f_139996_; // UNLOADED_CHUNK_FUTURE
+    @Shadow(remap = false)
+    private int f_140007_; // ticketLevel
 
-    @Shadow
-    protected abstract void updateChunkToSave(CompletableFuture<? extends Either<? extends ChunkAccess, ChunkHolder.ChunkLoadingFailure>> then, String thenDesc);
+    @Shadow(remap = false)
+    protected abstract void m_143017_(CompletableFuture<? extends Either<? extends ChunkAccess, ChunkHolder.ChunkLoadingFailure>> then, String thenDesc); // updateChunkToSave
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private AtomicReferenceArray<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> futures;
-    @Shadow private CompletableFuture<ChunkAccess> chunkToSave;
+    private AtomicReferenceArray<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> f_140001_; // futures
+    @Shadow(remap = false) private CompletableFuture<ChunkAccess> f_140005_; // chunkToSave
     @Unique
     private Object schedulingMutex = new Object();
 
@@ -48,11 +48,11 @@ public abstract class MixinChunkHolder {
      * @author Hari
      * @reason improve handling of async chunk request
      */
-    @Overwrite
-    public CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> getOrScheduleFuture(ChunkStatus targetStatus, ChunkMap chunkStorage) {
+    @Overwrite(remap = false)
+    public CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> m_140049_(ChunkStatus targetStatus, ChunkMap chunkStorage) { // getOrScheduleFuture
         // TODO [VanillaCopy]
         int i = targetStatus.getIndex();
-        CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> completableFuture = this.futures.get(i);
+        CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> completableFuture = this.f_140001_.get(i);
         if (completableFuture != null) {
             Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure> either = completableFuture.getNow(null);
             boolean bl = either != null && either.right().isPresent();
@@ -65,7 +65,7 @@ public abstract class MixinChunkHolder {
 
         synchronized (this.schedulingMutex) {
             // copied from above
-            completableFuture = this.futures.get(i);
+            completableFuture = this.f_140001_.get(i);
             if (completableFuture != null) {
                 Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure> either = completableFuture.getNow(null);
                 boolean bl = either != null && either.right().isPresent();
@@ -73,19 +73,19 @@ public abstract class MixinChunkHolder {
                     return completableFuture;
                 }
             }
-            if (ChunkLevel.generationStatus(this.ticketLevel).isOrAfter(targetStatus)) {
+            if (ChunkLevel.generationStatus(this.f_140007_).isOrAfter(targetStatus)) {
                 future = new CompletableFuture<>();
-                this.futures.set(i, future);
+                this.f_140001_.set(i, future);
                 // HariChunk - moved down to prevent deadlock
             } else {
-                return completableFuture == null ? UNLOADED_CHUNK_FUTURE : completableFuture;
+                return completableFuture == null ? f_139996_ : completableFuture;
             }
         }
 
         CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> completableFuture2 = chunkStorage.schedule((ChunkHolder) (Object) this, targetStatus);
         // synchronization: see below
         synchronized (this) {
-            this.updateChunkToSave(completableFuture2, "schedule " + targetStatus);
+            this.m_143017_(completableFuture2, "schedule " + targetStatus);
         }
         completableFuture2.whenComplete((either, throwable) -> {
             if (throwable != null) {
@@ -94,7 +94,7 @@ public abstract class MixinChunkHolder {
             }
             future.complete(either);
         });
-        this.futures.set(i, completableFuture2);
+        this.f_140001_.set(i, completableFuture2);
         return completableFuture2;
     }
 
@@ -102,7 +102,7 @@ public abstract class MixinChunkHolder {
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkHolder;updateChunkToSave(Ljava/util/concurrent/CompletableFuture;Ljava/lang/String;)V"))
     private void synchronizeCombineSavingFuture(ChunkHolder holder, CompletableFuture<? extends Either<? extends ChunkAccess, ChunkHolder.ChunkLoadingFailure>> then, String thenDesc) {
         synchronized (this) {
-            this.updateChunkToSave(then.exceptionally(unused -> null), thenDesc);
+            this.m_143017_(then.exceptionally(unused -> null), thenDesc);
         }
     }
 
@@ -110,10 +110,10 @@ public abstract class MixinChunkHolder {
      * @author Hari
      * @reason synchronize
      */
-    @Overwrite
-    public void addSaveDependency(String string, CompletableFuture<?> completableFuture) {
+    @Overwrite(remap = false)
+    public void m_200416_(String string, CompletableFuture<?> completableFuture) { // addSaveDependency
         synchronized (this) {
-            this.chunkToSave = this.chunkToSave.thenCombine(completableFuture.exceptionally(unused -> null), (chunk, object) -> chunk);
+            this.f_140005_ = this.f_140005_.thenCombine(completableFuture.exceptionally(unused -> null), (chunk, object) -> chunk);
         }
     }
 

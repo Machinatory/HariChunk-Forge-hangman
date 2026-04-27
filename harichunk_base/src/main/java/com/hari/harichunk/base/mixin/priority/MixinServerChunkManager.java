@@ -20,18 +20,18 @@ import java.util.function.BooleanSupplier;
 @Mixin(ServerChunkCache.class)
 public abstract class MixinServerChunkManager implements ISyncLoadManager {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    Thread mainThread;
+    Thread f_8330_; // mainThread
 
-    @Shadow
-    protected abstract boolean chunkAbsent(@Nullable ChunkHolder holder, int maxLevel);
+    @Shadow(remap = false)
+    protected abstract boolean m_8416_(@Nullable ChunkHolder holder, int maxLevel); // chunkAbsent
 
-    @Shadow
+    @Shadow(remap = false)
     @Nullable
-    protected abstract ChunkHolder getVisibleChunkIfPresent(long pos);
+    protected abstract ChunkHolder m_8364_(long pos); // getVisibleChunkIfPresent
 
-    @Shadow @Final public ChunkMap chunkMap;
+    @Shadow(remap = false) @Final public ChunkMap f_8325_; // chunkMap
     @Unique
     private volatile ChunkPos currentSyncLoadChunk = null;
     @Unique
@@ -40,22 +40,22 @@ public abstract class MixinServerChunkManager implements ISyncLoadManager {
     @Dynamic
     @Redirect(method = {"getChunk", "getChunkBlocking"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerChunkCache$MainThreadExecutor;managedBlock(Ljava/util/function/BooleanSupplier;)V"), require = 0)
     private void beforeAwaitChunk(ServerChunkCache.MainThreadExecutor instance, BooleanSupplier supplier, int x, int z, ChunkStatus leastStatus, boolean create) {
-        if (Thread.currentThread() != this.mainThread || supplier.getAsBoolean()) return;
+        if (Thread.currentThread() != this.f_8330_ || supplier.getAsBoolean()) return;
 
         this.currentSyncLoadChunk = new ChunkPos(x, z);
         syncLoadNanos = System.nanoTime();
-        ((IVanillaChunkManager) this.chunkMap).harichunk$getSchedulingManager().setCurrentSyncLoad(this.currentSyncLoadChunk);
+        ((IVanillaChunkManager) this.f_8325_).harichunk$getSchedulingManager().setCurrentSyncLoad(this.currentSyncLoadChunk);
         instance.managedBlock(supplier);
     }
 
     @Inject(method = "getChunk", at = @At("RETURN"))
     private void afterGetChunk(int x, int z, ChunkStatus leastStatus, boolean create, CallbackInfoReturnable<ChunkAccess> cir) {
-        if (Thread.currentThread() != this.mainThread) return;
+        if (Thread.currentThread() != this.f_8330_) return;
 
         if (this.currentSyncLoadChunk != null) {
             this.currentSyncLoadChunk = null;
 //            System.out.println("Sync load took %.2fms".formatted((System.nanoTime() - syncLoadNanos) / 1e6));
-            ((IVanillaChunkManager) this.chunkMap).harichunk$getSchedulingManager().setCurrentSyncLoad(null);
+            ((IVanillaChunkManager) this.f_8325_).harichunk$getSchedulingManager().setCurrentSyncLoad(null);
         }
     }
 

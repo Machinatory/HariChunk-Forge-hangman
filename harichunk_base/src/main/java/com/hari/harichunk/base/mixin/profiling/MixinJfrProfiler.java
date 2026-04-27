@@ -23,13 +23,13 @@ import java.util.List;
 public class MixinJfrProfiler implements IVanillaJfrProfiler {
 
     @Mutable
-    @Shadow @Final private static List<Class<? extends Event>> CUSTOM_EVENTS;
+    @Shadow(remap = false) @Final private static List<Class<? extends Event>> f_185289_; // CUSTOM_EVENTS
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void preInit(CallbackInfo ci) {
-        ArrayList<Class<? extends Event>> copy = new ArrayList<>(CUSTOM_EVENTS);
+        ArrayList<Class<? extends Event>> copy = new ArrayList<>(f_185289_);
         copy.add(ChunkLoadScheduleEvent.class);
-        CUSTOM_EVENTS = List.copyOf(copy);
+        f_185289_ = List.copyOf(copy);
     }
 
 

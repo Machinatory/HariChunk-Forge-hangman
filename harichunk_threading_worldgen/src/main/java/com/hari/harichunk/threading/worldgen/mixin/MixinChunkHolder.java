@@ -18,14 +18,14 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 @Mixin(value = ChunkHolder.class, priority = 1110)
 public abstract class MixinChunkHolder {
 
-    @Shadow public abstract CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> getOrScheduleFuture(ChunkStatus targetStatus, ChunkMap chunkStorage);
+    @Shadow(remap = false) public abstract CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> m_140049_(ChunkStatus targetStatus, ChunkMap chunkStorage); // getOrScheduleFuture
 
     @Redirect(method = "getOrScheduleFuture", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkMap;schedule(Lnet/minecraft/server/level/ChunkHolder;Lnet/minecraft/world/level/chunk/ChunkStatus;)Ljava/util/concurrent/CompletableFuture;"))
     private CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> redirectGetChunk(ChunkMap instance, ChunkHolder holder, ChunkStatus requiredStatus) {
         if (requiredStatus == ChunkStatus.EMPTY) {
             return instance.schedule(holder, requiredStatus);
         } else {
-            return this.getOrScheduleFuture(requiredStatus.getParent(), instance)
+            return this.m_140049_(requiredStatus.getParent(), instance)
                     .thenComposeAsync(
                             unused -> instance.schedule(holder, requiredStatus),
                             Config.asyncScheduling ? Runnable::run : r -> {
