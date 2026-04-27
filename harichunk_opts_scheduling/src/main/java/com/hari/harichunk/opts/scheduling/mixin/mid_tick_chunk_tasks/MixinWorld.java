@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Level.class)
 public abstract class MixinWorld {
 
-    @Shadow @Nullable public abstract MinecraftServer getServer();
+    @Shadow(remap = false) @Nullable public abstract MinecraftServer m_7654_();
 
-    @Shadow @Final public boolean isClientSide;
+    @Shadow(remap = false) @Final public boolean f_46443_; // isClientSide
 
     @Inject(method = "guardEntityTick", at = @At("TAIL"))
     private void onPostTickEntity(CallbackInfo ci) {
-        final MinecraftServer server = this.getServer();
-        if (!this.isClientSide && server != null) {
+        final MinecraftServer server = this.m_7654_();
+        if (!this.f_46443_ && server != null) {
             ((ServerMidTickTask) server).executeTasksMidTick((ServerLevel) (Object) this);
         }
     }
