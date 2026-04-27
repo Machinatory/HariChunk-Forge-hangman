@@ -13,12 +13,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(Level.class)
 public class MixinWorld {
 
-    @Shadow @Final private Thread thread;
+    @Shadow(remap = false) @Final private Thread f_46423_; // thread
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/RandomSource;create()Lnet/minecraft/util/RandomSource;"))
     private RandomSource redirectWorldRandomInit() {
 //        new CheckedThreadLocalRandom(RandomSeed.getSeed(), () -> new Thread()).nextInt();
-        return new CheckedThreadLocalRandom(RandomSupport.generateUniqueSeed(), () -> this.thread);
+        return new CheckedThreadLocalRandom(RandomSupport.generateUniqueSeed(), () -> this.f_46423_);
     }
 
 }
