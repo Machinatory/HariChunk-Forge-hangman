@@ -11,12 +11,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ThreadedLevelLightEngine.class)
 public abstract class MixinServerLightingProvider {
 
-    @Shadow public abstract void tryScheduleUpdate();
+    @Shadow(remap = false) public abstract void m_9409_(); // tryScheduleUpdate
 
     @Dynamic
     @Inject(method = "m_215156_", at = @At("RETURN"))
     private void onPostRunTask(CallbackInfo info) {
-        this.tryScheduleUpdate(); // Run more tasks
+        this.m_9409_(); // Run more tasks
     }
 
 }
