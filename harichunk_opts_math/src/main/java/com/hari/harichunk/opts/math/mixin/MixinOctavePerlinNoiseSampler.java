@@ -58,7 +58,7 @@ public class MixinOctavePerlinNoiseSampler {
             ImprovedNoise perlinNoiseSampler = this.f_75390_[i];
             if (perlinNoiseSampler != null) {
                 @SuppressWarnings("deprecation")
-                double g = perlinNoiseSampler.m_75327_(
+                double g = perlinNoiseSampler.noise(
                         m_75406_(x * e), m_75406_(y * e), m_75406_(z * e), 0.0, 0.0
                 );
                 d += this.amplitudesArray[i] * g * f;
