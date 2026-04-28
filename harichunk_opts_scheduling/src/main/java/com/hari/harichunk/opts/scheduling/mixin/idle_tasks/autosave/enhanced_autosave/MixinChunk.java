@@ -16,14 +16,14 @@ public abstract class MixinChunk {
 
     @Shadow protected volatile boolean unsaved;
 
-    @Shadow public abstract ChunkPos getPos();
+    @Shadow @Final private ChunkPos pos;
 
     @Inject(method = "*", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/chunk/ChunkAccess;unsaved:Z", shift = At.Shift.AFTER))
     private void onSetShouldSave(CallbackInfo ci) {
         //noinspection ConstantConditions
         if (this.unsaved && (Object) this instanceof LevelChunk worldChunk) {
             if (worldChunk.getLevel() instanceof ServerLevel serverWorld) {
-                ((IThreadedAnvilChunkStorage) serverWorld.getChunkSource().chunkMap).enqueueDirtyChunkPosForAutoSave(this.getPos());
+                ((IThreadedAnvilChunkStorage) serverWorld.getChunkSource().chunkMap).enqueueDirtyChunkPosForAutoSave(this.pos);
             }
         }
     }
