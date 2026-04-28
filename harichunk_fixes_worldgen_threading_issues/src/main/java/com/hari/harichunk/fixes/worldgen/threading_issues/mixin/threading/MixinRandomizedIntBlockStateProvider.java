@@ -12,13 +12,13 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(RandomizedIntStateProvider.class)
 public class MixinRandomizedIntBlockStateProvider {
 
-    @Shadow @Nullable private IntegerProperty property;
+    @Shadow(remap = false) @Nullable private IntegerProperty f_161558_; // property
 
-    @Redirect(method = "getState", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/levelgen/feature/stateproviders/RandomizedIntStateProvider;property:Lnet/minecraft/world/level/block/state/properties/IntegerProperty;", opcode = Opcodes.PUTFIELD))
+    @Redirect(method = "getState", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/levelgen/feature/stateproviders/RandomizedIntStateProvider;f_161558_:Lnet/minecraft/world/level/block/state/properties/IntegerProperty;", opcode = Opcodes.PUTFIELD))
     private void redirectGetProperty(RandomizedIntStateProvider randomizedIntBlockStateProvider, IntegerProperty value) {
-        if (this.property != null) System.err.println("Detected different property settings in RandomizedIntBlockStateProvider! Expected " + this.property + " but got " + value);
+        if (this.f_161558_ != null) System.err.println("Detected different property settings in RandomizedIntBlockStateProvider! Expected " + this.f_161558_ + " but got " + value);
         synchronized (this) {
-            this.property = value;
+            this.f_161558_ = value;
         }
     }
 
