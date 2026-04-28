@@ -18,15 +18,15 @@ import net.minecraft.nbt.Tag;
 @Mixin(CompoundTag.class)
 public class MixinNbtCompound {
 
-    @Shadow @Final private Map<String, Tag> tags;
+    @Shadow(remap = false) @Final private Map<String, Tag> f_128329_; // tags
 
     /**
      * @author Hari
      * @reason copy using fastutil map
      */
-    @Overwrite
-    public CompoundTag copy() {
-        Map<String, Tag> map = new Object2ObjectOpenHashMap<>(Maps.transformValues(this.tags, Tag::copy));
+    @Overwrite(remap = false)
+    public CompoundTag m_6426_() { // copy
+        Map<String, Tag> map = new Object2ObjectOpenHashMap<>(Maps.transformValues(this.f_128329_, Tag::copy));
         return new CompoundTag(map);
     }
 
