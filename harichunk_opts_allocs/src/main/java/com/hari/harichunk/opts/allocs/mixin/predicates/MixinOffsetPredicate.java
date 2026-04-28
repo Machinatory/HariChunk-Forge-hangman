@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(StateTestingPredicate.class)
 public abstract class MixinOffsetPredicate {
 
-    @Shadow(remap = false) protected abstract boolean test(BlockState state);  // test
+    @Shadow(remap = false) protected abstract boolean m_183454_(BlockState state);  // test
 
     @Shadow(remap = false) @Final protected Vec3i f_190539_;  // offset
 
@@ -27,11 +27,11 @@ public abstract class MixinOffsetPredicate {
             int savedX = mutable.getX();
             int savedY = mutable.getY();
             int savedZ = mutable.getZ();
-            boolean res = this.test(worldGenLevel.getBlockState(mutable.set(savedX + this.f_190539_.getX(), savedY + this.f_190539_.getY(), savedZ + this.f_190539_.getZ())));
+            boolean res = this.m_183454_(worldGenLevel.getBlockState(mutable.set(savedX + this.f_190539_.getX(), savedY + this.f_190539_.getY(), savedZ + this.f_190539_.getZ())));
             mutable.set(savedX, savedY, savedZ);
             return res;
         } else {
-            return this.test(worldGenLevel.getBlockState(blockPos.offset(this.f_190539_)));
+            return this.m_183454_(worldGenLevel.getBlockState(blockPos.offset(this.f_190539_)));
         }
     }
 
