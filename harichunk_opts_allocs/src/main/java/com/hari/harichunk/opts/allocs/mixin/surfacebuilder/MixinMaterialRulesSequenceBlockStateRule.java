@@ -30,8 +30,8 @@ public class MixinMaterialRulesSequenceBlockStateRule {
      * @author Hari
      * @reason use array for iteration
      */
-    @Overwrite
-    public @Nullable BlockState tryApply(int i, int j, int k) {
+    @Overwrite(remap = false)
+    public @Nullable BlockState m_183550_(int i, int j, int k) {
         // TODO [VanillaCopy]
         for(SurfaceRules.SurfaceRule blockStateRule : this.rulesArray) {
             BlockState blockState = blockStateRule.tryApply(i, j, k);

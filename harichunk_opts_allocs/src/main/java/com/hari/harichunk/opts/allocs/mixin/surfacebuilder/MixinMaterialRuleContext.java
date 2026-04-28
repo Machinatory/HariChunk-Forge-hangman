@@ -70,8 +70,8 @@ public class MixinMaterialRuleContext {
      * @author Hari
      * @reason reduce allocs
      */
-    @Overwrite
-    public void updateY(int i, int j, int k, int l, int m, int n) {
+    @Overwrite(remap = false)
+    public void m_189576_(int i, int j, int k, int l, int m, int n) {
         // TODO [VanillaCopy]
         ++this.f_189553_;
         this.f_189557_ = m;

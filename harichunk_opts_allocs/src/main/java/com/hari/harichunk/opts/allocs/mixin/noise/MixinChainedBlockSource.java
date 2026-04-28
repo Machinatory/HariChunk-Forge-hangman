@@ -29,8 +29,8 @@ public class MixinChainedBlockSource {
      * @author Hari
      * @reason reduce allocs using array
      */
-    @Overwrite
-    public @Nullable BlockState calculate(DensityFunction.FunctionContext arg) {
+    @Overwrite(remap = false)
+    public @Nullable BlockState m_207387_(DensityFunction.FunctionContext arg) {
         // TODO [VanillaCopy]
         for (NoiseChunk.BlockStateFiller blockStateSampler : this.samplersArray) {
             BlockState blockState = blockStateSampler.calculate(arg);

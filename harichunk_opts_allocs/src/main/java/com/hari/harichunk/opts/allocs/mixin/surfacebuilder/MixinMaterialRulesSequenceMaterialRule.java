@@ -42,7 +42,7 @@ public class MixinMaterialRulesSequenceMaterialRule {
      * @author Hari
      * @reason optimize lookup
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public SurfaceRules.SurfaceRule apply(SurfaceRules.Context materialRuleContext) {
         if (this.isSingleOrNoElement) {
             return this.firstElement != null ? this.firstElement.apply(materialRuleContext) : EMPTY;

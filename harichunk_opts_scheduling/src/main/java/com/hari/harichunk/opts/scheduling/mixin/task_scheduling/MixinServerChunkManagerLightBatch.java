@@ -24,8 +24,8 @@ public abstract class MixinServerChunkManagerLightBatch {
      * @author Hari
      * @reason batch light updates with AtomicIntegerArray for reduced scheduling overhead
      */
-    @Overwrite
-    public void onLightUpdate(LightLayer type, SectionPos pos) {
+    @Overwrite(remap = false)
+    public void m_6506_(LightLayer type, SectionPos pos) {
         ChunkHolder chunkHolder = this.m_8364_(new ChunkPos(pos.getX(), pos.getZ()).toLong());
         if (chunkHolder != null) {
             ((DuckChunkHolder) chunkHolder).harichunk$queueLightSectionDirty(type, pos.getY());

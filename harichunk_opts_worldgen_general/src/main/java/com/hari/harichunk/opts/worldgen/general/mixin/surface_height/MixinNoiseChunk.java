@@ -32,7 +32,7 @@ public class MixinNoiseChunk {
 
     @Shadow(remap = false) @Final private int f_188723_;  // firstNoiseX
     @Shadow(remap = false) @Final private int f_188724_;  // firstNoiseZ
-    @Shadow @Final private Long2IntMap preliminarySurfaceLevelCache;
+    @Shadow(remap = false) @Final private Long2IntMap f_198238_;  // preliminarySurfaceLevelCache
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void hc$injectGpuSurfaceHeights(CallbackInfo ci) {
@@ -49,7 +49,7 @@ public class MixinNoiseChunk {
                 long key = ColumnPos.asLong(blockX, blockZ);
                 int height = heights[lqx * 4 + lqz];
                 // putIfAbsent: preserve any value the constructor may have already computed.
-                preliminarySurfaceLevelCache.putIfAbsent(key, height);
+                f_198238_.putIfAbsent(key, height);
             }
         }
     }

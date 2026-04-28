@@ -52,8 +52,8 @@ public class MixinWorldGenerationProgressLogger {
      * @author Hari
      * @reason replace impl
      */
-    @Overwrite
-    public int getProgress() {
+    @Overwrite(remap = false)
+    public int m_9636_() {
         // LOGGER.info("{} / {}", chunkStatusTransitions, totalCount * chunkStatuses);
         return Mth.floor((float) this.chunkStatusTransitions * 100.0F / (float) (this.f_9623_ * chunkStatuses));
     }

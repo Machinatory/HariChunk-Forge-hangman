@@ -90,8 +90,8 @@ public class MixinChunkTicketManager implements IChunkTicketManager {
      * @author Hari
      * @reason remap setSimulationDistance to the normal one
      */
-    @Overwrite
-    public void updateSimulationDistance(int i) {
+    @Overwrite(remap = false)
+    public void m_183911_(int i) {
         this.f_140764_.updateViewDistance(i);
     }
 
@@ -99,8 +99,8 @@ public class MixinChunkTicketManager implements IChunkTicketManager {
      * @author Hari
      * @reason remap setWatchDistance to no-tick one
      */
-    @Overwrite
-    public void updatePlayerTickets(int viewDistance) {
+    @Overwrite(remap = false)
+    public void m_140777_(int viewDistance) {
         this.noTickSystem.setNoTickViewDistance(viewDistance);
     }
 

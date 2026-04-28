@@ -39,8 +39,8 @@ public class MixinOctavePerlinNoiseSampler {
      * @author Hari
      * @reason remove frequent type conversion
      */
-    @Overwrite
-    public static double wrap(double value) {
+    @Overwrite(remap = false)
+    public static double m_75406_(double value) {
         return value - Math.floor(value / 3.3554432E7 + 0.5) * 3.3554432E7;
     }
 
@@ -48,8 +48,8 @@ public class MixinOctavePerlinNoiseSampler {
      * @author Hari
      * @reason optimize for common cases
      */
-    @Overwrite
-    public double getValue(double x, double y, double z) {
+    @Overwrite(remap = false)
+    public double m_75408_(double x, double y, double z) {
         double d = 0.0;
         double e = this.f_75393_;
         double f = this.f_75392_;
@@ -58,8 +58,8 @@ public class MixinOctavePerlinNoiseSampler {
             ImprovedNoise perlinNoiseSampler = this.f_75390_[i];
             if (perlinNoiseSampler != null) {
                 @SuppressWarnings("deprecation")
-                double g = perlinNoiseSampler.noise(
-                        wrap(x * e), wrap(y * e), wrap(z * e), 0.0, 0.0
+                double g = perlinNoiseSampler.m_75327_(
+                        m_75406_(x * e), m_75406_(y * e), m_75406_(z * e), 0.0, 0.0
                 );
                 d += this.amplitudesArray[i] * g * f;
             }

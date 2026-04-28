@@ -25,8 +25,8 @@ public class MixinStructureStart {
      * @author Hari
      * @reason atomic operation
      */
-    @Overwrite
-    public void addReference() {
+    @Overwrite(remap = false)
+    public void m_73607_() {
         this.referencesAtomic.incrementAndGet();
     }
 

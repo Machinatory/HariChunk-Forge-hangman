@@ -111,9 +111,9 @@ public class MixinAquiferSamplerImpl {
      * @author Hari
      * @reason optimize
      */
-    @Overwrite
+    @Overwrite(remap = false)
     @Nullable
-    public BlockState computeSubstance(DensityFunction.FunctionContext arg, double d) {
+    public BlockState m_207104_(DensityFunction.FunctionContext arg, double d) {
         final int blockX = arg.blockX();
         final int blockY = arg.blockY();
         final int blockZ = arg.blockZ();
@@ -181,7 +181,7 @@ public class MixinAquiferSamplerImpl {
                     }
                 }
 
-                Aquifer.FluidStatus fluidLevel2 = this.getAquiferStatus(r);
+                Aquifer.FluidStatus fluidLevel2 = this.m_188445_(r);
                 double e = 1.0 - Math.abs(p - o) / 25.0; // HariChunk - inline
                 final BlockState fluidLevel2BlockState = fluidLevel2.at(blockY);
                 if (e <= 0.0) {
@@ -194,7 +194,7 @@ public class MixinAquiferSamplerImpl {
                         return fluidLevel2BlockState;
                     } else {
                         double mutableDouble = Double.NaN;
-                        Aquifer.FluidStatus fluidLevel3 = this.getAquiferStatus(s);
+                        Aquifer.FluidStatus fluidLevel3 = this.m_188445_(s);
                         double result1;
                         final BlockState fluidLevel3BlockState = fluidLevel3.at(blockY);
                         final boolean fluidLevel2BlockStateOfLava = fluidLevel2BlockState.is(Blocks.LAVA);
@@ -237,7 +237,7 @@ public class MixinAquiferSamplerImpl {
                             this.f_158000_ = false;
                             return null;
                         } else {
-                            Aquifer.FluidStatus fluidLevel4 = this.getAquiferStatus(t);
+                            Aquifer.FluidStatus fluidLevel4 = this.m_188445_(t);
                             double g = 1.0 - (double) Math.abs(q - o) / 25.0;
                             final BlockState fluidLevel4BlockState = fluidLevel4.at(blockY);
                             final boolean fluidLevel4BlockStateOfWater = fluidLevel4BlockState.is(Blocks.WATER);
@@ -346,8 +346,8 @@ public class MixinAquiferSamplerImpl {
      * @author Hari
      * @reason optimize
      */
-    @Overwrite
-    private Aquifer.FluidStatus getAquiferStatus(long pos) {
+    @Overwrite(remap = false)
+    private Aquifer.FluidStatus m_188445_(long pos) {
         int i = (int) ((pos << WATER_LEVEL_MAGIC_1) >> WATER_LEVEL_MAGIC_2); // HariChunk - inline
         int j = (int) ((pos << WATER_LEVEL_MAGIC_3) >> WATER_LEVEL_MAGIC_4); // HariChunk - inline
         int k = (int) ((pos << WATER_LEVEL_MAGIC_5) >> WATER_LEVEL_MAGIC_6); // HariChunk - inline
@@ -359,7 +359,7 @@ public class MixinAquiferSamplerImpl {
         if (fluidLevel != null) {
             return fluidLevel;
         } else {
-            Aquifer.FluidStatus fluidLevel2 = this.computeFluid(i, j, k);
+            Aquifer.FluidStatus fluidLevel2 = this.m_188447_(i, j, k);
             this.f_157998_[o] = fluidLevel2;
             return fluidLevel2;
         }
@@ -369,8 +369,8 @@ public class MixinAquiferSamplerImpl {
      * @author Hari
      * @reason optimize
      */
-    @Overwrite
-    private Aquifer.FluidStatus computeFluid(int i, int j, int k) {
+    @Overwrite(remap = false)
+    private Aquifer.FluidStatus m_188447_(int i, int j, int k) {
         Aquifer.FluidStatus fluidLevel = this.f_188411_.computeFluid(i, j, k);
         int l = Integer.MAX_VALUE;
         int m = j + 12;

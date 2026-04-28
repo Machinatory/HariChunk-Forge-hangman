@@ -27,8 +27,8 @@ public class MixinConfiguredFeature<FC extends FeatureConfiguration, F extends F
      * @author Hari
      * @reason pool FeatureContext
      */
-    @Overwrite
-    public boolean place(WorldGenLevel world, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
+    @Overwrite(remap = false)
+    public boolean m_224953_(WorldGenLevel world, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
         if (!world.ensureCanWrite(origin)) return false;
         final SimpleObjectPool<PooledFeatureContext<?>> pool = PooledFeatureContext.POOL.get();
         final PooledFeatureContext<FC> context = (PooledFeatureContext<FC>) pool.alloc();

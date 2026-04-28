@@ -30,8 +30,8 @@ public abstract class MixinNbtList extends CollectionTag<Tag> {
      * @author Hari
      * @reason copy using fastutil list
      */
-    @Overwrite
-    public ListTag copy() {
+    @Overwrite(remap = false)
+    public ListTag m_6426_() {
         Iterable<Tag> iterable = TagTypes.getType(this.f_128717_).isValue() ? this.f_128716_ : Iterables.transform(this.f_128716_, Tag::copy);
         List<Tag> list = new ObjectArrayList<>(this.f_128716_.size());
         iterable.forEach(list::add);

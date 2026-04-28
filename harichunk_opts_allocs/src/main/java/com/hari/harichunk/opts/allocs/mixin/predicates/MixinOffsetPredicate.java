@@ -21,7 +21,7 @@ public abstract class MixinOffsetPredicate {
      * @author Hari
      * @reason reduce allocs
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public final boolean test(WorldGenLevel worldGenLevel, BlockPos blockPos) {
         if (blockPos instanceof BlockPos.MutableBlockPos mutable) {
             int savedX = mutable.getX();

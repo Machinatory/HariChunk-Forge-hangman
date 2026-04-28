@@ -19,9 +19,8 @@ public abstract class MixinAtomicSimpleRandomFactory implements PositionalRandom
      * @author Hari
      * @reason non-atomic
      */
-    @Overwrite
-    @Override
-    public RandomSource at(int x, int y, int z) { // TODO [VanillaCopy]
+    @Overwrite(remap = false)
+    public RandomSource m_213715_(int x, int y, int z) { // TODO [VanillaCopy]
         long l = Mth.getSeed(x, y, z);
         long m = l ^ this.seed;
         return new SingleThreadedRandomSource(m);
@@ -31,9 +30,8 @@ public abstract class MixinAtomicSimpleRandomFactory implements PositionalRandom
      * @author Hari
      * @reason non-atomic
      */
-    @Overwrite
-    @Override
-    public RandomSource fromHashOf(String string) { // TODO [VanillaCopy]
+    @Overwrite(remap = false)
+    public RandomSource m_214111_(String string) { // TODO [VanillaCopy]
         int i = string.hashCode();
         return new SingleThreadedRandomSource((long)i ^ this.seed);
     }

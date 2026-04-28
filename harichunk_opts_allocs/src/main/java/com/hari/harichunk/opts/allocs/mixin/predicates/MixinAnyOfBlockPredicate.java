@@ -15,7 +15,7 @@ public abstract class MixinAnyOfBlockPredicate implements CombinedBlockPredicate
      * @author Hari
      * @reason reduce alloc
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public boolean test(WorldGenLevel worldGenLevel, BlockPos blockPos) {
         for (BlockPredicate blockPredicate : this.harichunk$getPredicatesArray()) {
             if (blockPredicate.test(worldGenLevel, blockPos)) {

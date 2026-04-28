@@ -14,8 +14,8 @@ public class MixinNoiseChunkGenerator {
      * @author Hari
      * @reason optimize
      */
-    @Overwrite
-    private static Aquifer.FluidPicker createFluidPicker(NoiseGeneratorSettings chunkGeneratorSettings) {
+    @Overwrite(remap = false)
+    private static Aquifer.FluidPicker m_247703_(NoiseGeneratorSettings chunkGeneratorSettings) {
         Aquifer.FluidStatus fluidLevel = new Aquifer.FluidStatus(-54, Blocks.LAVA.defaultBlockState());
         int i = chunkGeneratorSettings.seaLevel();
         Aquifer.FluidStatus fluidLevel2 = new Aquifer.FluidStatus(i, chunkGeneratorSettings.defaultFluid());

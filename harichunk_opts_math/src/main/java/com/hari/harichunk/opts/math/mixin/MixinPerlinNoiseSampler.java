@@ -42,9 +42,8 @@ public abstract class MixinPerlinNoiseSampler {
      * @author Hari
      * @reason optimize: remove frequent type conversions
      */
-    @Deprecated
-    @Overwrite
-    public double noise(double x, double y, double z, double yScale, double yMax) {
+    @Overwrite(remap = false)
+    public double m_75327_(double x, double y, double z, double yScale, double yMax) {
         double d = x + this.f_75321_;
         double e = y + this.f_75322_;
         double f = z + this.f_75323_;
@@ -66,15 +65,15 @@ public abstract class MixinPerlinNoiseSampler {
             o = Math.floor(m / yScale + 1.0E-7F) * yScale;
         }
 
-        return this.sampleAndLerp((int) i, (int) j, (int) k, g, h - o, l, h);
+        return this.m_164317_((int) i, (int) j, (int) k, g, h - o, l, h);
     }
 
     /**
      * @author Hari
      * @reason inline math & small optimization: remove frequent type conversions and redundant ops
      */
-    @Overwrite
-    private double sampleAndLerp(int sectionX, int sectionY, int sectionZ, double localX, double localY, double localZ, double fadeLocalX) {
+    @Overwrite(remap = false)
+    private double m_164317_(int sectionX, int sectionY, int sectionZ, double localX, double localY, double localZ, double fadeLocalX) {
         // TODO [VanillaCopy] but optimized
         final int var0 = sectionX & 0xFF;
         final int var1 = (sectionX + 1) & 0xFF;

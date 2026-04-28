@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = "net.minecraft.world.level.levelgen.DensityFunctions$EndIslandDensityFunction")
 public class MixinDFTypesEndIslands {
 
-    @Shadow @Final private SimplexNoise islandNoise;
+    @Shadow(remap = false) @Final private SimplexNoise f_208627_;  // islandNoise
 
     @Unique
     private long harichunk$nativePermPtr = 0;
@@ -26,7 +26,7 @@ public class MixinDFTypesEndIslands {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
         if (NativeLoader.available) {
-            harichunk$nativePermPtr = NativeStructs.createSimplexPermutation(((ISimplexNoiseSampler) islandNoise).getP());
+            harichunk$nativePermPtr = NativeStructs.createSimplexPermutation(((ISimplexNoiseSampler) f_208627_).getP());
         }
     }
 
@@ -34,8 +34,8 @@ public class MixinDFTypesEndIslands {
      * @author Hari
      * @reason use native end islands sampling
      */
-    @Overwrite
-    public double compute(DensityFunction.FunctionContext context) {
+    @Overwrite(remap = false)
+    public double m_207386_(DensityFunction.FunctionContext context) {
         if (harichunk$nativePermPtr != 0) {
             return (double) NativeBindings.endIslandsSample(harichunk$nativePermPtr, context.blockX() / 8, context.blockZ() / 8);
         }
