@@ -15,16 +15,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ChunkAccess.class)
 public abstract class MixinChunk {
 
-    @Shadow protected volatile boolean unsaved;
+    @Shadow(remap = false) protected volatile boolean f_62662_; // unsaved
 
-    @Shadow @Final private ChunkPos pos;
+    @Shadow(remap = false) @Final private ChunkPos f_62661_; // pos
 
     @Inject(method = "*", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/chunk/ChunkAccess;unsaved:Z", shift = At.Shift.AFTER))
     private void onSetShouldSave(CallbackInfo ci) {
         //noinspection ConstantConditions
-        if (this.unsaved && (Object) this instanceof LevelChunk worldChunk) {
+        if (this.f_62662_ && (Object) this instanceof LevelChunk worldChunk) {
             if (worldChunk.getLevel() instanceof ServerLevel serverWorld) {
-                ((IThreadedAnvilChunkStorage) serverWorld.getChunkSource().chunkMap).enqueueDirtyChunkPosForAutoSave(this.pos);
+                ((IThreadedAnvilChunkStorage) serverWorld.getChunkSource().chunkMap).enqueueDirtyChunkPosForAutoSave(this.f_62661_);
             }
         }
     }
