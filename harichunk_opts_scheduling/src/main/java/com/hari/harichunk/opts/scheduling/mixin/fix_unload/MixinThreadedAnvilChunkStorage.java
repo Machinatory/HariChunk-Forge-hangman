@@ -19,12 +19,12 @@ import net.minecraft.util.thread.BlockableEventLoop;
 @Mixin(ChunkMap.class)
 public abstract class MixinThreadedAnvilChunkStorage {
 
-    @Shadow @Final private BlockableEventLoop<Runnable> mainThreadExecutor;
+    @Shadow(remap = false) @Final private BlockableEventLoop<Runnable> f_140135_; // mainThreadExecutor
 
-    @Shadow protected abstract void processUnloads(BooleanSupplier shouldKeepTicking);
+    @Shadow(remap = false) protected abstract void m_140353_(BooleanSupplier shouldKeepTicking); // processUnloads
 
     @Mutable
-    @Shadow @Final private LongSet toDrop;
+    @Shadow(remap = false) @Final private LongSet f_140139_; // toDrop
 
     @ModifyArg(method = "tick(Ljava/util/function/BooleanSupplier;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/village/poi/PoiManager;tick(Ljava/util/function/BooleanSupplier;)V"))
     private BooleanSupplier redirectTickPointOfInterestStorageTick(BooleanSupplier shouldKeepTicking) {
@@ -38,7 +38,7 @@ public abstract class MixinThreadedAnvilChunkStorage {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        this.toDrop = new LongHashSet();
+        this.f_140139_ = new LongHashSet();
     }
 
 }

@@ -15,32 +15,32 @@ import net.minecraft.world.level.entity.Visibility;
 @Mixin(PersistentEntitySectionManager.class)
 public abstract class MixinServerEntityManager<T> implements ITryFlushable {
 
-    @Shadow protected abstract LongSet getAllChunksToSave();
+    @Shadow(remap = false) protected abstract LongSet m_157587_(); // getAllChunksToSave
 
-    @Shadow @Final private EntityPersistentStorage<T> permanentStorage;
+    @Shadow(remap = false) @Final private EntityPersistentStorage<T> f_157493_; // permanentStorage
 
-    @Shadow protected abstract void processPendingLoads();
+    @Shadow(remap = false) protected abstract void m_157582_(); // processPendingLoads
 
-    @Shadow @Final private Long2ObjectMap<Visibility> chunkVisibility;
+    @Shadow(remap = false) @Final private Long2ObjectMap<Visibility> f_90979_; // chunkVisibility
 
-    @Shadow protected abstract boolean processChunkUnload(long chunkPos);
+    @Shadow(remap = false) protected abstract boolean m_157568_(long chunkPos); // processChunkUnload
 
-    @Shadow protected abstract boolean storeChunkSections(long chunkPos, Consumer<T> action);
+    @Shadow(remap = false) protected abstract boolean m_157512_(long chunkPos, Consumer<T> action); // storeChunkSections
 
     public boolean harichunk$tryFlush() {
-        LongSet longSet = this.getAllChunksToSave();
+        LongSet longSet = this.m_157587_();
 
         if(!longSet.isEmpty()) {
-            this.permanentStorage.flush(false);
-            this.processPendingLoads();
+            this.f_157493_.flush(false);
+            this.m_157582_();
             longSet.removeIf((pos) -> {
-                boolean bl = this.chunkVisibility.get(pos) == Visibility.HIDDEN;
-                return bl ? this.processChunkUnload(pos) : this.storeChunkSections(pos, (entity) -> {
+                boolean bl = this.f_90979_.get(pos) == Visibility.HIDDEN;
+                return bl ? this.m_157568_(pos) : this.m_157512_(pos, (entity) -> {
                 });
             });
         }
 
-        this.permanentStorage.flush(true);
+        this.f_157493_.flush(true);
         return longSet.isEmpty();
     }
 

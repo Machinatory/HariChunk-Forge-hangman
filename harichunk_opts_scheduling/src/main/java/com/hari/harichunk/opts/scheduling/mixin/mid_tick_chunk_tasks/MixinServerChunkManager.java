@@ -14,12 +14,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerChunkCache.class)
 public class MixinServerChunkManager {
 
-    @Shadow @Final private ServerLevel level;
+    @Shadow(remap = false) @Final private ServerLevel f_8329_; // level
 
     @Dynamic
     @Inject(method = "tickChunks", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;tickChunk(Lnet/minecraft/world/level/chunk/LevelChunk;I)V"))
     private void onPostTickChunk(CallbackInfo ci) {
-        ((ServerMidTickTask) this.level.getServer()).executeTasksMidTick(this.level);
+        ((ServerMidTickTask) this.f_8329_.getServer()).executeTasksMidTick(this.f_8329_);
     }
 
 }

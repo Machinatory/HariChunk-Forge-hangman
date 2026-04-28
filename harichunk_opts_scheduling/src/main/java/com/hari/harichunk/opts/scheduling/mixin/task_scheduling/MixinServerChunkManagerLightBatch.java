@@ -16,9 +16,9 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(ServerChunkCache.class)
 public abstract class MixinServerChunkManagerLightBatch {
 
-    @Shadow @Nullable protected abstract ChunkHolder getVisibleChunkIfPresent(long pos);
+    @Shadow(remap = false) @Nullable protected abstract ChunkHolder m_8364_(long pos); // getVisibleChunkIfPresent
 
-    @Shadow @Final private ServerChunkCache.MainThreadExecutor mainThreadProcessor;
+    @Shadow(remap = false) @Final private ServerChunkCache.MainThreadExecutor f_8332_; // mainThreadProcessor
 
     /**
      * @author Hari
@@ -26,11 +26,11 @@ public abstract class MixinServerChunkManagerLightBatch {
      */
     @Overwrite
     public void onLightUpdate(LightLayer type, SectionPos pos) {
-        ChunkHolder chunkHolder = this.getVisibleChunkIfPresent(new ChunkPos(pos.getX(), pos.getZ()).toLong());
+        ChunkHolder chunkHolder = this.m_8364_(new ChunkPos(pos.getX(), pos.getZ()).toLong());
         if (chunkHolder != null) {
             ((DuckChunkHolder) chunkHolder).harichunk$queueLightSectionDirty(type, pos.getY());
             if (((DuckChunkHolder) chunkHolder).harichunk$shouldScheduleUndirty()) {
-                this.mainThreadProcessor.execute(() -> {
+                this.f_8332_.execute(() -> {
                     ((DuckChunkHolder) chunkHolder).harichunk$undirtyLight();
                 });
             }

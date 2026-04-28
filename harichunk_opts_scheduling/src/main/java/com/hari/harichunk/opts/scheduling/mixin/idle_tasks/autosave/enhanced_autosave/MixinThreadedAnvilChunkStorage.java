@@ -22,7 +22,7 @@ public abstract class MixinThreadedAnvilChunkStorage implements IThreadedAnvilCh
 
     @Shadow(remap = false) @Final private Long2ObjectLinkedOpenHashMap<ChunkHolder> f_140129_; // updatingChunkMap
 
-    @Shadow protected abstract boolean saveChunkIfNeeded(ChunkHolder chunkHolder);
+    @Shadow(remap = false) protected abstract boolean m_198874_(ChunkHolder chunkHolder); // saveChunkIfNeeded
 
     @Unique
     private final Object2LongLinkedOpenHashMap<ChunkPos> dirtyChunkPosForAutoSave = new Object2LongLinkedOpenHashMap<>();
@@ -50,7 +50,7 @@ public abstract class MixinThreadedAnvilChunkStorage implements IThreadedAnvilCh
                 if (chunkHolder == null) continue;
                 final CompletableFuture<ChunkAccess> savingFuture = chunkHolder.getChunkToSave();
                 if (savingFuture.isDone()) {
-                    this.saveChunkIfNeeded(chunkHolder);
+                    this.m_198874_(chunkHolder);
                     return true;
                 } else {
                     savingFuture.handle((chunk, throwable) -> {

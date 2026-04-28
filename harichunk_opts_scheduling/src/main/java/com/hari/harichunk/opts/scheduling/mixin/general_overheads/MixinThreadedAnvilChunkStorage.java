@@ -12,11 +12,11 @@ import net.minecraft.server.level.ChunkMap;
 @Mixin(ChunkMap.class)
 public class MixinThreadedAnvilChunkStorage {
 
-    @Shadow @Final private Queue<Runnable> unloadQueue;
+    @Shadow(remap = false) @Final private Queue<Runnable> f_140125_; // unloadQueue
 
     @Redirect(method = "processUnloads", at = @At(value = "INVOKE", target = "Ljava/util/Queue;size()I"))
     private int redirectUnloadSize(Queue<?> queue) {
-        if (this.unloadQueue == queue) return Integer.MAX_VALUE;
+        if (this.f_140125_ == queue) return Integer.MAX_VALUE;
         return queue.size();
     }
 

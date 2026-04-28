@@ -19,17 +19,17 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
 @Mixin(ChunkHolder.class)
 public abstract class MixinChunkHolder implements DuckChunkHolder {
 
-    @Shadow public abstract void sectionLightChanged(LightLayer lightType, int y);
+    @Shadow(remap = false) public abstract void m_140036_(LightLayer lightType, int y); // sectionLightChanged
 
-    @Shadow @Final private LevelHeightAccessor levelHeightAccessor;
+    @Shadow(remap = false) @Final private LevelHeightAccessor f_142983_; // levelHeightAccessor
 
     private AtomicIntegerArray[] harichunk$dirtyLightSections;
     private final AtomicBoolean harichunk$scheduledLightUndirty = new AtomicBoolean(false);
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
-        int bottomSection = this.levelHeightAccessor.getMinSection() - 1;
-        int topSection = this.levelHeightAccessor.getMinSection() + this.levelHeightAccessor.getSectionsCount();
+        int bottomSection = this.f_142983_.getMinSection() - 1;
+        int topSection = this.f_142983_.getMinSection() + this.f_142983_.getSectionsCount();
         int range = topSection - bottomSection + 1;
         harichunk$dirtyLightSections = new AtomicIntegerArray[LightLayer.values().length];
         for (int i = 0; i < harichunk$dirtyLightSections.length; i++) {
@@ -39,8 +39,8 @@ public abstract class MixinChunkHolder implements DuckChunkHolder {
 
     @Override
     public void harichunk$queueLightSectionDirty(LightLayer lightType, int sectionY) {
-        int bottomSection = this.levelHeightAccessor.getMinSection() - 1;
-        int topSection = this.levelHeightAccessor.getMinSection() + this.levelHeightAccessor.getSectionsCount();
+        int bottomSection = this.f_142983_.getMinSection() - 1;
+        int topSection = this.f_142983_.getMinSection() + this.f_142983_.getSectionsCount();
         if (sectionY >= bottomSection && sectionY <= topSection)
             this.harichunk$dirtyLightSections[lightType.ordinal()].set(sectionY - bottomSection, 1);
     }
@@ -57,14 +57,14 @@ public abstract class MixinChunkHolder implements DuckChunkHolder {
         }
         boolean hasDirtyLight = false;
         AtomicIntegerArray[] sections = this.harichunk$dirtyLightSections;
-        final int bottomSection = this.levelHeightAccessor.getMinSection() - 1;
+        final int bottomSection = this.f_142983_.getMinSection() - 1;
         for (int i = 0, length = sections.length; i < length; i++) {
             AtomicIntegerArray section = sections[i];
             LightLayer lightType = LightLayer.values()[i];
             for (int j = 0; j < section.length(); j++) {
                 if (section.compareAndSet(j, 1, 0)) {
                     hasDirtyLight = true;
-                    this.sectionLightChanged(lightType, j + bottomSection);
+                    this.m_140036_(lightType, j + bottomSection);
                 }
             }
         }

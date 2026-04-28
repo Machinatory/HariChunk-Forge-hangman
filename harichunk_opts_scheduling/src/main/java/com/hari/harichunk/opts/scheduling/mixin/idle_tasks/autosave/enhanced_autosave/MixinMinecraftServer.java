@@ -12,9 +12,9 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(MinecraftServer.class)
 public abstract class MixinMinecraftServer extends ReentrantBlockableEventLoop<TickTask> {
 
-    @Shadow protected abstract boolean haveTime();
+    @Shadow(remap = false) protected abstract boolean m_129960_(); // haveTime
 
-    @Shadow public abstract Iterable<ServerLevel> getAllLevels();
+    @Shadow(remap = false) public abstract Iterable<ServerLevel> m_129785_(); // getAllLevels
 
     public MixinMinecraftServer(String string) {
         super(string);
@@ -30,15 +30,15 @@ public abstract class MixinMinecraftServer extends ReentrantBlockableEventLoop<T
             return true;
         } else {
             boolean hasWork = false;
-            if (this.haveTime()) {
-                for(ServerLevel serverWorld : this.getAllLevels()) {
+            if (this.m_129960_()) {
+                for(ServerLevel serverWorld : this.m_129785_()) {
                     if (serverWorld.getChunkSource().pollTask()) hasWork = true;
                 }
             }
 
-            if (!hasWork && this.haveTime()) {
-                for (ServerLevel serverWorld : this.getAllLevels()) {
-                    if (this.haveTime()) {
+            if (!hasWork && this.m_129960_()) {
+                for (ServerLevel serverWorld : this.m_129785_()) {
+                    if (this.m_129960_()) {
                         hasWork = ((IThreadedAnvilChunkStorage) serverWorld.getChunkSource().chunkMap).runOneChunkAutoSave();
                     }
                 }

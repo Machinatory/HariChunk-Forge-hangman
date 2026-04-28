@@ -15,17 +15,17 @@ import net.minecraft.world.level.chunk.storage.EntityStorage;
 @Mixin(EntityStorage.class)
 public class MixinEntityChunkDataAccess {
 
-    @Shadow @Final private ServerLevel level;
+    @Shadow(remap = false) @Final private ServerLevel f_156538_; // level
 
     @ModifyArg(method = "loadEntities", at = @At(value = "INVOKE", target = "Ljava/util/concurrent/CompletableFuture;thenApplyAsync(Ljava/util/function/Function;Ljava/util/concurrent/Executor;)Ljava/util/concurrent/CompletableFuture;"))
     private Executor redirectExecutor(Executor executor) {
-        return this.isSameThread() ? executor : ((IServerChunkManager) this.level.getChunkSource()).getMainThreadExecutor(); // SJhub - fix deadlock when getting entities in chunk
+        return this.isSameThread() ? executor : ((IServerChunkManager) this.f_156538_.getChunkSource()).getMainThreadExecutor(); // SJhub - fix deadlock when getting entities in chunk
     }
 
     // SJhub start
     @Unique
     private boolean isSameThread() {
-        return Thread.currentThread() == ((IServerChunkManager) this.level.getChunkSource()).getMainThreadExecutor().getRunningThread();
+        return Thread.currentThread() == ((IServerChunkManager) this.f_156538_.getChunkSource()).getMainThreadExecutor().getRunningThread();
     }
     // SJhub end
 

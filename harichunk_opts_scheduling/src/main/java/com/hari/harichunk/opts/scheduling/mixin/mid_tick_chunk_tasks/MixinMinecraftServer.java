@@ -15,15 +15,15 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(MinecraftServer.class)
 public abstract class MixinMinecraftServer implements ServerMidTickTask {
 
-    @Shadow public abstract Iterable<ServerLevel> getAllLevels();
+    @Shadow(remap = false) public abstract Iterable<ServerLevel> m_129785_(); // getAllLevels
 
-    @Shadow @Final private Thread serverThread;
+    @Shadow(remap = false) @Final private Thread f_129725_; // serverThread
     @Unique
     private long midTickChunkTasksLastRun = System.nanoTime();
 
     @Override
     public void executeTasksMidTick(ServerLevel world) {
-        if (this.serverThread != Thread.currentThread()) return;
+        if (this.f_129725_ != Thread.currentThread()) return;
         if (System.nanoTime() - midTickChunkTasksLastRun < Config.midTickChunkTasksInterval) return;
         ((BlockableEventLoop<Runnable>) ((IServerChunkManager) world.getChunkSource()).getMainThreadExecutor()).pollTask();
 
