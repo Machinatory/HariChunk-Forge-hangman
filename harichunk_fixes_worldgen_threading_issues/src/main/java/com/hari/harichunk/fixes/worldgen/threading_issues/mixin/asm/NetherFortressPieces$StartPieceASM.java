@@ -11,5 +11,5 @@ public class NetherFortressPieces$StartPieceASM {
 
     @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    public NetherFortressPieces.PieceWeight f_229797_;  // previousPiece
+    public NetherFortressPieces.PieceWeight f_228507_;  // previousPiece
 }
