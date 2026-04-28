@@ -1,5 +1,8 @@
 {
   "mappings": {
+    "com/hari/harichunk/opts/allocs/mixin/object_pooling_caching/MixinConfiguredFeature": {
+      "place": "Lnet/minecraft/world/level/levelgen/feature/ConfiguredFeature;m_224953_(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/world/level/chunk/ChunkGenerator;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Z"
+    },
     "com/hari/harichunk/opts/allocs/mixin/object_pooling_caching/MixinOreFeature": {
       "doPlace": "Lnet/minecraft/world/level/levelgen/feature/OreFeature;m_225171_(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/util/RandomSource;Lnet/minecraft/world/level/levelgen/feature/configurations/OreConfiguration;DDDDDDIIIII)Z"
     },
@@ -18,11 +21,36 @@
       "net.minecraft.nbt.ListTag$1": "net/minecraft/nbt/ListTag$1"
     },
     "com/hari/harichunk/opts/allocs/mixin/MixinNbtList": {
-      "<init>()V": "Lnet/minecraft/nbt/ListTag;<init>()V"
+      "<init>()V": "Lnet/minecraft/nbt/ListTag;<init>()V",
+      "copy": "Lnet/minecraft/nbt/ListTag;m_6426_()Lnet/minecraft/nbt/ListTag;"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/surfacebuilder/MixinMaterialRulesSequenceMaterialRule": {
+      "apply": "Lnet/minecraft/world/level/levelgen/surfacerules/MaterialRules$MaterialRuleSequence;m_183550_(Lnet/minecraft/world/level/levelgen/surfacerules/SurfaceRules$Context;)Lnet/minecraft/world/level/levelgen/surfacerules/SurfaceRules$SurfaceRule;"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/surfacebuilder/MixinMaterialRulesSequenceBlockStateRule": {
+      "tryApply": "Lnet/minecraft/world/level/levelgen/surfacerules/MaterialRules$MaterialRuleSequence;m_183550_(III)Lnet/minecraft/world/level/block/state/BlockState;"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/surfacebuilder/MixinMaterialRuleContext": {
+      "updateY": "Lnet/minecraft/world/level/levelgen/surfacerules/MaterialRules$MaterialRuleContext;m_189576_(IIIIII)V"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/predicates/MixinOffsetPredicate": {
+      "test": "Lnet/minecraft/world/level/levelgen/blockpredicates/StateTestingPredicate;test(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/core/BlockPos;)Z"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/predicates/MixinAnyOfBlockPredicate": {
+      "test": "Lnet/minecraft/world/level/levelgen/blockpredicates/AnyOfBlockPredicate;test(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/core/BlockPos;)Z"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/predicates/MixinAllOfBlockPredicate": {
+      "test": "Lnet/minecraft/world/level/levelgen/blockpredicates/AllOfBlockPredicate;test(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/core/BlockPos;)Z"
+    },
+    "com/hari/harichunk/opts/allocs/mixin/noise/MixinChainedBlockSource": {
+      "calculate": "Lnet/minecraft/world/level/levelgen/material/MaterialRuleList;m_207387_(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)Lnet/minecraft/world/level/block/state/BlockState;"
     }
   },
   "data": {
     "searge": {
+      "com/hari/harichunk/opts/allocs/mixin/object_pooling_caching/MixinConfiguredFeature": {
+        "place": "Lnet/minecraft/world/level/levelgen/feature/ConfiguredFeature;m_224953_(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/world/level/chunk/ChunkGenerator;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Z"
+      },
       "com/hari/harichunk/opts/allocs/mixin/object_pooling_caching/MixinOreFeature": {
         "doPlace": "Lnet/minecraft/world/level/levelgen/feature/OreFeature;m_225171_(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/util/RandomSource;Lnet/minecraft/world/level/levelgen/feature/configurations/OreConfiguration;DDDDDDIIIII)Z"
       },
@@ -41,7 +69,29 @@
         "net.minecraft.nbt.ListTag$1": "net/minecraft/nbt/ListTag$1"
       },
       "com/hari/harichunk/opts/allocs/mixin/MixinNbtList": {
-        "<init>()V": "Lnet/minecraft/nbt/ListTag;<init>()V"
+        "<init>()V": "Lnet/minecraft/nbt/ListTag;<init>()V",
+        "copy": "Lnet/minecraft/nbt/ListTag;m_6426_()Lnet/minecraft/nbt/ListTag;"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/surfacebuilder/MixinMaterialRulesSequenceMaterialRule": {
+        "apply": "Lnet/minecraft/world/level/levelgen/surfacerules/MaterialRules$MaterialRuleSequence;m_183550_(Lnet/minecraft/world/level/levelgen/surfacerules/SurfaceRules$Context;)Lnet/minecraft/world/level/levelgen/surfacerules/SurfaceRules$SurfaceRule;"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/surfacebuilder/MixinMaterialRulesSequenceBlockStateRule": {
+        "tryApply": "Lnet/minecraft/world/level/levelgen/surfacerules/MaterialRules$MaterialRuleSequence;m_183550_(III)Lnet/minecraft/world/level/block/state/BlockState;"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/surfacebuilder/MixinMaterialRuleContext": {
+        "updateY": "Lnet/minecraft/world/level/levelgen/surfacerules/MaterialRules$MaterialRuleContext;m_189576_(IIIIII)V"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/predicates/MixinOffsetPredicate": {
+        "test": "Lnet/minecraft/world/level/levelgen/blockpredicates/StateTestingPredicate;test(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/core/BlockPos;)Z"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/predicates/MixinAnyOfBlockPredicate": {
+        "test": "Lnet/minecraft/world/level/levelgen/blockpredicates/AnyOfBlockPredicate;test(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/core/BlockPos;)Z"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/predicates/MixinAllOfBlockPredicate": {
+        "test": "Lnet/minecraft/world/level/levelgen/blockpredicates/AllOfBlockPredicate;test(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/core/BlockPos;)Z"
+      },
+      "com/hari/harichunk/opts/allocs/mixin/noise/MixinChainedBlockSource": {
+        "calculate": "Lnet/minecraft/world/level/levelgen/material/MaterialRuleList;m_207387_(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)Lnet/minecraft/world/level/block/state/BlockState;"
       }
     }
   }
