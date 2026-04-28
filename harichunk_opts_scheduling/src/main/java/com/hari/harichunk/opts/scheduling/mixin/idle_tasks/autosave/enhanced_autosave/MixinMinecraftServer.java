@@ -24,8 +24,8 @@ public abstract class MixinMinecraftServer extends ReentrantBlockableEventLoop<T
      * @author Hari
      * @reason improve task execution when waiting for next tick
      */
-    @Overwrite
-    private boolean pollTaskInternal() {
+    @Overwrite(remap = false)
+    private boolean m_129961_() {
         if (super.pollTask()) {
             return true;
         } else {
