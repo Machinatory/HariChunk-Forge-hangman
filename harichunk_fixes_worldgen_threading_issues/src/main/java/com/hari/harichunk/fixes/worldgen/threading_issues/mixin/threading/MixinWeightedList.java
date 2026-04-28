@@ -27,7 +27,7 @@ public class MixinWeightedList<U> implements IWeightedList<U> {
     @Overwrite
     public ShufflingList<U> shuffle() {
         // TODO [VanillaCopy]
-        final ShufflingList<U> newList = new ShufflingList<>(entries); // HariChunk - use new instance
+        final ShufflingList<U> newList = new ShufflingList<>(this.f_147917_); // HariChunk - use new instance
         final Random random = new Random(); // HariChunk - use new instance
         ((com.hari.harichunk.base.mixin.access.IWeightedList<U>) newList).getEntries().forEach((entry) -> { // HariChunk - use new instance
             ((IWeightedListEntry) entry).invokeSetShuffledOrder(random.nextFloat());

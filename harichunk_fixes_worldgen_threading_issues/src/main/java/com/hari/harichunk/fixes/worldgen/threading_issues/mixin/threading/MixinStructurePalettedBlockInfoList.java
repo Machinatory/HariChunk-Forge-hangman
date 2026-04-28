@@ -22,7 +22,7 @@ public class MixinStructurePalettedBlockInfoList {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        this.f_74646_ = Collections.synchronizedMap(cache);
+        this.f_74646_ = Collections.synchronizedMap(this.f_74646_);
     }
 
 }

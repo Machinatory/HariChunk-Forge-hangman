@@ -30,7 +30,7 @@ public class MixinThreadedAnvilChunkStorage {
     // lambda expression in convertToFullChunk
     private void afterLoadToWorld(ChunkHolder chunkHolder, ChunkAccess protoChunk, CallbackInfoReturnable<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> cir) {
         if (this.f_140132_.contains(chunkHolder.getPos().toLong()))
-            LOGGER.error("Double scheduling chunk loading detected on chunk {}", chunkHolder.getPos());
+            f_140128_.error("Double scheduling chunk loading detected on chunk {}", chunkHolder.getPos());
     }
 
 }

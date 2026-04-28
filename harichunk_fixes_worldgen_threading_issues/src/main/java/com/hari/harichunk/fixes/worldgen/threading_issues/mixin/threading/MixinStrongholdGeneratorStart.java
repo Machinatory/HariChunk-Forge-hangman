@@ -21,7 +21,7 @@ public class MixinStrongholdGeneratorStart {
 
     @Inject(method = "<init>*", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        this.f_229799_ = Collections.synchronizedList(pendingChildren);
+        this.f_229799_ = Collections.synchronizedList(this.f_229799_);
     }
 
 }

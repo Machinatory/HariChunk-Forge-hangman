@@ -25,6 +25,6 @@ public class MixinFixedBiomeSource {
     private void onGetNoiseBiome(int x, int y, int z, Climate.Sampler sampler,
                                   CallbackInfoReturnable<Holder<Biome>> cir) {
         // FixedBiomeSource always returns the same biome, short-circuit directly
-        cir.setReturnValue(biome);
+        cir.setReturnValue(this.f_48252_);
     }
 }

@@ -42,24 +42,24 @@ public class MixinChunkRegion {
     private void onInit(ServerLevel world, List<ChunkAccess> list, ChunkStatus chunkStatus, int placementRadius, CallbackInfo ci) {
         if (Config.reduceLockRadius) {
             final int reducedTaskRadius = ((IChunkStatus) chunkStatus).getReducedTaskRadius();
-            lowerReducedCorner = new ChunkPos(center.getPos().x - reducedTaskRadius, center.getPos().z - reducedTaskRadius);
-            upperReducedCorner = new ChunkPos(center.getPos().x + reducedTaskRadius, center.getPos().z + reducedTaskRadius);
+            lowerReducedCorner = new ChunkPos(this.f_143479_.getPos().x - reducedTaskRadius, this.f_143479_.getPos().z - reducedTaskRadius);
+            upperReducedCorner = new ChunkPos(this.f_143479_.getPos().x + reducedTaskRadius, this.f_143479_.getPos().z + reducedTaskRadius);
         } else {
-            lowerReducedCorner = firstPos;
-            upperReducedCorner = lastPos;
+            lowerReducedCorner = this.f_9487_;
+            upperReducedCorner = this.f_9488_;
         }
     }
 
     @Inject(method = "getChunk(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Lnet/minecraft/world/level/chunk/ChunkAccess;", at = @At("HEAD"))
     private void onGetChunk(int chunkX, int chunkZ, ChunkStatus leastStatus, boolean create, CallbackInfoReturnable<ChunkAccess> cir) {
-        if (Config.reduceLockRadius && !isInsideReducedTaskRadius(chunkX, chunkZ) && generatingStatus != ChunkStatus.STRUCTURE_REFERENCES) {
+        if (Config.reduceLockRadius && !isInsideReducedTaskRadius(chunkX, chunkZ) && this.f_143480_ != ChunkStatus.STRUCTURE_REFERENCES) {
             StacktraceRecorder.record();
         }
     }
 
     @Inject(method = "hasChunk", at = @At("HEAD"))
     private void onIsChunkLoaded(int chunkX, int chunkZ, CallbackInfoReturnable<Boolean> cir) {
-        if (Config.reduceLockRadius && !isInsideReducedTaskRadius(chunkX, chunkZ) && generatingStatus != ChunkStatus.STRUCTURE_REFERENCES) {
+        if (Config.reduceLockRadius && !isInsideReducedTaskRadius(chunkX, chunkZ) && this.f_143480_ != ChunkStatus.STRUCTURE_REFERENCES) {
             StacktraceRecorder.record();
         }
     }

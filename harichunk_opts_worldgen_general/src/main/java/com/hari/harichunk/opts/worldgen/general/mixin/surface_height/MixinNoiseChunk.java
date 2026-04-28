@@ -36,7 +36,7 @@ public class MixinNoiseChunk {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void hc$injectGpuSurfaceHeights(CallbackInfo ci) {
-        int[] heights = VkSurfaceHeightCache.takePendingInjection(firstNoiseX, firstNoiseZ);
+        int[] heights = VkSurfaceHeightCache.takePendingInjection(this.f_188723_, this.f_188724_);
         if (heights == null) return;
 
         // Fill the 4×4 quart positions belonging to this chunk.
@@ -44,8 +44,8 @@ public class MixinNoiseChunk {
         // firstNoiseX + lqx, and its block-X is (firstNoiseX + lqx) << 2.
         for (int lqx = 0; lqx < 4; lqx++) {
             for (int lqz = 0; lqz < 4; lqz++) {
-                int blockX = QuartPos.toBlock(firstNoiseX + lqx);
-                int blockZ = QuartPos.toBlock(firstNoiseZ + lqz);
+                int blockX = QuartPos.toBlock(this.f_188723_ + lqx);
+                int blockZ = QuartPos.toBlock(this.f_188724_ + lqz);
                 long key = ColumnPos.asLong(blockX, blockZ);
                 int height = heights[lqx * 4 + lqz];
                 // putIfAbsent: preserve any value the constructor may have already computed.

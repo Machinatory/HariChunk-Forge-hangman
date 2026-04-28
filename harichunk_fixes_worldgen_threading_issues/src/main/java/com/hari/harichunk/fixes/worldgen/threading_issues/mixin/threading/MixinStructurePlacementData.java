@@ -21,7 +21,7 @@ public class MixinStructurePlacementData {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
-        this.f_74370_ = Collections.synchronizedList(processors);
+        this.f_74370_ = Collections.synchronizedList(this.f_74370_);
     }
 
 }

@@ -27,8 +27,8 @@ public class MixinStructure {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
-        this.f_74482_ = Collections.synchronizedList(palettes);
-        this.f_74483_ = Collections.synchronizedList(entityInfoList);
+        this.f_74482_ = Collections.synchronizedList(this.f_74482_);
+        this.f_74483_ = Collections.synchronizedList(this.f_74483_);
     }
 
 }

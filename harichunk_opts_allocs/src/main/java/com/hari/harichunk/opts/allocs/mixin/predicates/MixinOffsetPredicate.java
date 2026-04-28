@@ -31,7 +31,7 @@ public abstract class MixinOffsetPredicate {
             mutable.set(savedX, savedY, savedZ);
             return res;
         } else {
-            return this.test(worldGenLevel.getBlockState(blockPos.f_190539_(this.f_190539_)));
+            return this.test(worldGenLevel.getBlockState(blockPos.offset(this.f_190539_)));
         }
     }
 

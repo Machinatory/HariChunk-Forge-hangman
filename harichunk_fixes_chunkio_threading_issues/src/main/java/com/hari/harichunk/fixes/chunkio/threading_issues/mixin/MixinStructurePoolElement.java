@@ -21,7 +21,7 @@ public class MixinStructurePoolElement {
     @Dynamic
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void onCLInit(CallbackInfo info) {
-        CODEC = new SynchronizedCodec<>(CODEC);
+        f_210468_ = new SynchronizedCodec<>(f_210468_);
     }
 
 }

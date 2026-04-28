@@ -27,7 +27,7 @@ public abstract class MixinChunkHolder implements IChunkHolder {
     @Override
     public LevelChunk getAccessibleChunk() {
         final Either<LevelChunk, ChunkHolder.ChunkLoadingFailure> either = this.m_140082_().getNow(null);
-        return either == null ? null : either.left().orElseGet(this::getTickingChunk);
+        return either == null ? null : either.left().orElseGet(this::m_140085_);
     }
 
     @Redirect(method = {"blockChanged", "sectionLightChanged"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkHolder;m_140085_()Lnet/minecraft/world/level/chunk/LevelChunk;"), require = 2)

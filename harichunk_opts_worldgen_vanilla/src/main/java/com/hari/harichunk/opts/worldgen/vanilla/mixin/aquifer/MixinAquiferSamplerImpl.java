@@ -185,7 +185,7 @@ public class MixinAquiferSamplerImpl {
                 double e = 1.0 - Math.abs(p - o) / 25.0; // HariChunk - inline
                 final BlockState fluidLevel2BlockState = fluidLevel2.at(blockY);
                 if (e <= 0.0) {
-                    this.f_158000_ = e >= FLOWING_UPDATE_SIMULARITY;
+                    this.f_158000_ = e >= f_196979_;
                     return fluidLevel2BlockState;
                 } else {
                     final boolean fluidLevel2BlockStateOfWater = fluidLevel2BlockState.is(Blocks.WATER);
@@ -377,7 +377,7 @@ public class MixinAquiferSamplerImpl {
         int n = j - 12;
         boolean bl = false;
 
-        for (int[] is : SURFACE_SAMPLING_OFFSETS_IN_CHUNKS) {
+        for (int[] is : f_188412_) {
             int o = i + (is[0] << 4); // HariChunk - inline
             int p = k + (is[1] << 4); // HariChunk - inline
             int q = this.f_188407_.preliminarySurfaceLevel(o, p);

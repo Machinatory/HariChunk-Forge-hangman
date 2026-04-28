@@ -45,7 +45,7 @@ public abstract class MixinStorageIoWorker {
     @Unique
     private void checkHardLimit() {
         if (this.f_63519_.size() >= Config.chunkDataCacheLimit) {
-            LOGGER.warn("Chunk data cache size exceeded hard limit ({} >= {}), forcing writes to disk (you can increase chunkDataCacheLimit in harichunk.toml)", this.f_63519_.size(), Config.chunkDataCacheLimit);
+            f_63515_.warn("Chunk data cache size exceeded hard limit ({} >= {}), forcing writes to disk (you can increase chunkDataCacheLimit in harichunk.toml)", this.f_63519_.size(), Config.chunkDataCacheLimit);
             while (this.f_63519_.size() >= Config.chunkDataCacheSoftLimit * 0.75) { // using chunkDataCacheSoftLimit is intentional
                 writeResult0();
             }

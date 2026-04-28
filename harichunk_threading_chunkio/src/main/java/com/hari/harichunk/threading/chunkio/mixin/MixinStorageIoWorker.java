@@ -83,7 +83,7 @@ public abstract class MixinStorageIoWorker implements IAsyncChunkStorage {
                                 }
                             })
                             .exceptionally(throwable -> {
-                                LOGGER.warn("Failed to scan chunk {}", chunkPosx, throwable);
+                                f_63515_.warn("Failed to scan chunk {}", chunkPosx, throwable);
                                 return null;
                             });
                 }).toArray(CompletableFuture[]::new);
