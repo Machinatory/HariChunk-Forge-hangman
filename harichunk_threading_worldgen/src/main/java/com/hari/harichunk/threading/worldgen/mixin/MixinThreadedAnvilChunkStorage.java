@@ -68,7 +68,7 @@ public abstract class MixinThreadedAnvilChunkStorage {
         ThreadLocalWorldGenSchedulingState.clearChunkHolder();
     }
 
-    @Redirect(method = "scheduleChunkGeneration", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkMap;m_280541_(Lnet/minecraft/server/level/ChunkHolder;ILjava/util/function/IntFunction;)Ljava/util/concurrent/CompletableFuture;"))
+    @Redirect(method = "scheduleChunkGeneration", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkMap;m_280541_(Lnet/minecraft/server/level/ChunkHolder;ILjava/util/function/IntFunction;)Ljava/util/concurrent/CompletableFuture;", remap = false))
     private CompletableFuture<Either<List<ChunkAccess>, ChunkHolder.ChunkLoadingFailure>> redirectGetRegion(ChunkMap instance, ChunkHolder chunkHolder, int margin, IntFunction<ChunkStatus> distanceToStatus) {
         if (instance != (Object) this) throw new IllegalStateException();
         return chunkHolder.getOrScheduleFuture(distanceToStatus.apply(0), (ChunkMap) (Object) this)

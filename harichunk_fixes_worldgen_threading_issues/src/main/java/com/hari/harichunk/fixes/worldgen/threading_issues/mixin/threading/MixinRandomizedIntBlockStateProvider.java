@@ -14,7 +14,7 @@ public class MixinRandomizedIntBlockStateProvider {
 
     @Shadow(remap = false) @Nullable private IntegerProperty f_161558_; // property
 
-    @Redirect(method = "getState", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/levelgen/feature/stateproviders/RandomizedIntStateProvider;f_161558_:Lnet/minecraft/world/level/block/state/properties/IntegerProperty;", opcode = Opcodes.PUTFIELD))
+    @Redirect(method = "getState", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/levelgen/feature/stateproviders/RandomizedIntStateProvider;f_161558_:Lnet/minecraft/world/level/block/state/properties/IntegerProperty;", opcode = Opcodes.PUTFIELD, remap = false))
     private void redirectGetProperty(RandomizedIntStateProvider randomizedIntBlockStateProvider, IntegerProperty value) {
         if (this.f_161558_ != null) System.err.println("Detected different property settings in RandomizedIntBlockStateProvider! Expected " + this.f_161558_ + " but got " + value);
         synchronized (this) {

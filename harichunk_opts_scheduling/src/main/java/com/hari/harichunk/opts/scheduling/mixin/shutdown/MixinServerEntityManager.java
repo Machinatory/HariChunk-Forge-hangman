@@ -21,7 +21,7 @@ public abstract class MixinServerEntityManager<T> implements ITryFlushable {
 
     @Shadow(remap = false) protected abstract void m_157582_(); // processPendingLoads
 
-    @Shadow(remap = false) @Final private Long2ObjectMap<Visibility> f_90979_; // chunkVisibility
+    @Shadow(remap = false) @Final private Long2ObjectMap<Visibility> f_157497_; // chunkVisibility
 
     @Shadow(remap = false) protected abstract boolean m_157568_(long chunkPos); // processChunkUnload
 
@@ -34,7 +34,7 @@ public abstract class MixinServerEntityManager<T> implements ITryFlushable {
             this.f_157493_.flush(false);
             this.m_157582_();
             longSet.removeIf((pos) -> {
-                boolean bl = this.f_90979_.get(pos) == Visibility.HIDDEN;
+                boolean bl = this.f_157497_.get(pos) == Visibility.HIDDEN;
                 return bl ? this.m_157568_(pos) : this.m_157512_(pos, (entity) -> {
                 });
             });
