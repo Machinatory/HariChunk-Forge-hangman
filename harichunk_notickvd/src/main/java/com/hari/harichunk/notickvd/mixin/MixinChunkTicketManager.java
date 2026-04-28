@@ -26,8 +26,8 @@ public class MixinChunkTicketManager implements IChunkTicketManager {
 
     @Shadow private long ticketTickCounter;
     @Mutable
-    @Shadow @Final private TickingTracker tickingTicketsTracker;
-    @Shadow @Final private DistanceManager.PlayerTicketTracker playerTicketManager;
+    @Shadow(remap = false) @Final private TickingTracker f_183901_;  // tickingTicketsTracker
+    @Shadow(remap = false) @Final private DistanceManager.PlayerTicketTracker f_140764_;  // playerTicketManager
 
     @Unique
     private NoTickSystem noTickSystem;
@@ -38,7 +38,7 @@ public class MixinChunkTicketManager implements IChunkTicketManager {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
         this.noTickSystem = new NoTickSystem((DistanceManager) (Object) this);
-        this.tickingTicketsTracker = new NoOPTickingMap();
+        this.f_183901_ = new NoOPTickingMap();
     }
 
     @Inject(method = "addPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/DistanceManager$FixedPlayerDistanceChunkTracker;update(JIZ)V", ordinal = 0, shift = At.Shift.AFTER))
@@ -63,7 +63,7 @@ public class MixinChunkTicketManager implements IChunkTicketManager {
 
     @Inject(method = "runAllUpdates", at = @At("RETURN"))
     private void onTick(ChunkMap chunkStorage, CallbackInfoReturnable<Boolean> cir) {
-        if (this.tickingTicketsTracker instanceof NoOPTickingMap map) {
+        if (this.f_183901_ instanceof NoOPTickingMap map) {
             map.setTACS(chunkStorage);
         }
         this.noTickSystem.tickScheduler();
@@ -92,7 +92,7 @@ public class MixinChunkTicketManager implements IChunkTicketManager {
      */
     @Overwrite
     public void updateSimulationDistance(int i) {
-        this.playerTicketManager.updateViewDistance(i);
+        this.f_140764_.updateViewDistance(i);
     }
 
     /**

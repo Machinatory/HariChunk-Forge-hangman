@@ -23,18 +23,18 @@ public abstract class MixinStorageIoWorker implements IDirectStorage {
 
     @Shadow protected abstract <T> CompletableFuture<T> submitTask(Supplier<Either<T, Exception>> task);
 
-    @Shadow @Final private Map<ChunkPos, IOWorker.PendingStore> pendingWrites;
+    @Shadow(remap = false) @Final private Map<ChunkPos, IOWorker.PendingStore> f_63519_;  // pendingWrites
 
     @Shadow protected abstract void runStore(ChunkPos pos, IOWorker.PendingStore result);
 
-    @Shadow @Final private RegionFileStorage storage;
+    @Shadow(remap = false) @Final private RegionFileStorage f_63518_;  // storage
 
     @Override
     public CompletableFuture<Void> setRawChunkData(ChunkPos pos, byte[] data) {
         return this.submitTask(() -> {
-            IOWorker.PendingStore result = this.pendingWrites.get(pos);
+            IOWorker.PendingStore result = this.f_63519_.get(pos);
             try {
-                final RegionFile regionFile = ((IRegionBasedStorage) (Object) this.storage).invokeGetRegionFile(pos);
+                final RegionFile regionFile = ((IRegionBasedStorage) (Object) this.f_63518_).invokeGetRegionFile(pos);
                 try (final DataOutputStream out = regionFile.getChunkDataOutputStream(pos)) {
                     out.write(data);
                 }

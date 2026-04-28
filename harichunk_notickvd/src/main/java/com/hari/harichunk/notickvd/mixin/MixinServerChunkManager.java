@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(ServerChunkCache.class)
 public class MixinServerChunkManager {
 
-    @Shadow @Final private DistanceManager distanceManager;
+    @Shadow(remap = false) @Final private DistanceManager f_8327_;  // distanceManager
 
     @Redirect(method = "tickChunks", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkHolder;getTickingChunk()Lnet/minecraft/world/level/chunk/LevelChunk;"))
     private LevelChunk includeAccessibleChunks(ChunkHolder instance) {
@@ -29,7 +29,7 @@ public class MixinServerChunkManager {
 
     @WrapOperation(method = "tickChunks", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;getAllEntities()Ljava/lang/Iterable;"))
     private Iterable<Entity> redirectIterateEntities(ServerLevel serverWorld, Operation<Iterable<Entity>> op) {
-        final LongSet noTickOnlyChunks = ((IChunkTicketManager) this.distanceManager).getNoTickOnlyChunks();
+        final LongSet noTickOnlyChunks = ((IChunkTicketManager) this.f_8327_).getNoTickOnlyChunks();
         if (noTickOnlyChunks == null) return op.call(serverWorld);
         return new FilteringIterable<>(op.call(serverWorld), entity -> !noTickOnlyChunks.contains(entity.chunkPosition().toLong()));
     }

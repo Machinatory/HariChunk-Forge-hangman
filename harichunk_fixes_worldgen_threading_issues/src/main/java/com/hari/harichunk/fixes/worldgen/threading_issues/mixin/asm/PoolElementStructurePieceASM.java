@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(PoolElementStructurePiece.class)
 public class PoolElementStructurePieceASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    protected BlockPos position;
+    protected BlockPos f_72598_;  // position
 }

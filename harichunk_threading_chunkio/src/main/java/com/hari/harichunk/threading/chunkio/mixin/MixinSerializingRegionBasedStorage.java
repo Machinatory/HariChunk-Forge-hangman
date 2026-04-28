@@ -19,11 +19,11 @@ public abstract class MixinSerializingRegionBasedStorage implements ISerializing
     @Shadow
     protected abstract <T> void readColumn(ChunkPos pos, DynamicOps<T> dynamicOps, @Nullable T data);
 
-    @Shadow @Final private RegistryAccess registryAccess;
+    @Shadow(remap = false) @Final private RegistryAccess f_223507_;  // registryAccess
 
     @Override
     public void update(ChunkPos pos, CompoundTag tag) {
-        this.readColumn(pos, RegistryOps.create(NbtOps.INSTANCE, this.registryAccess), tag);
+        this.readColumn(pos, RegistryOps.create(NbtOps.INSTANCE, this.f_223507_), tag);
     }
 
 }

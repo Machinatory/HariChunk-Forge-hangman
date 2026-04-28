@@ -15,9 +15,9 @@ import net.minecraft.world.entity.ai.behavior.ShufflingList;
 @Mixin(ShufflingList.class)
 public class MixinWeightedList<U> implements IWeightedList<U> {
 
-    @Shadow @Final public List<ShufflingList.WeightedEntry<U>> entries;
+    @Shadow(remap = false) @Final public List<ShufflingList.WeightedEntry<U>> f_147917_;  // entries
 
-    @Shadow @Final private net.minecraft.util.RandomSource random;
+    @Shadow(remap = false) @Final private net.minecraft.util.RandomSource f_147918_;  // random
 
     /**
      * @author Hari
@@ -42,10 +42,10 @@ public class MixinWeightedList<U> implements IWeightedList<U> {
     @Override
     public ShufflingList<U> shuffleVanilla() {
         // TODO [VanillaCopy]
-        this.entries.forEach((entry) -> {
-            ((IWeightedListEntry) entry).invokeSetShuffledOrder(this.random.nextFloat());
+        this.f_147917_.forEach((entry) -> {
+            ((IWeightedListEntry) entry).invokeSetShuffledOrder(this.f_147918_.nextFloat());
         });
-        this.entries.sort(Comparator.comparingDouble(uEntry -> ((IWeightedListEntry) uEntry).invokeGetShuffledOrder()));
+        this.f_147917_.sort(Comparator.comparingDouble(uEntry -> ((IWeightedListEntry) uEntry).invokeGetShuffledOrder()));
         return (ShufflingList<U>) (Object) this;
     }
 }

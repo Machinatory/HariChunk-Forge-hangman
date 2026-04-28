@@ -15,13 +15,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PerlinNoise.class)
 public class MixinOctavePerlinNoiseSampler {
 
-    @Shadow @Final private double lowestFreqInputFactor;
+    @Shadow(remap = false) @Final private double f_75393_;  // lowestFreqInputFactor
 
-    @Shadow @Final private double lowestFreqValueFactor;
+    @Shadow(remap = false) @Final private double f_75392_;  // lowestFreqValueFactor
 
-    @Shadow @Final private ImprovedNoise[] noiseLevels;
+    @Shadow(remap = false) @Final private ImprovedNoise[] f_75390_;  // noiseLevels
 
-    @Shadow @Final private DoubleList amplitudes;
+    @Shadow(remap = false) @Final private DoubleList f_75391_;  // amplitudes
 
     @Unique
     private int octaveSamplersCount = 0;
@@ -31,8 +31,8 @@ public class MixinOctavePerlinNoiseSampler {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
-        this.octaveSamplersCount = this.noiseLevels.length;
-        this.amplitudesArray = this.amplitudes.toDoubleArray();
+        this.octaveSamplersCount = this.f_75390_.length;
+        this.amplitudesArray = this.f_75391_.toDoubleArray();
     }
 
     /**
@@ -51,11 +51,11 @@ public class MixinOctavePerlinNoiseSampler {
     @Overwrite
     public double getValue(double x, double y, double z) {
         double d = 0.0;
-        double e = this.lowestFreqInputFactor;
-        double f = this.lowestFreqValueFactor;
+        double e = this.f_75393_;
+        double f = this.f_75392_;
 
         for(int i = 0; i < this.octaveSamplersCount; ++i) {
-            ImprovedNoise perlinNoiseSampler = this.noiseLevels[i];
+            ImprovedNoise perlinNoiseSampler = this.f_75390_[i];
             if (perlinNoiseSampler != null) {
                 @SuppressWarnings("deprecation")
                 double g = perlinNoiseSampler.noise(

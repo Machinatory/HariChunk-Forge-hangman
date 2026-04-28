@@ -20,7 +20,7 @@ public abstract class MixinChunkHolder {
 
     @Shadow public abstract void broadcastChanges(LevelChunk chunk);
 
-    @Shadow @Final public static Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure> UNLOADED_CHUNK;
+    @Shadow(remap = false) @Final public static Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure> f_139995_;  // UNLOADED_CHUNK
 
 //    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Ljava/util/concurrent/atomic/AtomicReferenceArray;get(I)Ljava/lang/Object;"))
 //    private <E> E captureWorldGenCancellation(AtomicReferenceArray<E> instance, int i, ThreadedAnvilChunkStorage chunkStorage, Executor executor) {

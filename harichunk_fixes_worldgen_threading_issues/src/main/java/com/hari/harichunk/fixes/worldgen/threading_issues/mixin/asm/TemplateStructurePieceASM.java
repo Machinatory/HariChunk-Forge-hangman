@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(TemplateStructurePiece.class)
 public class TemplateStructurePieceASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    protected BlockPos templatePosition;
+    protected BlockPos f_73658_;  // templatePosition
 }

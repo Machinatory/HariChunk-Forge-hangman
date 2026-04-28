@@ -23,18 +23,18 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 @Mixin(WorldGenRegion.class)
 public class MixinChunkRegion {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private ChunkAccess center;
-    @Shadow
+    private ChunkAccess f_143479_;  // center
+    @Shadow(remap = false)
     @Final
-    private ChunkPos firstPos;
-    @Shadow
+    private ChunkPos f_9487_;  // firstPos
+    @Shadow(remap = false)
     @Final
-    private ChunkPos lastPos;
+    private ChunkPos f_9488_;  // lastPos
 
-    @Shadow @Final private static Logger LOGGER;
-    @Shadow @Final private ChunkStatus generatingStatus;
+    @Shadow(remap = false) @Final private static Logger f_9474_;  // LOGGER
+    @Shadow(remap = false) @Final private ChunkStatus f_143480_;  // generatingStatus
     private ChunkPos lowerReducedCorner = null;
     private ChunkPos upperReducedCorner = null;
 

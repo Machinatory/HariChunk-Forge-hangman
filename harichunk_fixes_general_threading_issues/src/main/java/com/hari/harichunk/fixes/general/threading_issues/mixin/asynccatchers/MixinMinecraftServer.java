@@ -13,11 +13,11 @@ import java.util.ConcurrentModificationException;
 @Mixin(MinecraftServer.class)
 public class MixinMinecraftServer {
 
-    @Shadow @Final private Thread serverThread;
+    @Shadow(remap = false) @Final private Thread f_129725_;  // serverThread
 
     @Inject(method = "saveAllChunks", at = @At("HEAD"))
     private void preventAsyncSave(CallbackInfoReturnable<Boolean> cir) {
-        if (Thread.currentThread() != this.serverThread) {
+        if (Thread.currentThread() != this.f_129725_) {
             final ConcurrentModificationException exception = new ConcurrentModificationException("Attempted to call MinecraftServer#save async");
             exception.printStackTrace();
             throw exception;
@@ -26,7 +26,7 @@ public class MixinMinecraftServer {
 
     @Inject(method = "saveEverything", at = @At("HEAD"))
     private void preventAsyncSaveAll(CallbackInfoReturnable<Boolean> cir) {
-        if (Thread.currentThread() != this.serverThread) {
+        if (Thread.currentThread() != this.f_129725_) {
             final ConcurrentModificationException exception = new ConcurrentModificationException("Attempted to call MinecraftServer#saveAll async");
             exception.printStackTrace();
             throw exception;

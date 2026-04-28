@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FixedBiomeSource.class)
 public class MixinFixedBiomeSource {
 
-    @Shadow @Final private Holder<Biome> biome;
+    @Shadow(remap = false) @Final private Holder<Biome> f_48252_;  // biome
 
     @Inject(method = "getNoiseBiome", at = @At("HEAD"), cancellable = true)
     private void onGetNoiseBiome(int x, int y, int z, Climate.Sampler sampler,

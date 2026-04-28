@@ -22,11 +22,11 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 @Mixin(ChunkMap.class)
 public abstract class MixinThreadedAnvilChunkStorage {
 
-    @Shadow @Final private BlockableEventLoop<Runnable> mainThreadExecutor;
+    @Shadow(remap = false) @Final private BlockableEventLoop<Runnable> f_140135_;  // mainThreadExecutor
 
     @Shadow public abstract CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> schedule(ChunkHolder holder, ChunkStatus requiredStatus);
 
-    @Shadow @Final private static Logger LOGGER;
+    @Shadow(remap = false) @Final private static Logger f_140128_;  // LOGGER
 
     @Redirect(method = "schedule", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkLevel;byStatus(Lnet/minecraft/world/level/chunk/ChunkStatus;)I"))
     private int redirectAddLightTicketDistance(ChunkStatus status) {
@@ -50,7 +50,7 @@ public abstract class MixinThreadedAnvilChunkStorage {
                     } else {
                         return CompletableFuture.completedFuture(either);
                     }
-                }, this.mainThreadExecutor).thenCompose(Function.identity());
+                }, this.f_140135_).thenCompose(Function.identity());
             } else {
                 return CompletableFuture.completedFuture(either);
             }

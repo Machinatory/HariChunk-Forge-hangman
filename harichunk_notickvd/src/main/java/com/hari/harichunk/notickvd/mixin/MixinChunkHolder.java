@@ -19,7 +19,7 @@ public abstract class MixinChunkHolder implements IChunkHolder {
 
     @Shadow public abstract CompletableFuture<Either<LevelChunk, ChunkHolder.ChunkLoadingFailure>> getFullChunkFuture();
 
-    @Shadow @Nullable public abstract LevelChunk getTickingChunk();
+    @Shadow(remap = false) @Nullable public abstract LevelChunk m_140085_();  // getTickingChunk
 
     @Shadow public abstract ChunkPos getPos();
 
@@ -30,7 +30,7 @@ public abstract class MixinChunkHolder implements IChunkHolder {
         return either == null ? null : either.left().orElseGet(this::getTickingChunk);
     }
 
-    @Redirect(method = {"blockChanged", "sectionLightChanged"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkHolder;getTickingChunk()Lnet/minecraft/world/level/chunk/LevelChunk;"), require = 2)
+    @Redirect(method = {"blockChanged", "sectionLightChanged"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkHolder;m_140085_()Lnet/minecraft/world/level/chunk/LevelChunk;"), require = 2)
     private LevelChunk redirectWorldChunk(ChunkHolder chunkHolder) {
         return this.getAccessibleChunk();
     }

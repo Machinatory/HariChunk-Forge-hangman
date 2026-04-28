@@ -13,11 +13,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinRegionBasedStorage {
 
     @Mutable
-    @Shadow @Final private boolean sync;
+    @Shadow(remap = false) @Final private boolean f_63701_;  // sync
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onPostInit(CallbackInfo info) {
-        this.sync = Boolean.parseBoolean(System.getProperty("com.hari.harichunk.chunkio.syncDiskWrites", "false"));
+        this.f_63701_ = Boolean.parseBoolean(System.getProperty("com.hari.harichunk.chunkio.syncDiskWrites", "false"));
     }
 
 }

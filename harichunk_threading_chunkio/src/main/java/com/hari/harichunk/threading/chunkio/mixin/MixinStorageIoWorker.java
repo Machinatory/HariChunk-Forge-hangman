@@ -36,7 +36,7 @@ public abstract class MixinStorageIoWorker implements IAsyncChunkStorage {
 
     @Shadow public abstract CompletableFuture<Void> scanChunk(ChunkPos pos, StreamTagVisitor scanner);
 
-    @Shadow @Final private static Logger LOGGER;
+    @Shadow(remap = false) @Final private static Logger f_63515_;  // LOGGER
     private ExecutorService threadExecutor;
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/Util;ioPool()Ljava/util/concurrent/ExecutorService;"))

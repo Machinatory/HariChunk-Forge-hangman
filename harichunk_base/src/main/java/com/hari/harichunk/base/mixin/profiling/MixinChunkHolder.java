@@ -26,11 +26,11 @@ public abstract class MixinChunkHolder {
 
     @Shadow public abstract ChunkPos getPos();
 
-    @Shadow @Final private LevelHeightAccessor levelHeightAccessor;
+    @Shadow(remap = false) @Final private LevelHeightAccessor f_142983_;  // levelHeightAccessor
 
     @Inject(method = "getOrScheduleFuture", at = @At("RETURN"))
     private void postGetChunkAt(ChunkStatus targetStatus, ChunkMap chunkStorage, CallbackInfoReturnable<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> cir) {
-        if (JvmProfiler.INSTANCE instanceof IVanillaJfrProfiler profiler && this.levelHeightAccessor instanceof ServerLevel serverWorld && !cir.getReturnValue().isDone()) {
+        if (JvmProfiler.INSTANCE instanceof IVanillaJfrProfiler profiler && this.f_142983_ instanceof ServerLevel serverWorld && !cir.getReturnValue().isDone()) {
             final ProfiledDuration finishable = profiler.startChunkLoadSchedule(this.getPos(), serverWorld.dimension(), targetStatus.toString());
             if (finishable != null) {
                 cir.getReturnValue().exceptionally(unused -> null).thenRun(finishable::finish);

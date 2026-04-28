@@ -16,12 +16,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LoggerChunkProgressListener.class)
 public class MixinWorldGenerationProgressLogger {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private static Logger LOGGER;
-    @Shadow
+    private static Logger f_9622_;  // LOGGER
+    @Shadow(remap = false)
     @Final
-    private int maxCount;
+    private int f_9623_;  // maxCount
     private volatile ChunkPos spawnPos = null;
     private volatile int radius = 0;
     private volatile int chunkStatusTransitions = 0;
@@ -55,7 +55,7 @@ public class MixinWorldGenerationProgressLogger {
     @Overwrite
     public int getProgress() {
         // LOGGER.info("{} / {}", chunkStatusTransitions, totalCount * chunkStatuses);
-        return Mth.floor((float) this.chunkStatusTransitions * 100.0F / (float) (this.maxCount * chunkStatuses));
+        return Mth.floor((float) this.chunkStatusTransitions * 100.0F / (float) (this.f_9623_ * chunkStatuses));
     }
 
 }

@@ -15,7 +15,7 @@ public abstract class MixinOffsetPredicate {
 
     @Shadow protected abstract boolean test(BlockState state);
 
-    @Shadow @Final protected Vec3i offset;
+    @Shadow(remap = false) @Final protected Vec3i f_190539_;  // offset
 
     /**
      * @author Hari
@@ -27,11 +27,11 @@ public abstract class MixinOffsetPredicate {
             int savedX = mutable.getX();
             int savedY = mutable.getY();
             int savedZ = mutable.getZ();
-            boolean res = this.test(worldGenLevel.getBlockState(mutable.set(savedX + this.offset.getX(), savedY + this.offset.getY(), savedZ + this.offset.getZ())));
+            boolean res = this.test(worldGenLevel.getBlockState(mutable.set(savedX + this.f_190539_.getX(), savedY + this.f_190539_.getY(), savedZ + this.f_190539_.getZ())));
             mutable.set(savedX, savedY, savedZ);
             return res;
         } else {
-            return this.test(worldGenLevel.getBlockState(blockPos.offset(this.offset)));
+            return this.test(worldGenLevel.getBlockState(blockPos.f_190539_(this.f_190539_)));
         }
     }
 

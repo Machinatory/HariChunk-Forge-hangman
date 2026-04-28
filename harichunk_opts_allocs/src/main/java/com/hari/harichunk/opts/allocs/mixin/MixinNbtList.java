@@ -22,7 +22,7 @@ public abstract class MixinNbtList extends CollectionTag<Tag> {
 
     @Shadow private byte type;
 
-    @Shadow @Final private List<Tag> list;
+    @Shadow(remap = false) @Final private List<Tag> f_128716_;  // list
 
     @Shadow protected abstract boolean updateType(Tag element);
 
@@ -32,8 +32,8 @@ public abstract class MixinNbtList extends CollectionTag<Tag> {
      */
     @Overwrite
     public ListTag copy() {
-        Iterable<Tag> iterable = TagTypes.getType(this.type).isValue() ? this.list : Iterables.transform(this.list, Tag::copy);
-        List<Tag> list = new ObjectArrayList<>(this.list.size());
+        Iterable<Tag> iterable = TagTypes.getType(this.type).isValue() ? this.f_128716_ : Iterables.transform(this.f_128716_, Tag::copy);
+        List<Tag> list = new ObjectArrayList<>(this.f_128716_.size());
         iterable.forEach(list::add);
         return new ListTag(list, this.type);
     }
@@ -51,7 +51,7 @@ public abstract class MixinNbtList extends CollectionTag<Tag> {
     @Override
     public boolean add(Tag element) {
         if (this.updateType(element)) {
-            this.list.add(element);
+            this.f_128716_.add(element);
             return true;
         } else {
             return false;

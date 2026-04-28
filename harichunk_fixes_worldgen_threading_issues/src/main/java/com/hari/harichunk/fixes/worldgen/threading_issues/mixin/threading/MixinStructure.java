@@ -16,19 +16,19 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 public class MixinStructure {
 
     @Mutable
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private List<StructureTemplate.Palette> palettes;
+    private List<StructureTemplate.Palette> f_74482_;  // palettes
 
     @Mutable
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private List<StructureTemplate.StructureEntityInfo> entityInfoList;
+    private List<StructureTemplate.StructureEntityInfo> f_74483_;  // entityInfoList
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
-        this.palettes = Collections.synchronizedList(palettes);
-        this.entityInfoList = Collections.synchronizedList(entityInfoList);
+        this.f_74482_ = Collections.synchronizedList(palettes);
+        this.f_74483_ = Collections.synchronizedList(entityInfoList);
     }
 
 }

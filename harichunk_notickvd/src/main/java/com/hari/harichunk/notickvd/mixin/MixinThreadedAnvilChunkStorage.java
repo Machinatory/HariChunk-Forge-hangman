@@ -37,7 +37,7 @@ public abstract class MixinThreadedAnvilChunkStorage {
 
     @Shadow public abstract List<ServerPlayer> getPlayers(ChunkPos chunkPos, boolean onlyOnWatchDistanceEdge);
 
-    @Shadow @Final private BlockableEventLoop<Runnable> mainThreadExecutor;
+    @Shadow(remap = false) @Final private BlockableEventLoop<Runnable> f_140135_;  // mainThreadExecutor
 
     @ModifyArg(method = "setViewDistance", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;clamp(III)I"), index = 2)
     private int modifyMaxVD(int max) {
@@ -56,7 +56,7 @@ public abstract class MixinThreadedAnvilChunkStorage {
             this.getPlayers(worldChunk.getPos(), false).forEach((serverPlayerEntity) -> {
                 if (NoTickChunkSendingInterceptor.onChunkSending(serverPlayerEntity, worldChunk.getPos().toLong())) {
                     if (Config.compatibilityMode) {
-                        this.mainThreadExecutor.tell(() -> this.playerLoadedChunk(serverPlayerEntity, mutableObject, worldChunk));
+                        this.f_140135_.tell(() -> this.playerLoadedChunk(serverPlayerEntity, mutableObject, worldChunk));
                     } else {
                         this.playerLoadedChunk(serverPlayerEntity, mutableObject, worldChunk);
                     }

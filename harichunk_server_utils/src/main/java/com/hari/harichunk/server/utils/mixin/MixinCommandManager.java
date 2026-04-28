@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(Commands.class)
 public class MixinCommandManager {
 
-    @Shadow @Final private CommandDispatcher<CommandSourceStack> dispatcher;
+    @Shadow(remap = false) @Final private CommandDispatcher<CommandSourceStack> f_82090_;  // dispatcher
 
 }

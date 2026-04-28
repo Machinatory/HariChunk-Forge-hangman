@@ -29,11 +29,11 @@ import org.admany.quantifiedadmanydagscheduler.AdmanyDagScheduler;
 @Mixin(ChunkMap.class)
 public abstract class MixinThreadedAnvilChunkStorage {
 
-    @Shadow
+    @Shadow(remap = false)
     @Nullable
-    protected abstract ChunkHolder getVisibleChunkIfPresent(long pos);
+    protected abstract ChunkHolder m_140327_(long pos);  // getVisibleChunkIfPresent
 
-    @Shadow @Final private BlockableEventLoop<Runnable> mainThreadExecutor;
+    @Shadow(remap = false) @Final private BlockableEventLoop<Runnable> f_140135_;  // mainThreadExecutor
 
     @Shadow private volatile Long2ObjectLinkedOpenHashMap<ChunkHolder> visibleChunkMap;
 
@@ -74,13 +74,13 @@ public abstract class MixinThreadedAnvilChunkStorage {
         return chunkHolder.getOrScheduleFuture(distanceToStatus.apply(0), (ChunkMap) (Object) this)
                 .thenComposeAsync(unused -> this.getChunkRangeFuture(chunkHolder, margin, distanceToStatus), r -> {
                     if (Config.asyncScheduling) {
-                        if (this.mainThreadExecutor.isSameThread()) {
+                        if (this.f_140135_.isSameThread()) {
                             AdmanyDagScheduler.submitAsync(r, "worldgen-range-future");
                         } else {
                             r.run();
                         }
                     } else {
-                        this.mainThreadExecutor.execute(r);
+                        this.f_140135_.execute(r);
                     }
                 });
     }

@@ -27,10 +27,10 @@ import net.minecraft.world.level.levelgen.structure.StructureCheck;
 public class MixinStructureChecker {
 
     @Mutable
-    @Shadow @Final private Long2ObjectMap<Object2IntMap<Structure>> loadedChunks;
+    @Shadow(remap = false) @Final private Long2ObjectMap<Object2IntMap<Structure>> f_197247_;  // loadedChunks
 
     @Mutable
-    @Shadow @Final private Map<Structure, Long2BooleanMap> featureChecks;
+    @Shadow(remap = false) @Final private Map<Structure, Long2BooleanMap> f_197248_;  // featureChecks
 
     @Unique
     private Object mapMutex = new Object();
@@ -38,8 +38,8 @@ public class MixinStructureChecker {
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void onInit(CallbackInfo info) {
         this.mapMutex = new Object();
-        this.loadedChunks = Long2ObjectMaps.synchronize(this.loadedChunks);
-        this.featureChecks = Object2ObjectMaps.synchronize(new Object2ObjectOpenHashMap<>(), this.mapMutex);
+        this.f_197247_ = Long2ObjectMaps.synchronize(this.f_197247_);
+        this.f_197248_ = Object2ObjectMaps.synchronize(new Object2ObjectOpenHashMap<>(), this.mapMutex);
     }
 
     @Redirect(method = "storeFullResults", at = @At(value = "INVOKE", target = "Ljava/util/Collection;forEach(Ljava/util/function/Consumer;)V"))

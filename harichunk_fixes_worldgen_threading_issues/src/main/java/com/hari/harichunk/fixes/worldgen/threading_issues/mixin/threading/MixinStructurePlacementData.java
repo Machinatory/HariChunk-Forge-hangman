@@ -17,11 +17,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 public class MixinStructurePlacementData {
 
     @Mutable
-    @Shadow @Final private List<StructureProcessor> processors;
+    @Shadow(remap = false) @Final private List<StructureProcessor> f_74370_;  // processors
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
-        this.processors = Collections.synchronizedList(processors);
+        this.f_74370_ = Collections.synchronizedList(processors);
     }
 
 }

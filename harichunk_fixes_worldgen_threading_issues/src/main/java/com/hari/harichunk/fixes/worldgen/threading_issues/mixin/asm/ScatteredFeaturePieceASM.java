@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(ScatteredFeaturePiece.class)
 public class ScatteredFeaturePieceASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    protected int heightPosition;
+    protected int f_72790_;  // heightPosition
 }

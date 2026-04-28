@@ -15,7 +15,7 @@ import net.minecraft.world.level.chunk.storage.SectionStorage;
 @Mixin(SectionStorage.class)
 public class MixinSerializingRegionBasedStorage {
 
-    @Shadow @Final protected LevelHeightAccessor levelHeightAccessor;
+    @Shadow(remap = false) @Final protected LevelHeightAccessor f_156618_;  // levelHeightAccessor
 
     @Redirect(method = "<init>", at = @At(value = "NEW", target = "net/minecraft/world/level/chunk/storage/IOWorker"))
     private IOWorker redirectStorageIoWorker(Path directory, boolean dsync, String name) {

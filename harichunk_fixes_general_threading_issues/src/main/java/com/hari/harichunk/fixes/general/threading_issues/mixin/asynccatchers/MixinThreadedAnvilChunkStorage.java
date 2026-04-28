@@ -14,11 +14,11 @@ import net.minecraft.util.thread.BlockableEventLoop;
 @Mixin(ChunkMap.class)
 public class MixinThreadedAnvilChunkStorage {
 
-    @Shadow @Final private BlockableEventLoop<Runnable> mainThreadExecutor;
+    @Shadow(remap = false) @Final private BlockableEventLoop<Runnable> f_140135_;  // mainThreadExecutor
 
     @Inject(method = "addEntity", at = @At("HEAD"))
     private void preventAsyncEntityLoad(CallbackInfo ci) {
-        if (!this.mainThreadExecutor.isSameThread()) {
+        if (!this.f_140135_.isSameThread()) {
             final ConcurrentModificationException e = new ConcurrentModificationException("Async entity load");
             e.printStackTrace();
             throw e;
@@ -27,7 +27,7 @@ public class MixinThreadedAnvilChunkStorage {
 
     @Inject(method = "removeEntity", at = @At("HEAD"))
     private void preventAsyncEntityUnload(CallbackInfo ci) {
-        if (!this.mainThreadExecutor.isSameThread()) {
+        if (!this.f_140135_.isSameThread()) {
             final ConcurrentModificationException e = new ConcurrentModificationException("Async entity unload");
             e.printStackTrace();
             throw e;

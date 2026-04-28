@@ -13,11 +13,11 @@ import net.minecraft.server.level.ServerChunkCache;
 @Mixin(ServerChunkCache.class)
 public class MixinServerChunkManager {
 
-    @Shadow @Final Thread mainThread;
+    @Shadow(remap = false) @Final Thread f_8330_;  // mainThread
 
     @Inject(method = "tick(Ljava/util/function/BooleanSupplier;Z)V", at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
-        if (Thread.currentThread() != this.mainThread) {
+        if (Thread.currentThread() != this.f_8330_) {
             final ConcurrentModificationException e = new ConcurrentModificationException("Async ticking server chunk manager");
             e.printStackTrace();
             throw e;

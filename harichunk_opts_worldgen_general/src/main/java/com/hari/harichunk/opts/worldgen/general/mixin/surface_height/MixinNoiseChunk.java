@@ -30,8 +30,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(NoiseChunk.class)
 public class MixinNoiseChunk {
 
-    @Shadow @Final private int firstNoiseX;
-    @Shadow @Final private int firstNoiseZ;
+    @Shadow(remap = false) @Final private int f_188723_;  // firstNoiseX
+    @Shadow(remap = false) @Final private int f_188724_;  // firstNoiseZ
     @Shadow @Final private Long2IntMap preliminarySurfaceLevelCache;
 
     @Inject(method = "<init>", at = @At("RETURN"))

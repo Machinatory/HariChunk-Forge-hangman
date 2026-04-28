@@ -19,9 +19,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 @Mixin(ConfiguredFeature.class)
 public class MixinConfiguredFeature<FC extends FeatureConfiguration, F extends Feature<FC>> {
 
-    @Shadow @Final public F feature;
+    @Shadow(remap = false) @Final public F f_65377_;  // feature
 
-    @Shadow @Final public FC config;
+    @Shadow(remap = false) @Final public FC f_65378_;  // config
 
     /**
      * @author Hari
@@ -33,8 +33,8 @@ public class MixinConfiguredFeature<FC extends FeatureConfiguration, F extends F
         final SimpleObjectPool<PooledFeatureContext<?>> pool = PooledFeatureContext.POOL.get();
         final PooledFeatureContext<FC> context = (PooledFeatureContext<FC>) pool.alloc();
         try {
-            context.reInit(Optional.empty(), world, chunkGenerator, random, origin, this.config);
-            return this.feature.place(context);
+            context.reInit(Optional.empty(), world, chunkGenerator, random, origin, this.f_65378_);
+            return this.f_65377_.place(context);
         } finally {
             context.reInit();
             pool.release(context);

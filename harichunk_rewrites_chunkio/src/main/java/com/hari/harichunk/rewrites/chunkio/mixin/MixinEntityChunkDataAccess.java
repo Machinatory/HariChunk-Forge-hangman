@@ -15,9 +15,9 @@ import net.minecraft.world.level.chunk.storage.IOWorker;
 @Mixin(EntityStorage.class)
 public class MixinEntityChunkDataAccess {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private ServerLevel level;
+    private ServerLevel f_156538_;  // level
 
     @Redirect(method = "<init>", at = @At(value = "NEW", target = "net/minecraft/world/level/chunk/storage/IOWorker"))
     private IOWorker redirectStorageIoWorker(Path directory, boolean dsync, String name) {

@@ -13,7 +13,7 @@ import java.util.List;
 @Mixin(CombiningPredicate.class)
 public class MixinCombinedBlockPredicate implements CombinedBlockPredicateExtension {
 
-    @Shadow @Final protected List<BlockPredicate> predicates;
+    @Shadow(remap = false) @Final protected List<BlockPredicate> f_190453_;  // predicates
 
     @Unique
     private BlockPredicate[] harichunk$predicatesArray;
@@ -22,7 +22,7 @@ public class MixinCombinedBlockPredicate implements CombinedBlockPredicateExtens
     public BlockPredicate[] harichunk$getPredicatesArray() {
         BlockPredicate[] predicateArray = this.harichunk$predicatesArray;
         if (predicateArray == null) {
-            this.harichunk$predicatesArray = predicateArray = this.predicates.toArray(BlockPredicate[]::new);
+            this.harichunk$predicatesArray = predicateArray = this.f_190453_.toArray(BlockPredicate[]::new);
         }
         return predicateArray;
     }

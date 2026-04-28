@@ -9,11 +9,11 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(SwampHutPiece.class)
 public class SwampHutPieceASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    private boolean spawnedWitch;
+    private boolean f_229949_;  // spawnedWitch
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    private boolean spawnedCat;
+    private boolean f_229950_;  // spawnedCat
 }

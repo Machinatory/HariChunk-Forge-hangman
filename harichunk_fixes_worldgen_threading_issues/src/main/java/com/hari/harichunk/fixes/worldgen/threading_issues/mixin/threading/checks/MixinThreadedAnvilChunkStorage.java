@@ -19,17 +19,17 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 @Mixin(ChunkMap.class)
 public class MixinThreadedAnvilChunkStorage {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private LongSet entitiesInLevel;
+    private LongSet f_140132_;  // entitiesInLevel
 
-    @Shadow @Final private static Logger LOGGER;
+    @Shadow(remap = false) @Final private static Logger f_140128_;  // LOGGER
 
     @Dynamic
     @Inject(method = "m_214854_", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/chunk/LevelChunk;runPostLoad()V"), cancellable = false)
     // lambda expression in convertToFullChunk
     private void afterLoadToWorld(ChunkHolder chunkHolder, ChunkAccess protoChunk, CallbackInfoReturnable<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> cir) {
-        if (this.entitiesInLevel.contains(chunkHolder.getPos().toLong()))
+        if (this.f_140132_.contains(chunkHolder.getPos().toLong()))
             LOGGER.error("Double scheduling chunk loading detected on chunk {}", chunkHolder.getPos());
     }
 

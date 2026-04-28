@@ -17,15 +17,15 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(TheEndBiomeSource.class)
 public abstract class MixinTheEndBiomeSource {
 
-    @Shadow @Final private Holder<Biome> highlands;
+    @Shadow(remap = false) @Final private Holder<Biome> f_48622_;  // highlands
 
-    @Shadow @Final private Holder<Biome> midlands;
+    @Shadow(remap = false) @Final private Holder<Biome> f_48623_;  // midlands
 
-    @Shadow @Final private Holder<Biome> islands;
+    @Shadow(remap = false) @Final private Holder<Biome> f_48624_;  // islands
 
-    @Shadow @Final private Holder<Biome> barrens;
+    @Shadow(remap = false) @Final private Holder<Biome> f_48625_;  // barrens
 
-    @Shadow @Final private Holder<Biome> end;
+    @Shadow(remap = false) @Final private Holder<Biome> f_48621_;  // end
 
     private Holder<Biome> getBiomeForNoiseGenVanilla(int x, int y, int z, Climate.Sampler noise) {
         // TODO [VanillaCopy]
@@ -35,17 +35,17 @@ public abstract class MixinTheEndBiomeSource {
         int l = SectionPos.blockToSectionCoord(i);
         int m = SectionPos.blockToSectionCoord(k);
         if ((long)l * (long)l + (long)m * (long)m <= 4096L) {
-            return this.end;
+            return this.f_48621_;
         } else {
             int n = (SectionPos.blockToSectionCoord(i) * 2 + 1) * 8;
             int o = (SectionPos.blockToSectionCoord(k) * 2 + 1) * 8;
             double d = noise.erosion().compute(new DensityFunction.SinglePointContext(n, j, o));
             if (d > 0.25D) {
-                return this.highlands;
+                return this.f_48622_;
             } else if (d >= -0.0625D) {
-                return this.midlands;
+                return this.f_48623_;
             } else {
-                return d < -0.21875D ? this.islands : this.barrens;
+                return d < -0.21875D ? this.f_48624_ : this.f_48625_;
             }
         }
     }

@@ -26,7 +26,7 @@ import net.minecraft.world.level.lighting.LevelLightEngine;
 @Mixin(ChunkSerializer.class)
 public class MixinChunkSerializer {
 
-    @Shadow @Final private static Logger LOGGER;
+    @Shadow(remap = false) @Final private static Logger f_63449_;  // LOGGER
 
     @Redirect(method = "read", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/village/poi/PoiManager;checkConsistencyWithBlocks(Lnet/minecraft/core/SectionPos;Lnet/minecraft/world/level/chunk/LevelChunkSection;)V"))
     private static void onPoiStorageInitForPalette(PoiManager instance, SectionPos chunkSectionPos, LevelChunkSection chunkSection) {

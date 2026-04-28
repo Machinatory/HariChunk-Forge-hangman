@@ -21,26 +21,26 @@ import net.minecraft.world.level.chunk.storage.RegionFileStorage;
 public class MixinStorageIoWorker {
 
     @Mutable
-    @Shadow @Final private Map<ChunkPos, IOWorker.PendingStore> pendingWrites;
+    @Shadow(remap = false) @Final private Map<ChunkPos, IOWorker.PendingStore> f_63519_;  // pendingWrites
 
     @Mutable
-    @Shadow @Final private RegionFileStorage storage;
+    @Shadow(remap = false) @Final private RegionFileStorage f_63518_;  // storage
 
     @Mutable
-    @Shadow @Final private AtomicBoolean shutdownRequested;
+    @Shadow(remap = false) @Final private AtomicBoolean f_63516_;  // shutdownRequested
 
     @Mutable
-    @Shadow @Final private ProcessorMailbox<StrictQueue.IntRunnable> mailbox;
+    @Shadow(remap = false) @Final private ProcessorMailbox<StrictQueue.IntRunnable> f_63517_;  // mailbox
 
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
         if ((Object) this instanceof HariChunkStorageVanillaInterface) {
             // fail-fast incompatibility
-            this.pendingWrites = null;
-            this.storage = null;
-            this.shutdownRequested = null;
-            this.mailbox = null;
+            this.f_63519_ = null;
+            this.f_63518_ = null;
+            this.f_63516_ = null;
+            this.f_63517_ = null;
         }
     }
 

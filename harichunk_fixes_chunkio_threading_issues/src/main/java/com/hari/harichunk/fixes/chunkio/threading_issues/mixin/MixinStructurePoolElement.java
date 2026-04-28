@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinStructurePoolElement {
 
     @Mutable
-    @Shadow @Final public static Codec<StructurePoolElement> CODEC;
+    @Shadow(remap = false) @Final public static Codec<StructurePoolElement> f_210468_;  // CODEC
 
     @Dynamic
     @Inject(method = "<clinit>", at = @At("RETURN"))
