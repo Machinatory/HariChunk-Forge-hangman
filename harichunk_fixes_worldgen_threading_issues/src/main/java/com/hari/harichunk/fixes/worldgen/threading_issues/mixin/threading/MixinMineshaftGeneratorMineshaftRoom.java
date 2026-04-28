@@ -17,11 +17,11 @@ import net.minecraft.world.level.levelgen.structure.structures.MineshaftPieces;
 public class MixinMineshaftGeneratorMineshaftRoom {
 
     @Mutable
-    @Shadow @Final private List<BoundingBox> childEntranceBoxes;
+    @Shadow(remap = false) @Final private List<BoundingBox> f_227900_;  // childEntranceBoxes
 
     @Inject(method = "<init>*", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        this.childEntranceBoxes = Collections.synchronizedList(this.childEntranceBoxes);
+        this.f_227900_ = Collections.synchronizedList(this.f_227900_);
     }
 
 }

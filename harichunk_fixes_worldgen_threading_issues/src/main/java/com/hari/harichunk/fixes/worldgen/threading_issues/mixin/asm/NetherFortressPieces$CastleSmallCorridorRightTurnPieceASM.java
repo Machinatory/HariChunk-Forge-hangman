@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(NetherFortressPieces.CastleSmallCorridorRightTurnPiece.class)
 public class NetherFortressPieces$CastleSmallCorridorRightTurnPieceASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    private boolean isNeedingChest;
+    private boolean f_228292_;  // isNeedingChest
 }

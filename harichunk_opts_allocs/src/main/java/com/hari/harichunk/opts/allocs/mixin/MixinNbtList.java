@@ -20,11 +20,11 @@ import net.minecraft.nbt.TagTypes;
 @Mixin(ListTag.class)
 public abstract class MixinNbtList extends CollectionTag<Tag> {
 
-    @Shadow private byte type;
+    @Shadow(remap = false) private byte f_128717_;  // type
 
     @Shadow(remap = false) @Final private List<Tag> f_128716_;  // list
 
-    @Shadow protected abstract boolean updateType(Tag element);
+    @Shadow(remap = false) protected abstract boolean m_128738_(Tag element);  // updateType
 
     /**
      * @author Hari
@@ -32,10 +32,10 @@ public abstract class MixinNbtList extends CollectionTag<Tag> {
      */
     @Overwrite
     public ListTag copy() {
-        Iterable<Tag> iterable = TagTypes.getType(this.type).isValue() ? this.f_128716_ : Iterables.transform(this.f_128716_, Tag::copy);
+        Iterable<Tag> iterable = TagTypes.getType(this.f_128717_).isValue() ? this.f_128716_ : Iterables.transform(this.f_128716_, Tag::copy);
         List<Tag> list = new ObjectArrayList<>(this.f_128716_.size());
         iterable.forEach(list::add);
-        return new ListTag(list, this.type);
+        return new ListTag(list, this.f_128717_);
     }
 
     @ModifyArg(method = "<init>()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/ListTag;<init>(Ljava/util/List;B)V"), index = 0)
@@ -50,7 +50,7 @@ public abstract class MixinNbtList extends CollectionTag<Tag> {
 
     @Override
     public boolean add(Tag element) {
-        if (this.updateType(element)) {
+        if (this.m_128738_(element)) {
             this.f_128716_.add(element);
             return true;
         } else {

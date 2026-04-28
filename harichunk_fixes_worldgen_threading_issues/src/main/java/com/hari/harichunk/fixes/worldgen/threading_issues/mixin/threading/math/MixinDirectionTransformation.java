@@ -11,11 +11,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(OctahedralGroup.class)
 public abstract class MixinDirectionTransformation {
 
-    @Shadow public abstract Direction rotate(Direction direction);
+    @Shadow(remap = false) public abstract Direction m_56528_(Direction direction);  // rotate
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        rotate(Direction.UP); // force load mapping to prevent further issues
+        m_56528_(Direction.UP); // force load mapping to prevent further issues
     }
 
 }

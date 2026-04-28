@@ -18,11 +18,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 public class MixinStructurePalettedBlockInfoList {
 
     @Mutable
-    @Shadow @Final private Map<Block, List<StructureTemplate.StructureBlockInfo>> cache;
+    @Shadow(remap = false) @Final private Map<Block, List<StructureTemplate.StructureBlockInfo>> f_74646_;  // cache
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        this.cache = Collections.synchronizedMap(cache);
+        this.f_74646_ = Collections.synchronizedMap(cache);
     }
 
 }

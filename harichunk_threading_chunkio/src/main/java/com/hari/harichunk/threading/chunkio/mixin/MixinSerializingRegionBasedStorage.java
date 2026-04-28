@@ -16,14 +16,14 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(SectionStorage.class)
 public abstract class MixinSerializingRegionBasedStorage implements ISerializingRegionBasedStorage {
 
-    @Shadow
-    protected abstract <T> void readColumn(ChunkPos pos, DynamicOps<T> dynamicOps, @Nullable T data);
+    @Shadow(remap = false)
+    protected abstract <T> void m_63801_(ChunkPos pos, DynamicOps<T> dynamicOps, @Nullable T data);  // readColumn
 
     @Shadow(remap = false) @Final private RegistryAccess f_223507_;  // registryAccess
 
     @Override
     public void update(ChunkPos pos, CompoundTag tag) {
-        this.readColumn(pos, RegistryOps.create(NbtOps.INSTANCE, this.f_223507_), tag);
+        this.m_63801_(pos, RegistryOps.create(NbtOps.INSTANCE, this.f_223507_), tag);
     }
 
 }

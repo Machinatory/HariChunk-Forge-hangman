@@ -30,11 +30,11 @@ import net.minecraft.world.level.chunk.storage.IOWorker;
 @Mixin(IOWorker.class)
 public abstract class MixinStorageIoWorker implements IAsyncChunkStorage {
 
-    @Shadow public abstract CompletableFuture<Optional<CompoundTag>> loadAsync(ChunkPos pos);
+    @Shadow(remap = false) public abstract CompletableFuture<Optional<CompoundTag>> m_156587_(ChunkPos pos);  // loadAsync
 
-    @Shadow protected abstract boolean isOldChunk(CompoundTag nbt);
+    @Shadow(remap = false) protected abstract boolean m_223484_(CompoundTag nbt);  // isOldChunk
 
-    @Shadow public abstract CompletableFuture<Void> scanChunk(ChunkPos pos, StreamTagVisitor scanner);
+    @Shadow(remap = false) public abstract CompletableFuture<Void> m_196358_(ChunkPos pos, StreamTagVisitor scanner);  // scanChunk
 
     @Shadow(remap = false) @Final private static Logger f_63515_;  // LOGGER
     private ExecutorService threadExecutor;
@@ -46,7 +46,7 @@ public abstract class MixinStorageIoWorker implements IAsyncChunkStorage {
 
     @Override
     public CompletableFuture<Optional<CompoundTag>> getNbtAtAsync(ChunkPos pos) {
-        return loadAsync(pos);
+        return m_156587_(pos);
     }
 
     @Inject(method = "close", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/thread/ProcessorMailbox;close()V", shift = At.Shift.AFTER))
@@ -70,11 +70,11 @@ public abstract class MixinStorageIoWorker implements IAsyncChunkStorage {
                 .map(chunkPosx -> {
                     CollectFields selectiveNbtCollector = new CollectFields(new FieldSelector(IntTag.TYPE, "DataVersion"), new FieldSelector(CompoundTag.TYPE, "blending_data"));
 
-                    return this.scanChunk(chunkPosx, selectiveNbtCollector)
+                    return this.m_196358_(chunkPosx, selectiveNbtCollector)
                             .thenRun(() -> {
                                 Tag nbtElement = selectiveNbtCollector.getResult();
                                 if (nbtElement instanceof CompoundTag nbtCompound) {
-                                    if (this.isOldChunk(nbtCompound)) {
+                                    if (this.m_223484_(nbtCompound)) {
                                         int i = chunkPosx.getRegionLocalZ() * 32 + chunkPosx.getRegionLocalX();
                                         synchronized (bitSet) {
                                             bitSet.set(i);

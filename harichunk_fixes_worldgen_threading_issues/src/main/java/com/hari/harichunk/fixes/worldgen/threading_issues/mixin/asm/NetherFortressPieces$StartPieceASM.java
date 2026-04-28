@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(NetherFortressPieces.StartPiece.class)
 public class NetherFortressPieces$StartPieceASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    public NetherFortressPieces.PieceWeight previousPiece;
+    public NetherFortressPieces.PieceWeight f_229797_;  // previousPiece
 }

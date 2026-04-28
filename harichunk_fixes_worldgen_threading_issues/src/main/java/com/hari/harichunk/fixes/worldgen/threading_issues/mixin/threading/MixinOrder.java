@@ -17,12 +17,12 @@ import net.minecraft.world.entity.ai.behavior.ShufflingList;
 public class MixinOrder {
 
     @Mutable
-    @Shadow @Final private Consumer<ShufflingList<?>> consumer;
+    @Shadow(remap = false) @Final private Consumer<ShufflingList<?>> f_22924_;  // consumer
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(String enumName, int ordinal, Consumer<ShufflingList<?>> listModifier, CallbackInfo ci) {
         if (enumName.equals("field_18349") || enumName.equals("SHUFFLED"))
-            this.consumer = obj -> ((IWeightedList<?>) obj).shuffleVanilla();
+            this.f_22924_ = obj -> ((IWeightedList<?>) obj).shuffleVanilla();
     }
 
 }

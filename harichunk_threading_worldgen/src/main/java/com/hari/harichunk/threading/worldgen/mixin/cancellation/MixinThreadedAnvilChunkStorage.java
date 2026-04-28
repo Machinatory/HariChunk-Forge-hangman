@@ -24,7 +24,7 @@ public abstract class MixinThreadedAnvilChunkStorage {
 
     @Shadow(remap = false) @Final private BlockableEventLoop<Runnable> f_140135_;  // mainThreadExecutor
 
-    @Shadow public abstract CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> schedule(ChunkHolder holder, ChunkStatus requiredStatus);
+    @Shadow(remap = false) public abstract CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> m_140292_(ChunkHolder holder, ChunkStatus requiredStatus);  // schedule
 
     @Shadow(remap = false) @Final private static Logger f_140128_;  // LOGGER
 
@@ -46,7 +46,7 @@ public abstract class MixinThreadedAnvilChunkStorage {
                 return CompletableFuture.supplyAsync(() -> {
                     if (ChunkLevel.generationStatus(holder.getTicketLevel()).isOrAfter(requiredStatus)) {
 //                        LOGGER.info("Chunk load {} raced, recovering", holder.getPos());
-                        return this.schedule(holder, requiredStatus); // recover from cancellation
+                        return this.m_140292_(holder, requiredStatus); // recover from cancellation
                     } else {
                         return CompletableFuture.completedFuture(either);
                     }

@@ -9,15 +9,15 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(OceanMonumentPieces.RoomDefinition.class)
 public class OceanMonumentPieces$RoomDefinitionASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    boolean claimed;
+    boolean f_228939_;  // claimed
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    boolean isSource;
+    boolean f_228940_;  // isSource
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    private int scanIndex;
+    private int f_228941_;  // scanIndex
 }

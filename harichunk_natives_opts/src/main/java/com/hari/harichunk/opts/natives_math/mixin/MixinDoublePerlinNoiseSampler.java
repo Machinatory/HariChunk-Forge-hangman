@@ -17,8 +17,8 @@ public class MixinDoublePerlinNoiseSampler implements INativePointer {
     @Unique
     private long harichunk$nativePtr = 0;
 
-    @Shadow @Final private double lowestFreqInputFactor;
-    @Shadow @Final private double lowestFreqValueFactor;
+    @Shadow(remap = false) @Final private double f_75393_;  // lowestFreqInputFactor
+    @Shadow(remap = false) @Final private double f_75392_;  // lowestFreqValueFactor
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {

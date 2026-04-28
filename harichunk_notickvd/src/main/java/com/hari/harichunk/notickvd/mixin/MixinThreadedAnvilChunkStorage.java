@@ -33,9 +33,9 @@ import net.minecraft.world.level.chunk.LevelChunk;
 @Mixin(ChunkMap.class)
 public abstract class MixinThreadedAnvilChunkStorage {
 
-    @Shadow protected abstract void playerLoadedChunk(ServerPlayer player, MutableObject<ClientboundLevelChunkWithLightPacket> mutableObject, LevelChunk chunk);
+    @Shadow(remap = false) protected abstract void m_183760_(ServerPlayer player, MutableObject<ClientboundLevelChunkWithLightPacket> mutableObject, LevelChunk chunk);  // playerLoadedChunk
 
-    @Shadow public abstract List<ServerPlayer> getPlayers(ChunkPos chunkPos, boolean onlyOnWatchDistanceEdge);
+    @Shadow(remap = false) public abstract List<ServerPlayer> m_183262_(ChunkPos chunkPos, boolean onlyOnWatchDistanceEdge);  // getPlayers
 
     @Shadow(remap = false) @Final private BlockableEventLoop<Runnable> f_140135_;  // mainThreadExecutor
 
@@ -53,12 +53,12 @@ public abstract class MixinThreadedAnvilChunkStorage {
     private void onMakeChunkAccessible(ChunkHolder chunkHolder, CallbackInfoReturnable<CompletableFuture<Either<LevelChunk, ChunkHolder.ChunkLoadingFailure>>> cir) {
         cir.getReturnValue().thenAccept(either -> either.left().ifPresent(worldChunk -> {
             MutableObject<ClientboundLevelChunkWithLightPacket> mutableObject = new MutableObject<>();
-            this.getPlayers(worldChunk.getPos(), false).forEach((serverPlayerEntity) -> {
+            this.m_183262_(worldChunk.getPos(), false).forEach((serverPlayerEntity) -> {
                 if (NoTickChunkSendingInterceptor.onChunkSending(serverPlayerEntity, worldChunk.getPos().toLong())) {
                     if (Config.compatibilityMode) {
-                        this.f_140135_.tell(() -> this.playerLoadedChunk(serverPlayerEntity, mutableObject, worldChunk));
+                        this.f_140135_.tell(() -> this.m_183760_(serverPlayerEntity, mutableObject, worldChunk));
                     } else {
-                        this.playerLoadedChunk(serverPlayerEntity, mutableObject, worldChunk);
+                        this.m_183760_(serverPlayerEntity, mutableObject, worldChunk);
                     }
                 }
             });
@@ -74,7 +74,7 @@ public abstract class MixinThreadedAnvilChunkStorage {
     @Overwrite(remap = false)
     private void m_214908_(MutableObject<ClientboundLevelChunkWithLightPacket> mutableObject, LevelChunk worldChunk, ServerPlayer player) {
         if (Config.ensureChunkCorrectness && NoTickChunkSendingInterceptor.onChunkSending(player, worldChunk.getPos().toLong()))
-            this.playerLoadedChunk(player, mutableObject, worldChunk);
+            this.m_183760_(player, mutableObject, worldChunk);
     }
 
     // private static synthetic method_20582(Lnet/minecraft/world/chunk/Chunk;)Z

@@ -9,11 +9,11 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(OceanMonumentPieces.MonumentBuilding.class)
 public class OceanMonumentPieces$MonumentBuildingASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    private OceanMonumentPieces.RoomDefinition sourceRoom;
+    private OceanMonumentPieces.RoomDefinition f_228643_;  // sourceRoom
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    private OceanMonumentPieces.RoomDefinition coreRoom;
+    private OceanMonumentPieces.RoomDefinition f_228644_;  // coreRoom
 }

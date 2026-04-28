@@ -19,7 +19,7 @@ public abstract class MixinMarker implements IFastCacheLike, IEqualityOverriding
     @Mutable
     @Shadow(remap = false) @Final private DensityFunction f_208706_; // wrapped
 
-    @Shadow public abstract DensityFunctions.Marker.Type type();
+    @Shadow(remap = false) public abstract DensityFunctions.Marker.Type f_208705_();  // type
 
     @Unique
     private Object harichunk$optionalEquality;
@@ -51,7 +51,7 @@ public abstract class MixinMarker implements IFastCacheLike, IEqualityOverriding
 
     @Override
     public DensityFunction harichunk$withDelegate(DensityFunction delegate) {
-        DensityFunctions.Marker marker = new DensityFunctions.Marker(this.type(), delegate);
+        DensityFunctions.Marker marker = new DensityFunctions.Marker(this.f_208705_(), delegate);
         ((IEqualityOverriding) (Object) marker).harichunk$overrideEquality(this);
         return marker;
     }

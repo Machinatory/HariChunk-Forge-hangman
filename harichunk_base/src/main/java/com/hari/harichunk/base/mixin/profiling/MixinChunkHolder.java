@@ -24,14 +24,14 @@ import java.util.concurrent.CompletableFuture;
 public abstract class MixinChunkHolder {
 
 
-    @Shadow public abstract ChunkPos getPos();
+    @Shadow(remap = false) public abstract ChunkPos m_140092_();  // getPos
 
     @Shadow(remap = false) @Final private LevelHeightAccessor f_142983_;  // levelHeightAccessor
 
     @Inject(method = "getOrScheduleFuture", at = @At("RETURN"))
     private void postGetChunkAt(ChunkStatus targetStatus, ChunkMap chunkStorage, CallbackInfoReturnable<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> cir) {
         if (JvmProfiler.INSTANCE instanceof IVanillaJfrProfiler profiler && this.f_142983_ instanceof ServerLevel serverWorld && !cir.getReturnValue().isDone()) {
-            final ProfiledDuration finishable = profiler.startChunkLoadSchedule(this.getPos(), serverWorld.dimension(), targetStatus.toString());
+            final ProfiledDuration finishable = profiler.startChunkLoadSchedule(this.m_140092_(), serverWorld.dimension(), targetStatus.toString());
             if (finishable != null) {
                 cir.getReturnValue().exceptionally(unused -> null).thenRun(finishable::finish);
             }

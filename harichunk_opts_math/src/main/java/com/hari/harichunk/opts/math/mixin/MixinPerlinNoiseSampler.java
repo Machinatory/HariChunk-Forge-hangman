@@ -10,13 +10,13 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(value = ImprovedNoise.class, priority = 1090)
 public abstract class MixinPerlinNoiseSampler {
 
-    @Shadow @Final public double yo;
+    @Shadow(remap = false) @Final public double f_75322_;  // yo
 
-    @Shadow @Final public double xo;
+    @Shadow(remap = false) @Final public double f_75321_;  // xo
 
-    @Shadow @Final public double zo;
+    @Shadow(remap = false) @Final public double f_75323_;  // zo
 
-    @Shadow @Final private byte[] p;
+    @Shadow(remap = false) @Final private byte[] f_75324_;  // p
 
     @Unique
     private static final double[] FLAT_SIMPLEX_GRAD = new double[]{
@@ -45,9 +45,9 @@ public abstract class MixinPerlinNoiseSampler {
     @Deprecated
     @Overwrite
     public double noise(double x, double y, double z, double yScale, double yMax) {
-        double d = x + this.xo;
-        double e = y + this.yo;
-        double f = z + this.zo;
+        double d = x + this.f_75321_;
+        double e = y + this.f_75322_;
+        double f = z + this.f_75323_;
         double i = Math.floor(d);
         double j = Math.floor(e);
         double k = Math.floor(f);
@@ -78,16 +78,16 @@ public abstract class MixinPerlinNoiseSampler {
         // TODO [VanillaCopy] but optimized
         final int var0 = sectionX & 0xFF;
         final int var1 = (sectionX + 1) & 0xFF;
-        final int var2 = this.p[var0] & 0xFF;
-        final int var3 = this.p[var1] & 0xFF;
+        final int var2 = this.f_75324_[var0] & 0xFF;
+        final int var3 = this.f_75324_[var1] & 0xFF;
         final int var4 = (var2 + sectionY) & 0xFF;
         final int var5 = (var3 + sectionY) & 0xFF;
         final int var6 = (var2 + sectionY + 1) & 0xFF;
         final int var7 = (var3 + sectionY + 1) & 0xFF;
-        final int var8 = this.p[var4] & 0xFF;
-        final int var9 = this.p[var5] & 0xFF;
-        final int var10 = this.p[var6] & 0xFF;
-        final int var11 = this.p[var7] & 0xFF;
+        final int var8 = this.f_75324_[var4] & 0xFF;
+        final int var9 = this.f_75324_[var5] & 0xFF;
+        final int var10 = this.f_75324_[var6] & 0xFF;
+        final int var11 = this.f_75324_[var7] & 0xFF;
 
         final int var12 = (var8 + sectionZ) & 0xFF;
         final int var13 = (var9 + sectionZ) & 0xFF;
@@ -97,14 +97,14 @@ public abstract class MixinPerlinNoiseSampler {
         final int var17 = (var9 + sectionZ + 1) & 0xFF;
         final int var18 = (var10 + sectionZ + 1) & 0xFF;
         final int var19 = (var11 + sectionZ + 1) & 0xFF;
-        final int var20 = (this.p[var12] & 15) << 2;
-        final int var21 = (this.p[var13] & 15) << 2;
-        final int var22 = (this.p[var14] & 15) << 2;
-        final int var23 = (this.p[var15] & 15) << 2;
-        final int var24 = (this.p[var16] & 15) << 2;
-        final int var25 = (this.p[var17] & 15) << 2;
-        final int var26 = (this.p[var18] & 15) << 2;
-        final int var27 = (this.p[var19] & 15) << 2;
+        final int var20 = (this.f_75324_[var12] & 15) << 2;
+        final int var21 = (this.f_75324_[var13] & 15) << 2;
+        final int var22 = (this.f_75324_[var14] & 15) << 2;
+        final int var23 = (this.f_75324_[var15] & 15) << 2;
+        final int var24 = (this.f_75324_[var16] & 15) << 2;
+        final int var25 = (this.f_75324_[var17] & 15) << 2;
+        final int var26 = (this.f_75324_[var18] & 15) << 2;
+        final int var27 = (this.f_75324_[var19] & 15) << 2;
         final double var60 = localX - 1.0;
         final double var61 = localY - 1.0;
         final double var62 = localZ - 1.0;

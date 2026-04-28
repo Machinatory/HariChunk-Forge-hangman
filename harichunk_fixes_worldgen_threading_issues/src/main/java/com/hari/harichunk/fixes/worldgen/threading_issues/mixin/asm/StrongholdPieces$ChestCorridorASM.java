@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(StrongholdPieces.ChestCorridor.class)
 public class StrongholdPieces$ChestCorridorASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    private boolean hasPlacedChest;
+    private boolean f_229463_;  // hasPlacedChest
 }

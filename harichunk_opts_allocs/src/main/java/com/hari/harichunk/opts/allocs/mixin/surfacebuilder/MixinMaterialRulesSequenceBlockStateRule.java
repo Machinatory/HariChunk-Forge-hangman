@@ -17,13 +17,13 @@ import net.minecraft.world.level.levelgen.SurfaceRules;
 @Mixin(SurfaceRules.SequenceRule.class)
 public class MixinMaterialRulesSequenceBlockStateRule {
 
-    @Shadow @Final private List<SurfaceRules.SurfaceRule> rules;
+    @Shadow(remap = false) @Final private List<SurfaceRules.SurfaceRule> f_189685_;  // rules
     @Unique
     private SurfaceRules.SurfaceRule[] rulesArray;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
-        this.rulesArray = this.rules.toArray(SurfaceRules.SurfaceRule[]::new);
+        this.rulesArray = this.f_189685_.toArray(SurfaceRules.SurfaceRule[]::new);
     }
 
     /**

@@ -21,17 +21,17 @@ import java.util.function.Supplier;
 public abstract class MixinStorageIoWorker implements IDirectStorage {
 
 
-    @Shadow protected abstract <T> CompletableFuture<T> submitTask(Supplier<Either<T, Exception>> task);
+    @Shadow(remap = false) protected abstract <T> CompletableFuture<T> m_63545_(Supplier<Either<T, Exception>> task);  // submitTask
 
     @Shadow(remap = false) @Final private Map<ChunkPos, IOWorker.PendingStore> f_63519_;  // pendingWrites
 
-    @Shadow protected abstract void runStore(ChunkPos pos, IOWorker.PendingStore result);
+    @Shadow(remap = false) protected abstract void m_63535_(ChunkPos pos, IOWorker.PendingStore result);  // runStore
 
     @Shadow(remap = false) @Final private RegionFileStorage f_63518_;  // storage
 
     @Override
     public CompletableFuture<Void> setRawChunkData(ChunkPos pos, byte[] data) {
-        return this.submitTask(() -> {
+        return this.m_63545_(() -> {
             IOWorker.PendingStore result = this.f_63519_.get(pos);
             try {
                 final RegionFile regionFile = ((IRegionBasedStorage) (Object) this.f_63518_).invokeGetRegionFile(pos);

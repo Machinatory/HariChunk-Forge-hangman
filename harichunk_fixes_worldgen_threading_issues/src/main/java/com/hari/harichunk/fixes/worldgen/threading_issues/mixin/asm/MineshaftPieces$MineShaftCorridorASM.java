@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(MineshaftPieces.MineShaftCorridor.class)
 public class MineshaftPieces$MineShaftCorridorASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    private boolean hasPlacedSpider;
+    private boolean f_227728_;  // hasPlacedSpider
 }

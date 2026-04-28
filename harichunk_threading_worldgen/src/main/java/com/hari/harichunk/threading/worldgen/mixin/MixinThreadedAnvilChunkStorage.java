@@ -35,9 +35,9 @@ public abstract class MixinThreadedAnvilChunkStorage {
 
     @Shadow(remap = false) @Final private BlockableEventLoop<Runnable> f_140135_;  // mainThreadExecutor
 
-    @Shadow private volatile Long2ObjectLinkedOpenHashMap<ChunkHolder> visibleChunkMap;
+    @Shadow(remap = false) private volatile Long2ObjectLinkedOpenHashMap<ChunkHolder> f_140130_;  // visibleChunkMap
 
-    @Shadow protected abstract CompletableFuture<Either<List<ChunkAccess>, ChunkHolder.ChunkLoadingFailure>> getChunkRangeFuture(ChunkHolder chunkHolder, int margin, IntFunction<ChunkStatus> distanceToStatus);
+    @Shadow(remap = false) protected abstract CompletableFuture<Either<List<ChunkAccess>, ChunkHolder.ChunkLoadingFailure>> m_280541_(ChunkHolder chunkHolder, int margin, IntFunction<ChunkStatus> distanceToStatus);  // getChunkRangeFuture
 
     /**
      * @author Hari
@@ -68,11 +68,11 @@ public abstract class MixinThreadedAnvilChunkStorage {
         ThreadLocalWorldGenSchedulingState.clearChunkHolder();
     }
 
-    @Redirect(method = "scheduleChunkGeneration", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkMap;getChunkRangeFuture(Lnet/minecraft/server/level/ChunkHolder;ILjava/util/function/IntFunction;)Ljava/util/concurrent/CompletableFuture;"))
+    @Redirect(method = "scheduleChunkGeneration", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkMap;m_280541_(Lnet/minecraft/server/level/ChunkHolder;ILjava/util/function/IntFunction;)Ljava/util/concurrent/CompletableFuture;"))
     private CompletableFuture<Either<List<ChunkAccess>, ChunkHolder.ChunkLoadingFailure>> redirectGetRegion(ChunkMap instance, ChunkHolder chunkHolder, int margin, IntFunction<ChunkStatus> distanceToStatus) {
         if (instance != (Object) this) throw new IllegalStateException();
         return chunkHolder.getOrScheduleFuture(distanceToStatus.apply(0), (ChunkMap) (Object) this)
-                .thenComposeAsync(unused -> this.getChunkRangeFuture(chunkHolder, margin, distanceToStatus), r -> {
+                .thenComposeAsync(unused -> this.m_280541_(chunkHolder, margin, distanceToStatus), r -> {
                     if (Config.asyncScheduling) {
                         if (this.f_140135_.isSameThread()) {
                             AdmanyDagScheduler.submitAsync(r, "worldgen-range-future");
@@ -87,7 +87,7 @@ public abstract class MixinThreadedAnvilChunkStorage {
 
     @Redirect(method = "getChunkRangeFuture", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkMap;getUpdatingChunkIfPresent(J)Lnet/minecraft/server/level/ChunkHolder;"))
     private ChunkHolder redirectGetChunkHolder(ChunkMap instance, long pos) {
-        return this.visibleChunkMap.get(pos); // thread-safe
+        return this.f_140130_.get(pos); // thread-safe
     }
 
 }

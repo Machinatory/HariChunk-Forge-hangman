@@ -18,9 +18,9 @@ public class MixinMaterialRulesSequenceMaterialRule {
 
     private static final SurfaceRules.SurfaceRule EMPTY = new SurfaceRules.SequenceRule(List.of());
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private List<SurfaceRules.RuleSource> sequence;
+    private List<SurfaceRules.RuleSource> f_189697_;  // sequence
 
     @Unique
     private SurfaceRules.RuleSource[] sequenceArray;
@@ -33,7 +33,7 @@ public class MixinMaterialRulesSequenceMaterialRule {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        this.sequenceArray = this.sequence.toArray(SurfaceRules.RuleSource[]::new);
+        this.sequenceArray = this.f_189697_.toArray(SurfaceRules.RuleSource[]::new);
         this.isSingleOrNoElement = this.sequenceArray.length <= 1;
         this.firstElement = this.sequenceArray.length == 0 ? null : this.sequenceArray[0];
     }

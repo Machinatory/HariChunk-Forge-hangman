@@ -17,16 +17,16 @@ import net.minecraft.world.level.chunk.LevelChunk;
 @Mixin(ChunkHolder.class)
 public abstract class MixinChunkHolder implements IChunkHolder {
 
-    @Shadow public abstract CompletableFuture<Either<LevelChunk, ChunkHolder.ChunkLoadingFailure>> getFullChunkFuture();
+    @Shadow(remap = false) public abstract CompletableFuture<Either<LevelChunk, ChunkHolder.ChunkLoadingFailure>> m_140082_();  // getFullChunkFuture
 
     @Shadow(remap = false) @Nullable public abstract LevelChunk m_140085_();  // getTickingChunk
 
-    @Shadow public abstract ChunkPos getPos();
+    @Shadow(remap = false) public abstract ChunkPos m_140092_();  // getPos
 
     @Unique
     @Override
     public LevelChunk getAccessibleChunk() {
-        final Either<LevelChunk, ChunkHolder.ChunkLoadingFailure> either = this.getFullChunkFuture().getNow(null);
+        final Either<LevelChunk, ChunkHolder.ChunkLoadingFailure> either = this.m_140082_().getNow(null);
         return either == null ? null : either.left().orElseGet(this::getTickingChunk);
     }
 

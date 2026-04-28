@@ -11,15 +11,15 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(WoodlandMansionPieces.PlacementData.class)
 public class WoodlandMansionPieces$PlacementDataASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    public Rotation rotation;
+    public Rotation f_230138_;  // rotation
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    public BlockPos position;
+    public BlockPos f_230139_;  // position
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    public String wallType;
+    public String f_230140_;  // wallType
 }

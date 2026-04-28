@@ -17,11 +17,11 @@ import net.minecraft.world.level.levelgen.structure.structures.StrongholdPieces;
 public class MixinStrongholdGeneratorStart {
 
     @Mutable
-    @Shadow @Final public List<StructurePiece> pendingChildren;
+    @Shadow(remap = false) @Final public List<StructurePiece> f_229799_;  // pendingChildren
 
     @Inject(method = "<init>*", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        this.pendingChildren = Collections.synchronizedList(pendingChildren);
+        this.f_229799_ = Collections.synchronizedList(pendingChildren);
     }
 
 }

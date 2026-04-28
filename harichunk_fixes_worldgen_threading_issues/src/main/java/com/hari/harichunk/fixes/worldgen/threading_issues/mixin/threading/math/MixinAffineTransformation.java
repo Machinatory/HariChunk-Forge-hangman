@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Transformation.class)
 public abstract class MixinAffineTransformation {
 
-    @Shadow protected abstract void ensureDecomposed();
+    @Shadow(remap = false) protected abstract void m_121106_();  // ensureDecomposed
 
     @Inject(method = "<init>*", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        this.ensureDecomposed(); // run init early
+        this.m_121106_(); // run init early
     }
 
 }

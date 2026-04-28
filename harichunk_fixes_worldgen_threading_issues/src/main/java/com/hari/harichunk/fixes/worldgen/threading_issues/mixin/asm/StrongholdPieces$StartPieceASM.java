@@ -11,12 +11,12 @@ import javax.annotation.Nullable;
 @Mixin(StrongholdPieces.StartPiece.class)
 public class StrongholdPieces$StartPieceASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    public StrongholdPieces.PieceWeight previousPiece;
+    public StrongholdPieces.PieceWeight f_229797_;  // previousPiece
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
     @Nullable
-    public StrongholdPieces.PortalRoom portalRoomPiece;
+    public StrongholdPieces.PortalRoom f_229798_;  // portalRoomPiece
 }

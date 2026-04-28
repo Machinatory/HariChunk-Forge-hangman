@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(StateTestingPredicate.class)
 public abstract class MixinOffsetPredicate {
 
-    @Shadow protected abstract boolean test(BlockState state);
+    @Shadow(remap = false) protected abstract boolean test(BlockState state);  // test
 
     @Shadow(remap = false) @Final protected Vec3i f_190539_;  // offset
 

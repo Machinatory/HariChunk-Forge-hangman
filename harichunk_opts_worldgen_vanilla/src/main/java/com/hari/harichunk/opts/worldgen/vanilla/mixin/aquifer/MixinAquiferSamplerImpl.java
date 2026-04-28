@@ -38,73 +38,73 @@ public class MixinAquiferSamplerImpl {
     private static final int WATER_LEVEL_MAGIC_6 = 64 - BlockPos.PACKED_Z_LENGTH;
 
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private int minGridX;
+    private int f_158002_;  // minGridX
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private int minGridY;
+    private int f_158003_;  // minGridY
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private int minGridZ;
+    private int f_158004_;  // minGridZ
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private int gridSizeZ;
+    private int f_158006_;  // gridSizeZ
 
-    @Shadow @Final private int gridSizeX;
+    @Shadow(remap = false) @Final private int f_158005_;  // gridSizeX
 
-    @Shadow @Final private long[] aquiferLocationCache;
+    @Shadow(remap = false) @Final private long[] f_157999_;  // aquiferLocationCache
 
-    @Shadow @Final private PositionalRandomFactory positionalRandomFactory;
+    @Shadow(remap = false) @Final private PositionalRandomFactory f_188410_;  // positionalRandomFactory
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private Aquifer.FluidStatus[] aquiferCache;
+    private Aquifer.FluidStatus[] f_157998_;  // aquiferCache
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private static int[][] SURFACE_SAMPLING_OFFSETS_IN_CHUNKS;
+    private static int[][] f_188412_;  // SURFACE_SAMPLING_OFFSETS_IN_CHUNKS
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private NoiseChunk noiseChunk;
+    private NoiseChunk f_188407_;  // noiseChunk
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private DensityFunction barrierNoise;
+    private DensityFunction f_157994_;  // barrierNoise
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private DensityFunction fluidLevelFloodednessNoise;
+    private DensityFunction f_188408_;  // fluidLevelFloodednessNoise
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private DensityFunction fluidLevelSpreadNoise;
+    private DensityFunction f_188409_;  // fluidLevelSpreadNoise
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private DensityFunction lavaNoise;
+    private DensityFunction f_157996_;  // lavaNoise
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private static double FLOWING_UPDATE_SIMULARITY;
+    private static double f_196979_;  // FLOWING_UPDATE_SIMULARITY
 
-    @Shadow
-    private boolean shouldScheduleFluidUpdate;
+    @Shadow(remap = false)
+    private boolean f_158000_;  // shouldScheduleFluidUpdate
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private Aquifer.FluidPicker globalFluidPicker;
+    private Aquifer.FluidPicker f_188411_;  // globalFluidPicker
 
     @Unique
     private RandomSource randomInstance;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        this.randomInstance = RandomUtils.getRandom(this.positionalRandomFactory);
+        this.randomInstance = RandomUtils.getRandom(this.f_188410_);
     }
 
     /**
@@ -118,12 +118,12 @@ public class MixinAquiferSamplerImpl {
         final int blockY = arg.blockY();
         final int blockZ = arg.blockZ();
         if (d > 0.0) {
-            this.shouldScheduleFluidUpdate = false;
+            this.f_158000_ = false;
             return null;
         } else {
-            Aquifer.FluidStatus fluidLevel = this.globalFluidPicker.computeFluid(blockX, blockY, blockZ);
+            Aquifer.FluidStatus fluidLevel = this.f_188411_.computeFluid(blockX, blockY, blockZ);
             if (fluidLevel.at(blockY).is(Blocks.LAVA)) {
-                this.shouldScheduleFluidUpdate = false;
+                this.f_158000_ = false;
                 return Blocks.LAVA.defaultBlockState();
             } else {
                 int l = Math.floorDiv(blockX - 5, 16);
@@ -142,19 +142,19 @@ public class MixinAquiferSamplerImpl {
                             int x = l + u;
                             int y = m + v;
                             int z = n + w;
-                            int aa = ((y - this.minGridY) * this.gridSizeZ + z - this.minGridZ) * this.gridSizeX + x - this.minGridX;
-                            long ab = this.aquiferLocationCache[aa];
+                            int aa = ((y - this.f_158003_) * this.f_158006_ + z - this.f_158004_) * this.f_158005_ + x - this.f_158002_;
+                            long ab = this.f_157999_[aa];
                             long ac;
                             if (ab != Long.MAX_VALUE) {
                                 ac = ab;
                             } else {
                                 // HariChunk - reuse random instance
-                                RandomUtils.derive(this.positionalRandomFactory, this.randomInstance, x, y, z);
+                                RandomUtils.derive(this.f_188410_, this.randomInstance, x, y, z);
                                 final int i1 = randomInstance.nextInt(10);
                                 final int i2 = randomInstance.nextInt(9);
                                 final int i3 = randomInstance.nextInt(10);
                                 ac = BlockPos.asLong(x * 16 + i1, y * 12 + i2, z * 16 + i3);
-                                this.aquiferLocationCache[aa] = ac;
+                                this.f_157999_[aa] = ac;
                             }
 
                             int ad = (int) ((ac << WATER_LEVEL_MAGIC_1) >> WATER_LEVEL_MAGIC_2) - blockX; // HariChunk - inline
@@ -185,12 +185,12 @@ public class MixinAquiferSamplerImpl {
                 double e = 1.0 - Math.abs(p - o) / 25.0; // HariChunk - inline
                 final BlockState fluidLevel2BlockState = fluidLevel2.at(blockY);
                 if (e <= 0.0) {
-                    this.shouldScheduleFluidUpdate = e >= FLOWING_UPDATE_SIMULARITY;
+                    this.f_158000_ = e >= FLOWING_UPDATE_SIMULARITY;
                     return fluidLevel2BlockState;
                 } else {
                     final boolean fluidLevel2BlockStateOfWater = fluidLevel2BlockState.is(Blocks.WATER);
-                    if (fluidLevel2BlockStateOfWater && this.globalFluidPicker.computeFluid(blockX, blockY - 1, blockZ).at(blockY - 1).is(Blocks.LAVA)) {
-                        this.shouldScheduleFluidUpdate = true;
+                    if (fluidLevel2BlockStateOfWater && this.f_188411_.computeFluid(blockX, blockY - 1, blockZ).at(blockY - 1).is(Blocks.LAVA)) {
+                        this.f_158000_ = true;
                         return fluidLevel2BlockState;
                     } else {
                         double mutableDouble = Double.NaN;
@@ -220,7 +220,7 @@ public class MixinAquiferSamplerImpl {
 
                                 double r2;
                                 if (!(q2 < -2.0) && !(q2 > 2.0)) {
-                                    double t2 = this.barrierNoise.compute(arg);
+                                    double t2 = this.f_157994_.compute(arg);
                                     mutableDouble = t2;
                                     r2 = t2;
                                 } else {
@@ -234,7 +234,7 @@ public class MixinAquiferSamplerImpl {
                         }
                         double f = e * result1;
                         if (d + f > 0.0) {
-                            this.shouldScheduleFluidUpdate = false;
+                            this.f_158000_ = false;
                             return null;
                         } else {
                             Aquifer.FluidStatus fluidLevel4 = this.getAquiferStatus(t);
@@ -265,7 +265,7 @@ public class MixinAquiferSamplerImpl {
                                         double r1;
                                         if (!(q1 < -2.0) && !(q1 > 2.0)) {
                                             if (Double.isNaN(mutableDouble)) {
-                                                double t1 = this.barrierNoise.compute(arg);
+                                                double t1 = this.f_157994_.compute(arg);
                                                 mutableDouble = t1;
                                                 r1 = t1;
                                             } else {
@@ -282,7 +282,7 @@ public class MixinAquiferSamplerImpl {
                                 }
                                 double h = e * g * result;
                                 if (d + h > 0.0) {
-                                    this.shouldScheduleFluidUpdate = false;
+                                    this.f_158000_ = false;
                                     return null;
                                 }
                             }
@@ -311,7 +311,7 @@ public class MixinAquiferSamplerImpl {
                                         double r1;
                                         if (!(q1 < -2.0) && !(q1 > 2.0)) {
                                             if (Double.isNaN(mutableDouble)) {
-                                                double t1 = this.barrierNoise.compute(arg);
+                                                double t1 = this.f_157994_.compute(arg);
                                                 mutableDouble = t1;
                                                 r1 = t1;
                                             } else {
@@ -328,12 +328,12 @@ public class MixinAquiferSamplerImpl {
                                 }
                                 double ah = e * h * result;
                                 if (d + ah > 0.0) {
-                                    this.shouldScheduleFluidUpdate = false;
+                                    this.f_158000_ = false;
                                     return null;
                                 }
                             }
 
-                            this.shouldScheduleFluidUpdate = true;
+                            this.f_158000_ = true;
                             return fluidLevel2BlockState;
                         }
                     }
@@ -354,13 +354,13 @@ public class MixinAquiferSamplerImpl {
         int l = Math.floorDiv(i, 16); // HariChunk - inline
         int m = Math.floorDiv(j, 12); // HariChunk - inline
         int n = Math.floorDiv(k, 16); // HariChunk - inline
-        int o = ((m - this.minGridY) * this.gridSizeZ + n - this.minGridZ) * this.gridSizeX + l - this.minGridX;
-        Aquifer.FluidStatus fluidLevel = this.aquiferCache[o];
+        int o = ((m - this.f_158003_) * this.f_158006_ + n - this.f_158004_) * this.f_158005_ + l - this.f_158002_;
+        Aquifer.FluidStatus fluidLevel = this.f_157998_[o];
         if (fluidLevel != null) {
             return fluidLevel;
         } else {
             Aquifer.FluidStatus fluidLevel2 = this.computeFluid(i, j, k);
-            this.aquiferCache[o] = fluidLevel2;
+            this.f_157998_[o] = fluidLevel2;
             return fluidLevel2;
         }
     }
@@ -371,7 +371,7 @@ public class MixinAquiferSamplerImpl {
      */
     @Overwrite
     private Aquifer.FluidStatus computeFluid(int i, int j, int k) {
-        Aquifer.FluidStatus fluidLevel = this.globalFluidPicker.computeFluid(i, j, k);
+        Aquifer.FluidStatus fluidLevel = this.f_188411_.computeFluid(i, j, k);
         int l = Integer.MAX_VALUE;
         int m = j + 12;
         int n = j - 12;
@@ -380,7 +380,7 @@ public class MixinAquiferSamplerImpl {
         for (int[] is : SURFACE_SAMPLING_OFFSETS_IN_CHUNKS) {
             int o = i + (is[0] << 4); // HariChunk - inline
             int p = k + (is[1] << 4); // HariChunk - inline
-            int q = this.noiseChunk.preliminarySurfaceLevel(o, p);
+            int q = this.f_188407_.preliminarySurfaceLevel(o, p);
             int r = q + 8;
             boolean bl2 = is[0] == 0 && is[1] == 0;
             if (bl2 && n > r) {
@@ -389,7 +389,7 @@ public class MixinAquiferSamplerImpl {
 
             boolean bl3 = m > r;
             if (bl2 || bl3) {
-                Aquifer.FluidStatus fluidLevel2 = this.globalFluidPicker.computeFluid(o, r, p);
+                Aquifer.FluidStatus fluidLevel2 = this.f_188411_.computeFluid(o, r, p);
                 if (!fluidLevel2.at(r).isAir()) {
                     if (bl2) {
                         bl = true;
@@ -406,7 +406,7 @@ public class MixinAquiferSamplerImpl {
 
         int s = l + 8 - j;
         double d = bl ? clampedLerpFromProgressInlined(s) : 0.0;
-        double e = Mth.clamp(this.fluidLevelFloodednessNoise.compute(new DensityFunction.SinglePointContext(i, j, k)), -1.0, 1.0);
+        double e = Mth.clamp(this.f_188408_.compute(new DensityFunction.SinglePointContext(i, j, k)), -1.0, 1.0);
         double f = lerpFromProgressInlined(d, -0.3, 0.8);
         if (e > f) {
             return fluidLevel;
@@ -419,7 +419,7 @@ public class MixinAquiferSamplerImpl {
                 int x = Math.floorDiv(j, 40);
                 int y = Math.floorDiv(k, 16);
                 int z = x * 40 + 20;
-                double h = this.fluidLevelSpreadNoise.compute(new DensityFunction.SinglePointContext(w, x, y)) * 10.0;
+                double h = this.f_188409_.compute(new DensityFunction.SinglePointContext(w, x, y)) * 10.0;
                 int ab = Mth.quantize(h, 3);
                 int ac = z + ab;
                 int ad = Math.min(l, ac);
@@ -427,7 +427,7 @@ public class MixinAquiferSamplerImpl {
                     int ag = Math.floorDiv(i, 64);
                     int ah = Math.floorDiv(j, 40);
                     int ai = Math.floorDiv(k, 64);
-                    double aj = this.lavaNoise.compute(new DensityFunction.SinglePointContext(ag, ah, ai));
+                    double aj = this.f_157996_.compute(new DensityFunction.SinglePointContext(ag, ah, ai));
                     if (Math.abs(aj) > 0.3) {
                         return new Aquifer.FluidStatus(ad, Blocks.LAVA.defaultBlockState());
                     }

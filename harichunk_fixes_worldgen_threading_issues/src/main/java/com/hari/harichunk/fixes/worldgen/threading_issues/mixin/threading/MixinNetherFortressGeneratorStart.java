@@ -16,8 +16,8 @@ import net.minecraft.world.level.levelgen.structure.structures.NetherFortressPie
 @Mixin(NetherFortressPieces.StartPiece.class)
 public class MixinNetherFortressGeneratorStart {
 
-    @Shadow public List<NetherFortressPieces.PieceWeight> availableBridgePieces;
-    @Shadow public List<NetherFortressPieces.PieceWeight> availableCastlePieces;
+    @Shadow(remap = false) public List<NetherFortressPieces.PieceWeight> f_228508_;  // availableBridgePieces
+    @Shadow(remap = false) public List<NetherFortressPieces.PieceWeight> f_228509_;  // availableCastlePieces
 
     @Redirect(method = "<init>(Lnet/minecraft/util/RandomSource;II)V", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/levelgen/structure/structures/NetherFortressPieces$PieceWeight;placeCount:I", opcode = Opcodes.PUTFIELD), require = 2)
     private void redirectSetPieceDataGeneratedCount(NetherFortressPieces.PieceWeight pieceData, int value) {
@@ -30,7 +30,7 @@ public class MixinNetherFortressGeneratorStart {
 
     @Inject(method = "<init>*", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        this.availableBridgePieces = Collections.synchronizedList(this.availableBridgePieces);
-        this.availableCastlePieces = Collections.synchronizedList(this.availableCastlePieces);
+        this.f_228508_ = Collections.synchronizedList(this.f_228508_);
+        this.f_228509_ = Collections.synchronizedList(this.f_228509_);
     }
 }

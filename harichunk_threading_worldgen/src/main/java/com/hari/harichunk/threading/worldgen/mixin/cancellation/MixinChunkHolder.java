@@ -14,11 +14,11 @@ import net.minecraft.world.level.chunk.LevelChunk;
 @Mixin(ChunkHolder.class)
 public abstract class MixinChunkHolder {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private AtomicReferenceArray<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> futures;
+    private AtomicReferenceArray<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> f_140001_;  // futures
 
-    @Shadow public abstract void broadcastChanges(LevelChunk chunk);
+    @Shadow(remap = false) public abstract void m_140054_(LevelChunk chunk);  // broadcastChanges
 
     @Shadow(remap = false) @Final public static Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure> f_139995_;  // UNLOADED_CHUNK
 

@@ -20,31 +20,31 @@ import net.minecraft.world.level.levelgen.SurfaceRules;
 @Mixin(SurfaceRules.Context.class)
 public class MixinMaterialRuleContext {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private Function<BlockPos, Holder<Biome>> biomeGetter;
+    private Function<BlockPos, Holder<Biome>> f_189542_;  // biomeGetter
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private BlockPos.MutableBlockPos pos;
+    private BlockPos.MutableBlockPos f_189554_;  // pos
 
-    @Shadow
-    private long lastUpdateY;
+    @Shadow(remap = false)
+    private long f_189553_;  // lastUpdateY
 
-    @Shadow
-    private Supplier<Holder<Biome>> biome;
+    @Shadow(remap = false)
+    private Supplier<Holder<Biome>> f_189555_;  // biome
 
-    @Shadow
-    private int blockY;
+    @Shadow(remap = false)
+    private int f_189557_;  // blockY
 
-    @Shadow
-    private int waterHeight;
+    @Shadow(remap = false)
+    private int f_189558_;  // waterHeight
 
-    @Shadow
-    private int stoneDepthBelow;
+    @Shadow(remap = false)
+    private int f_189559_;  // stoneDepthBelow
 
-    @Shadow
-    private int stoneDepthAbove;
+    @Shadow(remap = false)
+    private int f_189560_;  // stoneDepthAbove
 
     @Unique
     private int lazyPosX;
@@ -59,9 +59,9 @@ public class MixinMaterialRuleContext {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo info) {
-        this.biome = () -> {
+        this.f_189555_ = () -> {
             if (this.lastBiome == null)
-                return this.lastBiome = this.biomeGetter.apply(this.pos.set(this.lazyPosX, this.lazyPosY, this.lazyPosZ));
+                return this.lastBiome = this.f_189542_.apply(this.f_189554_.set(this.lazyPosX, this.lazyPosY, this.lazyPosZ));
             return this.lastBiome;
         };
     }
@@ -73,11 +73,11 @@ public class MixinMaterialRuleContext {
     @Overwrite
     public void updateY(int i, int j, int k, int l, int m, int n) {
         // TODO [VanillaCopy]
-        ++this.lastUpdateY;
-        this.blockY = m;
-        this.waterHeight = k;
-        this.stoneDepthBelow = j;
-        this.stoneDepthAbove = i;
+        ++this.f_189553_;
+        this.f_189557_ = m;
+        this.f_189558_ = k;
+        this.f_189559_ = j;
+        this.f_189560_ = i;
 
         // set lazy values
         this.lazyPosX = l;

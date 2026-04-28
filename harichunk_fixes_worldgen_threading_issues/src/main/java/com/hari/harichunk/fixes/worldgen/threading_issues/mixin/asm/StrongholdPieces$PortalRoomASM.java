@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(StrongholdPieces.PortalRoom.class)
 public class StrongholdPieces$PortalRoomASM {
 
-    @Shadow
+    @Shadow(remap = false)
     @TransformAccess(Opcodes.ACC_PUBLIC | Opcodes.ACC_VOLATILE)
-    private boolean hasPlacedSpawner;
+    private boolean f_229627_;  // hasPlacedSpawner
 }

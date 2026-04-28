@@ -15,13 +15,13 @@ import java.util.Map;
 @Mixin(value = IOWorker.class, priority = 990)
 public abstract class MixinStorageIoWorker {
 
-    @Shadow @Final private Map<ChunkPos, IOWorker.PendingStore> pendingWrites;
+    @Shadow(remap = false) @Final private Map<ChunkPos, IOWorker.PendingStore> f_63519_;  // pendingWrites
 
-    @Shadow protected abstract void runStore(ChunkPos pos, IOWorker.PendingStore result);
+    @Shadow(remap = false) protected abstract void m_63535_(ChunkPos pos, IOWorker.PendingStore result);  // runStore
 
-    @Shadow protected abstract void tellStorePending();
+    @Shadow(remap = false) protected abstract void m_63561_();  // tellStorePending
 
-    @Shadow @Final private static Logger LOGGER;
+    @Shadow(remap = false) @Final private static Logger f_63515_;  // LOGGER
 
     @Dynamic
     @Inject(method = "m_223468_", at = @At("HEAD"))
@@ -31,10 +31,10 @@ public abstract class MixinStorageIoWorker {
 
     @Inject(method = "storePendingChunk", at = @At("HEAD"))
     private void onWriteResult(CallbackInfo ci) {
-        if (!this.pendingWrites.isEmpty()) {
+        if (!this.f_63519_.isEmpty()) {
             checkHardLimit();
-            if (this.pendingWrites.size() >= Config.chunkDataCacheSoftLimit) {
-                int writeFrequency = Math.min(1, (this.pendingWrites.size() - (int) Config.chunkDataCacheSoftLimit) / 16);
+            if (this.f_63519_.size() >= Config.chunkDataCacheSoftLimit) {
+                int writeFrequency = Math.min(1, (this.f_63519_.size() - (int) Config.chunkDataCacheSoftLimit) / 16);
                 for (int i = 0; i < writeFrequency; i++) {
                     writeResult0();
                 }
@@ -44,9 +44,9 @@ public abstract class MixinStorageIoWorker {
 
     @Unique
     private void checkHardLimit() {
-        if (this.pendingWrites.size() >= Config.chunkDataCacheLimit) {
-            LOGGER.warn("Chunk data cache size exceeded hard limit ({} >= {}), forcing writes to disk (you can increase chunkDataCacheLimit in harichunk.toml)", this.pendingWrites.size(), Config.chunkDataCacheLimit);
-            while (this.pendingWrites.size() >= Config.chunkDataCacheSoftLimit * 0.75) { // using chunkDataCacheSoftLimit is intentional
+        if (this.f_63519_.size() >= Config.chunkDataCacheLimit) {
+            LOGGER.warn("Chunk data cache size exceeded hard limit ({} >= {}), forcing writes to disk (you can increase chunkDataCacheLimit in harichunk.toml)", this.f_63519_.size(), Config.chunkDataCacheLimit);
+            while (this.f_63519_.size() >= Config.chunkDataCacheSoftLimit * 0.75) { // using chunkDataCacheSoftLimit is intentional
                 writeResult0();
             }
         }
@@ -55,11 +55,11 @@ public abstract class MixinStorageIoWorker {
     @Unique
     private void writeResult0() {
         // TODO [VanillaCopy] writeResult
-        Iterator<Map.Entry<ChunkPos, IOWorker.PendingStore>> iterator = this.pendingWrites.entrySet().iterator();
+        Iterator<Map.Entry<ChunkPos, IOWorker.PendingStore>> iterator = this.f_63519_.entrySet().iterator();
         if (iterator.hasNext()) {
             Map.Entry<ChunkPos, IOWorker.PendingStore> entry = iterator.next();
             iterator.remove();
-            this.runStore(entry.getKey(), entry.getValue());
+            this.m_63535_(entry.getKey(), entry.getValue());
         }
     }
 

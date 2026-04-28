@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(DistanceManager.class)
 public class MixinChunkTicketManager implements IChunkTicketManager {
 
-    @Shadow private long ticketTickCounter;
+    @Shadow(remap = false) private long f_140771_;  // ticketTickCounter
     @Mutable
     @Shadow(remap = false) @Final private TickingTracker f_183901_;  // tickingTicketsTracker
     @Shadow(remap = false) @Final private DistanceManager.PlayerTicketTracker f_140764_;  // playerTicketManager
@@ -53,7 +53,7 @@ public class MixinChunkTicketManager implements IChunkTicketManager {
 
     @Inject(method = "purgeStaleTickets", at = @At("RETURN"))
     private void onPurge(CallbackInfo ci) {
-        this.noTickSystem.runPurge(this.ticketTickCounter);
+        this.noTickSystem.runPurge(this.f_140771_);
     }
 
     @Inject(method = "runAllUpdates", at = @At("HEAD"))
@@ -68,9 +68,9 @@ public class MixinChunkTicketManager implements IChunkTicketManager {
         }
         this.noTickSystem.tickScheduler();
         this.noTickSystem.afterTicketTicks();
-        if (this.lastNoTickSystemTick != this.ticketTickCounter) {
+        if (this.lastNoTickSystemTick != this.f_140771_) {
             this.noTickSystem.tick(chunkStorage);
-            this.lastNoTickSystemTick = this.ticketTickCounter;
+            this.lastNoTickSystemTick = this.f_140771_;
         }
     }
 
