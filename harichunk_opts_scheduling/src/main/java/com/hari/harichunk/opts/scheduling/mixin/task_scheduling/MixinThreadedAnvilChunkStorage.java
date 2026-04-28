@@ -20,17 +20,15 @@ import net.minecraft.util.thread.BlockableEventLoop;
 @Mixin(ChunkMap.class)
 public class MixinThreadedAnvilChunkStorage implements IThreadedAnvilChunkStorage {
 
-    @Shadow
-    @Final
-    private ServerLevel level;
-    @Shadow @Final private BlockableEventLoop<Runnable> mainThreadExecutor;
+    @Shadow(remap = false) @Final private ServerLevel f_140133_; // level
+    @Shadow(remap = false) @Final private BlockableEventLoop<Runnable> f_140135_; // mainThreadExecutor
 
-    @Shadow @Final private ChunkMap.DistanceManager distanceManager;
+    @Shadow(remap = false) @Final private ChunkMap.DistanceManager f_140145_; // distanceManager
     private final Executor mainInvokingExecutor = runnable -> {
-        if (this.level.getServer().isSameThread()) {
+        if (this.f_140133_.getServer().isSameThread()) {
             runnable.run();
         } else {
-            this.mainThreadExecutor.execute(runnable);
+            this.f_140135_.execute(runnable);
         }
     };
 

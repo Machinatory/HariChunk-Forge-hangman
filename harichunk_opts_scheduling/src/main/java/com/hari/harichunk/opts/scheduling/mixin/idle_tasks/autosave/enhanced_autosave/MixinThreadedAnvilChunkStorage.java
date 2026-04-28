@@ -20,7 +20,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 @Mixin(ChunkMap.class)
 public abstract class MixinThreadedAnvilChunkStorage implements IThreadedAnvilChunkStorage {
 
-    @Shadow @Final private Long2ObjectLinkedOpenHashMap<ChunkHolder> updatingChunkMap;
+    @Shadow(remap = false) @Final private Long2ObjectLinkedOpenHashMap<ChunkHolder> f_140129_; // updatingChunkMap
 
     @Shadow protected abstract boolean saveChunkIfNeeded(ChunkHolder chunkHolder);
 
@@ -46,7 +46,7 @@ public abstract class MixinThreadedAnvilChunkStorage implements IThreadedAnvilCh
                 if (System.currentTimeMillis() - entry.getLongValue() < Config.autoSaveDelayMillis) break;
                 iterator.remove();
                 if (entry.getKey() == null) continue;
-                ChunkHolder chunkHolder = this.updatingChunkMap.get(entry.getKey().toLong());
+                ChunkHolder chunkHolder = this.f_140129_.get(entry.getKey().toLong());
                 if (chunkHolder == null) continue;
                 final CompletableFuture<ChunkAccess> savingFuture = chunkHolder.getChunkToSave();
                 if (savingFuture.isDone()) {

@@ -11,11 +11,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftServer.class)
 public class MixinMinecraftServer {
 
-    @Shadow private long nextTickTime;
+    @Shadow(remap = false) private long f_129726_; // nextTickTime
 
     @Inject(method = "stopServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;waitUntilNextTick()V", shift = At.Shift.BEFORE))
     private void shutdownBeforeRunTasks(CallbackInfo ci) {
-        this.nextTickTime = Util.getMillis() + 100L;
+        this.f_129726_ = Util.getMillis() + 100L;
     }
 
 }

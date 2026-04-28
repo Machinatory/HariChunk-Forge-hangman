@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(ServerGamePacketListenerImpl.class)
 public class MixinServerPlayNetworkHandler {
 
-    @Shadow public ServerPlayer player;
+    @Shadow(remap = false) public ServerPlayer f_9743_; // player
 
 //    @Inject(method = "onPlayerMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;move(Lnet/minecraft/entity/MovementType;Lnet/minecraft/util/math/Vec3d;)V", shift = At.Shift.BEFORE))
 //    private void movePacketBeforePlayerMove(CallbackInfo ci) {
