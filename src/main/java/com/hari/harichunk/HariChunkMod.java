@@ -130,12 +130,22 @@ public class HariChunkMod {
         try {
             Class<?> api = Class.forName("org.admany.quantified.api.QuantifiedAPI");
             Method method = api.getMethod("register", String.class, String.class, String.class);
-            return String.valueOf(method.invoke(null, "harichunk", "HariChunk", "unknown"));
+            return String.valueOf(method.invoke(null, "harichunk", "HariChunk", ownVersion()));
         } catch (Throwable throwable) {
             return "failed(" + throwable.getClass().getSimpleName() + ")";
         }
     }
 
+    private static String ownVersion() {
+        try {
+            return ModList.get()
+                    .getModContainerById("harichunk")
+                    .map(container -> container.getModInfo().getVersion().toString())
+                    .orElse("unknown");
+        } catch (Throwable throwable) {
+            return "unknown";
+        }
+    }
     private static String invokeStaticString(String className, String methodName) {
         try {
             Class<?> schedulerClass = Class.forName(className);

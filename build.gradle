@@ -36,6 +36,11 @@ apply plugin: 'com.gradleup.shadow'
 group = mod_group_id
 version = mod_version
 
+allprojects {
+    group = rootProject.group
+    version = rootProject.version
+}
+
 base {
     archivesName = "${mod_id}"
 }
@@ -96,6 +101,13 @@ minecraft {
             mods {
                 "${mod_id}" {
                     source sourceSets.main
+                }
+
+                moduleProjects.each { moduleName ->
+                    def moduleProject = project(moduleName)
+                    "${moduleProject.name}" {
+                        source moduleProject.sourceSets.main
+                    }
                 }
             }
         }
@@ -220,7 +232,7 @@ dependencies {
     moduleProjects.each { moduleName ->
         jarJar(project(moduleName)) {
             transitive = false
-            jarJar.ranged(it, '[*,)')
+            jarJar.ranged(it, "[${mod_version},)")
         }
     }
 }
@@ -271,5 +283,23 @@ tasks.withType(JavaCompile).configureEach {
 if (project.hasProperty('shadowJar')) {
     moduleProjects.each { moduleName ->
         shadowJar.dependsOn "${moduleName}:build"
+    }
+}
+allprojects {
+    tasks.matching { it.name == 'reobfJar' }.configureEach { task ->
+        task.doFirst {
+            def compileTmp = layout.buildDirectory.dir('tmp/compileJava').get().asFile
+            compileTmp.mkdirs()
+
+            def mappings = new File(compileTmp, 'compileJava-mappings.tsrg')
+            if (!mappings.exists()) {
+                mappings.text = ''
+            }
+
+            def refmap = new File(compileTmp, 'compileJava-refmap.json')
+            if (!refmap.exists()) {
+                refmap.text = '{}'
+            }
+        }
     }
 }
