@@ -46,6 +46,10 @@ public final class VkGpuAccel {
      */
     private static final Semaphore IN_FLIGHT_SEMAPHORE =
             new Semaphore(VkGpuAccelConfig.MAX_IN_FLIGHT_WORKSPACES);
+        private static final AdaptiveBatchGate ENCODED_DENSITY_GATE =
+            new AdaptiveBatchGate(VkGpuAccelConfig.MAX_ADAPTIVE_BATCH_THRESHOLD);
+        private static final AdaptiveBatchGate APPROX_DENSITY_GATE =
+            new AdaptiveBatchGate(VkGpuAccelConfig.MAX_ADAPTIVE_BATCH_THRESHOLD);
 
     /**
      * Per-thread packed coordinate buffer pool. Reusing the buffer avoids a
@@ -133,7 +137,19 @@ public final class VkGpuAccel {
     }
 
     public static String statusString() {
-        return isReady() ? "ready, " + VkGpuAccelStats.summary() : "unavailable: " + unavailableReason;
+        return isReady() ? "ready, exactGate=" + ENCODED_DENSITY_GATE.summary()
+                + " approxGate=" + APPROX_DENSITY_GATE.summary()
+                + " " + VkGpuAccelStats.summary() : "unavailable: " + unavailableReason;
+    }
+
+    public static String debugString() {
+        return "ready=" + isReady()
+                + " ownsGpuNoise=" + shouldOwnGpuNoise()
+                + " exactDensity=" + canComputeEncodedDensityBatches()
+                + " approxDensity=" + canComputeApproximateDensityBatches()
+                + " exactGate=" + ENCODED_DENSITY_GATE.summary()
+                + " approxGate=" + APPROX_DENSITY_GATE.summary()
+                + " stats=" + VkGpuAccelStats.summary();
     }
 
     public static CompletableFuture<float[]> submitTerrainFeatureBatch(float[] inputCoords) {
@@ -142,17 +158,17 @@ public final class VkGpuAccel {
             return CompletableFuture.completedFuture(new float[0]);
         }
         if (!isReady()) {
-            VkGpuAccelStats.recordFallback();
+            VkGpuAccelStats.recordUnavailable();
             return CompletableFuture.completedFuture(null);
         }
 
         int items = inputCoords.length / 3;
-        VkGpuAccelStats.recordFeatureBatch(items);
-
         if (!IN_FLIGHT_SEMAPHORE.tryAcquire()) {
-            VkGpuAccelStats.recordFallback();
+            VkGpuAccelStats.recordBusy();
             return CompletableFuture.completedFuture(null);
         }
+
+        VkGpuAccelStats.recordFeatureBatch(items);
 
         return QuantifiedAPI.<float[]>vulkan(QAPI_MOD_ID, "harichunk-vk-terrain-features")
                 .cpuFallback(() -> null)
@@ -200,26 +216,34 @@ public final class VkGpuAccel {
             return CompletableFuture.completedFuture(new float[0]);
         }
         if (!canComputeEncodedDensityBatches()) {
-            VkGpuAccelStats.recordFallback();
+            VkGpuAccelStats.recordUnavailable();
             return CompletableFuture.completedFuture(null);
         }
 
         int samples = packedCoords.length / 3;
-        VkGpuAccelStats.recordDensityBatch(samples);
         if (auxValueCount < 0 || auxValues.length < auxValueCount * samples) {
-            VkGpuAccelStats.recordFallback();
+            VkGpuAccelStats.recordInvalidInput();
             return CompletableFuture.completedFuture(null);
         }
         long dataSize = (long) (packedCoords.length + encodedProgram.length + samples
                 + (long) auxValueCount * samples) * Float.BYTES;
 
         if (!IN_FLIGHT_SEMAPHORE.tryAcquire()) {
-            VkGpuAccelStats.recordFallback();
+            ENCODED_DENSITY_GATE.recordBackpressure();
+            VkGpuAccelStats.recordBusy();
             return CompletableFuture.completedFuture(null);
         }
 
         long taskKey = ThreadLocalRandom.current().nextLong();
         String shaderKey = CompiledDensityCache.getOrRegister(encodedProgram, instructionCount);
+        if (shaderKey == null) {
+            IN_FLIGHT_SEMAPHORE.release();
+            ENCODED_DENSITY_GATE.recordFailure();
+            VkGpuAccelStats.recordNullResult();
+            return CompletableFuture.completedFuture(null);
+        }
+
+        VkGpuAccelStats.recordDensityBatch(samples);
         McDensityVulkanTask densityTask = new McDensityVulkanTask(
                 QAPI_MOD_ID, "harichunk-vk-mc-density", taskKey,
                 packedCoords, encodedProgram, instructionCount,
@@ -253,10 +277,16 @@ public final class VkGpuAccel {
                                                          int instructionCount,
                                                          float[] auxValues,
                                                          int auxValueCount) {
-        if (!canComputeEncodedDensityBatches() || length < VkGpuAccelConfig.MIN_BATCH_SIZE) {
-            VkGpuAccelStats.recordFallback();
+        if (!canComputeEncodedDensityBatches()) {
+            VkGpuAccelStats.recordUnavailable();
             return null;
         }
+        if (!ENCODED_DENSITY_GATE.shouldAttempt(length)) {
+            VkGpuAccelStats.recordAdaptiveSkip();
+            return null;
+        }
+
+        VkGpuAccelStats.recordAttempt();
 
         float[] packed = acquirePackedBuffer(length * 3);
         for (int i = 0; i < length; i++) {
@@ -272,7 +302,8 @@ public final class VkGpuAccel {
                             auxValues, auxValueCount)
                     .get(Math.max(1L, VkGpuAccelConfig.TASK_TIMEOUT.toMillis()), TimeUnit.MILLISECONDS);
             if (gpuDensity == null || gpuDensity.length != length) {
-                VkGpuAccelStats.recordFallback();
+                ENCODED_DENSITY_GATE.recordFailure();
+                VkGpuAccelStats.recordNullResult();
                 return null;
             }
 
@@ -280,9 +311,12 @@ public final class VkGpuAccel {
             for (int i = 0; i < length; i++) {
                 density[i] = gpuDensity[i];
             }
+            ENCODED_DENSITY_GATE.recordSuccess();
+            VkGpuAccelStats.recordSuccess();
             return density;
         } catch (Throwable throwable) {
-            VkGpuAccelStats.recordFallback();
+            ENCODED_DENSITY_GATE.recordFailure();
+            VkGpuAccelStats.recordFailure();
             LOGGER.debug("VK encoded density batch failed: {}", throwable.toString());
             return null;
         }
@@ -308,10 +342,16 @@ public final class VkGpuAccel {
                                                          int instructionCount,
                                                          float[] auxValues,
                                                          int auxValueCount) {
-        if (!canComputeEncodedDensityBatches() || length < VkGpuAccelConfig.MIN_BATCH_SIZE) {
-            VkGpuAccelStats.recordFallback();
+            if (!canComputeEncodedDensityBatches()) {
+                VkGpuAccelStats.recordUnavailable();
+                return null;
+            }
+            if (!ENCODED_DENSITY_GATE.shouldAttempt(length)) {
+                VkGpuAccelStats.recordAdaptiveSkip();
             return null;
         }
+
+            VkGpuAccelStats.recordAttempt();
 
         float[] packed = acquirePackedBuffer(length * 3);
         for (int i = 0; i < length; i++) {
@@ -327,7 +367,8 @@ public final class VkGpuAccel {
                             auxValues, auxValueCount)
                     .get(Math.max(1L, VkGpuAccelConfig.TASK_TIMEOUT.toMillis()), TimeUnit.MILLISECONDS);
             if (gpuDensity == null || gpuDensity.length != length) {
-                VkGpuAccelStats.recordFallback();
+                ENCODED_DENSITY_GATE.recordFailure();
+                VkGpuAccelStats.recordNullResult();
                 return null;
             }
 
@@ -335,9 +376,12 @@ public final class VkGpuAccel {
             for (int i = 0; i < length; i++) {
                 density[i] = gpuDensity[i];
             }
+            ENCODED_DENSITY_GATE.recordSuccess();
+            VkGpuAccelStats.recordSuccess();
             return density;
         } catch (Throwable throwable) {
-            VkGpuAccelStats.recordFallback();
+            ENCODED_DENSITY_GATE.recordFailure();
+            VkGpuAccelStats.recordFailure();
             LOGGER.debug("VK encoded density batch failed: {}", throwable.toString());
             return null;
         }
@@ -348,10 +392,16 @@ public final class VkGpuAccel {
                                                   double[] zCoords,
                                                   int offset,
                                                   int length) {
-        if (!canComputeApproximateDensityBatches() || length < VkGpuAccelConfig.MIN_BATCH_SIZE) {
-            VkGpuAccelStats.recordFallback();
+        if (!canComputeApproximateDensityBatches()) {
+            VkGpuAccelStats.recordUnavailable();
             return null;
         }
+        if (!APPROX_DENSITY_GATE.shouldAttempt(length)) {
+            VkGpuAccelStats.recordAdaptiveSkip();
+            return null;
+        }
+
+        VkGpuAccelStats.recordAttempt();
 
         float[] packed = new float[length * 3];
         for (int i = 0; i < length; i++) {
@@ -366,7 +416,8 @@ public final class VkGpuAccel {
             float[] features = submitTerrainFeatureBatch(packed)
                     .get(Math.max(1L, VkGpuAccelConfig.TASK_TIMEOUT.toMillis()), TimeUnit.MILLISECONDS);
             if (features == null || features.length < length * 4) {
-                VkGpuAccelStats.recordFallback();
+                APPROX_DENSITY_GATE.recordFailure();
+                VkGpuAccelStats.recordNullResult();
                 return null;
             }
 
@@ -375,9 +426,12 @@ public final class VkGpuAccel {
                 density[i] = (features[i * 4] * 2.0d) - 1.0d;
             }
             VkGpuAccelStats.recordDensityBatch(length);
+            APPROX_DENSITY_GATE.recordSuccess();
+            VkGpuAccelStats.recordSuccess();
             return density;
         } catch (Throwable throwable) {
-            VkGpuAccelStats.recordFallback();
+            APPROX_DENSITY_GATE.recordFailure();
+            VkGpuAccelStats.recordFailure();
             LOGGER.debug("VK density batch failed: {}", throwable.toString());
             return null;
         }

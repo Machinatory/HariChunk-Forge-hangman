@@ -18,7 +18,14 @@ public final class VkGpuAccelStats {
     private static final AtomicLong featureItems = new AtomicLong();
     private static final AtomicLong densitySubmissions = new AtomicLong();
     private static final AtomicLong densityItems = new AtomicLong();
-    private static final AtomicLong fallbacks = new AtomicLong();
+    private static final AtomicLong attempts = new AtomicLong();
+    private static final AtomicLong successes = new AtomicLong();
+    private static final AtomicLong adaptiveSkips = new AtomicLong();
+    private static final AtomicLong unavailable = new AtomicLong();
+    private static final AtomicLong busy = new AtomicLong();
+    private static final AtomicLong invalidInputs = new AtomicLong();
+    private static final AtomicLong nullResults = new AtomicLong();
+    private static final AtomicLong failures = new AtomicLong();
     private static final AtomicLong compiledShaders = new AtomicLong();
 
     private VkGpuAccelStats() {
@@ -34,8 +41,36 @@ public final class VkGpuAccelStats {
         densityItems.addAndGet(items);
     }
 
-    static void recordFallback() {
-        fallbacks.incrementAndGet();
+    static void recordAttempt() {
+        attempts.incrementAndGet();
+    }
+
+    static void recordSuccess() {
+        successes.incrementAndGet();
+    }
+
+    static void recordAdaptiveSkip() {
+        adaptiveSkips.incrementAndGet();
+    }
+
+    static void recordUnavailable() {
+        unavailable.incrementAndGet();
+    }
+
+    static void recordBusy() {
+        busy.incrementAndGet();
+    }
+
+    static void recordInvalidInput() {
+        invalidInputs.incrementAndGet();
+    }
+
+    static void recordNullResult() {
+        nullResults.incrementAndGet();
+    }
+
+    static void recordFailure() {
+        failures.incrementAndGet();
     }
 
     static void recordCompiledShader() {
@@ -43,9 +78,16 @@ public final class VkGpuAccelStats {
     }
 
     public static String summary() {
-        return "features=" + featureSubmissions.get() + "/" + featureItems.get()
-                + " density=" + densitySubmissions.get() + "/" + densityItems.get()
+        return "submitted=" + featureSubmissions.get() + "/" + featureItems.get()
+            + "+" + densitySubmissions.get() + "/" + densityItems.get()
+            + " attempts=" + attempts.get()
+            + " success=" + successes.get()
                 + " compiled=" + compiledShaders.get()
-                + " fallback=" + fallbacks.get();
+            + " skip=" + adaptiveSkips.get()
+            + " unavailable=" + unavailable.get()
+            + " busy=" + busy.get()
+            + " invalid=" + invalidInputs.get()
+            + " null=" + nullResults.get()
+            + " failed=" + failures.get();
     }
 }

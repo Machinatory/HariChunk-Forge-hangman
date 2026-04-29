@@ -5,6 +5,8 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * Routes DFC noise subtree batch evaluation through GPU acceleration.
  *
@@ -20,10 +22,14 @@ public final class GpuDensityFunction {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("HariChunk/DFC-GPU");
 
-    // Minimum batch size to justify GPU dispatch overhead
-    public static final int GPU_BATCH_THRESHOLD = Integer.getInteger(
-            "harichunk.dfc.gpu_batch_threshold", 128
-    );
+        private static final AtomicLong encodedAttempts = new AtomicLong();
+        private static final AtomicLong encodedSuccesses = new AtomicLong();
+        private static final AtomicLong encodedBypasses = new AtomicLong();
+        private static final AtomicLong encodedFailures = new AtomicLong();
+        private static final AtomicLong approximateAttempts = new AtomicLong();
+        private static final AtomicLong approximateSuccesses = new AtomicLong();
+        private static final AtomicLong approximateBypasses = new AtomicLong();
+        private static final AtomicLong approximateFailures = new AtomicLong();
 
     private static volatile boolean gpuAvailable = false;
     private static volatile boolean initialized = false;
@@ -38,24 +44,33 @@ public final class GpuDensityFunction {
         if (initialized) return;
         initialized = true;
 
-        gpuAvailable = queryBackendShouldUseGpu(GPU_BATCH_THRESHOLD);
+        gpuAvailable = queryBackendShouldUseGpu(1);
 
-        LOGGER.info("DFC-GPU density function acceleration [available={}, threshold={}]",
-                gpuAvailable, GPU_BATCH_THRESHOLD);
+        LOGGER.info("DFC-GPU density function acceleration [available={}, adaptive=true]",
+            gpuAvailable);
     }
 
     /**
      * Check if GPU acceleration should be used for a batch of given size.
      */
     public static boolean shouldUseGpuBatch(int batchSize) {
-        if (batchSize < GPU_BATCH_THRESHOLD) {
+        if (batchSize <= 0) {
             return false;
         }
-        // Fast path: avoid repeated reflection probe once GPU is confirmed available.
         if (gpuAvailable) return true;
         boolean available = queryBackendShouldUseGpu(batchSize);
         gpuAvailable = available;
         return available;
+    }
+
+    public static String debugString() {
+        return "available=" + gpuAvailable
+                + " encoded=" + encodedAttempts.get() + "/" + encodedSuccesses.get()
+                + " bypass=" + encodedBypasses.get()
+                + " fail=" + encodedFailures.get()
+                + " approx=" + approximateAttempts.get() + "/" + approximateSuccesses.get()
+                + " bypass=" + approximateBypasses.get()
+                + " fail=" + approximateFailures.get();
     }
 
     /**
@@ -78,13 +93,19 @@ public final class GpuDensityFunction {
 
         // Try GPU acceleration for large batches
         if (shouldUseApproximateNoiseBatch(length)) {
+            approximateAttempts.incrementAndGet();
             try {
                 if (tryGpuBatchNoise(noiseHolder, xCoords, yCoords, zCoords, result, offset, length)) {
+                    approximateSuccesses.incrementAndGet();
                     return;
                 }
+                approximateFailures.incrementAndGet();
             } catch (Exception e) {
+                approximateFailures.incrementAndGet();
                 LOGGER.debug("GPU batch noise failed, falling back to per-sample: {}", e.getMessage());
             }
+        } else {
+            approximateBypasses.incrementAndGet();
         }
 
         // Fallback: per-sample evaluation via InvocationShim
@@ -112,8 +133,10 @@ public final class GpuDensityFunction {
                                                     float[] auxValues,
                                                     int auxValueCount) {
         if (result.length <= 0 || !shouldUseGpuBatch(result.length)) {
+            encodedBypasses.incrementAndGet();
             return false;
         }
+        encodedAttempts.incrementAndGet();
         try {
             Class<?> accelClass = Class.forName("org.admany.vkgpuaccel.VkGpuAccel");
             Object computed;
@@ -139,11 +162,14 @@ public final class GpuDensityFunction {
                         .invoke(null, xCoords, yCoords, zCoords, 0, result.length, encodedProgram, instructionCount);
             }
             if (!(computed instanceof double[] values) || values.length != result.length) {
+                encodedFailures.incrementAndGet();
                 return false;
             }
             System.arraycopy(values, 0, result, 0, result.length);
+            encodedSuccesses.incrementAndGet();
             return true;
         } catch (Exception e) {
+            encodedFailures.incrementAndGet();
             LOGGER.debug("Encoded Vulkan density program unavailable: {}", e.getMessage());
             return false;
         }

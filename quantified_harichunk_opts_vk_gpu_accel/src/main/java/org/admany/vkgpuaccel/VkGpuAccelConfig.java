@@ -31,14 +31,14 @@ public final class VkGpuAccelConfig {
     );
 
     /**
-     * Minimum samples per density evaluation to attempt GPU dispatch.
-     * With QAPI's GpuTaskDispatcher batching (preferredBatchSize ~25-64),
-     * even small evaluations get coalesced into one mcDensityFunctionsBatch
-     * call, so a lower threshold is correct. 64 keeps trivially small
-     * evaluations on CPU while routing anything MC actually generates to GPU.
+     * Maximum adaptive threshold before tiny VK batches are temporarily held on
+     * CPU after repeated backpressure. The gate starts at 1 so all tasks may
+     * use GPU immediately, then scales up only when the runtime is saturated.
+     * The legacy min_batch property is kept as a compatibility alias.
      */
-    public static final int MIN_BATCH_SIZE = Integer.getInteger(
-            "harichunk.vkgpuaccel.min_batch", 64
+    public static final int MAX_ADAPTIVE_BATCH_THRESHOLD = Integer.getInteger(
+            "harichunk.vkgpuaccel.max_adaptive_batch",
+            Integer.getInteger("harichunk.vkgpuaccel.min_batch", 64)
     );
 
     public static final Duration TASK_TIMEOUT = Duration.ofMillis(Long.getLong(

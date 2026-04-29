@@ -41,6 +41,10 @@ public class HariChunkCommands {
                 Commands.literal("data")
                     .executes(HariChunkCommands::dataCommand)
             )
+            .then(
+                Commands.literal("gpu")
+                    .executes(HariChunkCommands::gpuCommand)
+            )
         );
     }
 
@@ -115,6 +119,34 @@ public class HariChunkCommands {
 
         return 1;
     }
+
+        private static int gpuCommand(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
+
+        sendLine(source, "HariChunk GPU Runtime");
+        sendLine(source, "GPU noise backend: " + invokeStaticString(
+            "com.hari.harichunk.opts.gpu_noise.common.GpuNoiseBackend",
+            "getStatusString",
+            "unavailable"));
+        sendLine(source, "Quantified Vulkan accel: " + invokeStaticString(
+            "org.admany.vkgpuaccel.VkGpuAccel",
+            "debugString",
+            "unavailable"));
+        sendLine(source, "BRS GPU noise: " + invokeStaticString(
+            "org.admany.brsgpunoise.BrsGpuNoise",
+            "debugString",
+            "unavailable"));
+        sendLine(source, "DFC GPU: " + invokeStaticString(
+            "com.hari.harichunk.opts.dfc.common.gen.GpuDensityFunction",
+            "debugString",
+            "unavailable"));
+        sendLine(source, "DAG scheduler: " + invokeStaticString(
+            "org.admany.quantifiedadmanydagscheduler.AdmanyDagScheduler",
+            "getStatsString",
+            "unavailable"));
+
+        return 1;
+        }
 
     private static void sendLine(CommandSourceStack source, String line) {
         source.sendSuccess(() -> Component.nullToEmpty(line), false);

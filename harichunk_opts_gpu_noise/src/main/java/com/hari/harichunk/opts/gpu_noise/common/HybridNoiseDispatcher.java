@@ -55,7 +55,7 @@ public final class HybridNoiseDispatcher {
 
         // GPU availability is checked dynamically via GpuNoiseBackend
         try {
-            gpuAvailable = GpuNoiseBackend.shouldUseGpu(Config.MIN_BATCH_SIZE);
+            gpuAvailable = GpuNoiseBackend.shouldUseGpu(1);
             LOGGER.info("HybridNoise: GPU backend {}",
                     gpuAvailable ? "available (" + GpuNoiseBackend.getActiveBackend() + ")" : "not available");
         } catch (Exception e) {
@@ -119,8 +119,9 @@ public final class HybridNoiseDispatcher {
             double[] x, double[] y, double[] z,
             int length) {
 
-        // Large batch + GPU available + not thermally limited → GPU
-        if (length >= SIMD_PREFERRED_BATCH_THRESHOLD && GpuNoiseBackend.shouldUseGpu(length)) {
+        // GPU-ready paths may batch dynamically downstream, so do not hard-block
+        // small work here before the backend gets a chance to coalesce it.
+        if (GpuNoiseBackend.shouldUseGpu(length)) {
             try {
                 return ThermalAwareExecutor.execute(gpuWork, null, length);
             } catch (Exception e) {
@@ -154,8 +155,7 @@ public final class HybridNoiseDispatcher {
             double[] x, double[] y, double[] z,
             int length) {
 
-        // Large batch + GPU available → async GPU
-        if (length >= SIMD_PREFERRED_BATCH_THRESHOLD && GpuNoiseBackend.shouldUseGpu(length)) {
+        if (GpuNoiseBackend.shouldUseGpu(length)) {
             return ThermalAwareExecutor.executeAsync(gpuWork, null, length)
                     .exceptionally(ex -> {
                         LOGGER.debug("Async GPU batch failed: {}", ex.getMessage());
@@ -206,7 +206,7 @@ public final class HybridNoiseDispatcher {
      * Get the optimal backend name for logging/status.
      */
     public static String getOptimalBackend(int batchSize) {
-        if (batchSize >= SIMD_PREFERRED_BATCH_THRESHOLD && gpuAvailable && GpuNoiseBackend.shouldUseGpu(batchSize)) {
+        if (gpuAvailable && GpuNoiseBackend.shouldUseGpu(batchSize)) {
             return "GPU(" + GpuNoiseBackend.getActiveBackend() + ")";
         }
         if (nativeSimdAvailable) {

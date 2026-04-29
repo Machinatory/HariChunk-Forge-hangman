@@ -27,8 +27,14 @@ public final class BrsGpuNoiseConfig {
             System.getProperty("harichunk.brs_gpu_noise.native_noise", "true")
     );
 
-    public static final int MIN_BATCH_SIZE = Integer.getInteger(
-            "harichunk.brs_gpu_noise.min_batch", 192
+    /**
+     * Maximum adaptive threshold for native noise batching. The runtime starts
+     * permissive and only scales up toward this cap when repeated GPU pressure
+     * suggests tiny batches should temporarily stay on CPU.
+     */
+    public static final int MAX_ADAPTIVE_BATCH_THRESHOLD = Integer.getInteger(
+            "harichunk.brs_gpu_noise.max_adaptive_batch",
+            Integer.getInteger("harichunk.brs_gpu_noise.min_batch", 192)
     );
 
     public static final Duration TASK_TIMEOUT = Duration.ofMillis(Long.getLong(

@@ -13,6 +13,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import net.minecraft.server.level.ChunkHolder;
+import net.minecraft.server.level.ChunkHolder.ChunkLoadingFailure;
 import net.minecraft.server.level.ChunkLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -161,7 +162,7 @@ public class ChunkStatusUtils {
 
         PARALLELIZED() {
             @Override
-            public CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> runTask(AsyncLock lock, Supplier<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> completableFuture, ChunkStatus status, ChunkPos pos) {
+            public CompletableFuture<Either<ChunkAccess, ChunkLoadingFailure>> runTask(AsyncLock lock, Supplier<CompletableFuture<Either<ChunkAccess, ChunkLoadingFailure>>> completableFuture, ChunkStatus status, ChunkPos pos) {
                 // During STRUCTURE_REFERENCES, fire off an async GPU surface-height batch
                 // for the 4x4 chunk region so the result is ready before NOISE runs.
                 if (status == ChunkStatus.STRUCTURE_REFERENCES) {
@@ -180,7 +181,7 @@ public class ChunkStatusUtils {
         },
         SINGLE_THREADED() {
             @Override
-            public CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> runTask(AsyncLock lock, Supplier<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> completableFuture, ChunkStatus status, ChunkPos pos) {
+            public CompletableFuture<Either<ChunkAccess, ChunkLoadingFailure>> runTask(AsyncLock lock, Supplier<CompletableFuture<Either<ChunkAccess, ChunkLoadingFailure>>> completableFuture, ChunkStatus status, ChunkPos pos) {
                 Preconditions.checkNotNull(lock);
                 String desc = dagDescriptionFor(status);
                 String localityKey = localityKeyFor(status, pos);
@@ -198,12 +199,12 @@ public class ChunkStatusUtils {
         },
         AS_IS() {
             @Override
-            public CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> runTask(AsyncLock lock, Supplier<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> completableFuture, ChunkStatus status, ChunkPos pos) {
+            public CompletableFuture<Either<ChunkAccess, ChunkLoadingFailure>> runTask(AsyncLock lock, Supplier<CompletableFuture<Either<ChunkAccess, ChunkLoadingFailure>>> completableFuture, ChunkStatus status, ChunkPos pos) {
                 return completableFuture.get();
             }
         };
 
-        public abstract CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> runTask(AsyncLock lock, Supplier<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> completableFuture, ChunkStatus status, ChunkPos pos);
+        public abstract CompletableFuture<Either<ChunkAccess, ChunkLoadingFailure>> runTask(AsyncLock lock, Supplier<CompletableFuture<Either<ChunkAccess, ChunkLoadingFailure>>> completableFuture, ChunkStatus status, ChunkPos pos);
 
     }
 }

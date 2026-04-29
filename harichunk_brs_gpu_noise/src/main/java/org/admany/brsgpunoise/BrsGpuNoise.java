@@ -27,6 +27,8 @@ public final class BrsGpuNoise {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("HariChunk BRS GPU Noise");
     private static final AtomicBoolean initialized = new AtomicBoolean(false);
+        private static final AdaptiveBatchGate NATIVE_NOISE_GATE =
+            new AdaptiveBatchGate(BrsGpuNoiseConfig.MAX_ADAPTIVE_BATCH_THRESHOLD);
 
     private static volatile boolean ready;
     private static volatile String unavailableReason = "not initialized";
@@ -71,7 +73,15 @@ public final class BrsGpuNoise {
     }
 
     public static String statusString() {
-        return isReady() ? "ready, " + BrsGpuNoiseStats.summary() : "unavailable: " + unavailableReason;
+        return isReady() ? "ready, gate=" + NATIVE_NOISE_GATE.summary() + " " + BrsGpuNoiseStats.summary()
+                : "unavailable: " + unavailableReason;
+    }
+
+    public static String debugString() {
+        return "ready=" + isReady()
+                + " gate=" + NATIVE_NOISE_GATE.summary()
+                + " nativeNoise=" + BrsGpuNoiseConfig.NATIVE_NOISE
+                + " stats=" + BrsGpuNoiseStats.summary();
     }
 
     public static double[] tryComputeNativeNoiseLeafBatch(int mode,
@@ -87,15 +97,21 @@ public final class BrsGpuNoise {
         Objects.requireNonNull(xCoords, "xCoords");
         Objects.requireNonNull(yCoords, "yCoords");
         Objects.requireNonNull(zCoords, "zCoords");
-        if (!isReady() || length < BrsGpuNoiseConfig.MIN_BATCH_SIZE) {
-            BrsGpuNoiseStats.recordFallback();
+        if (!isReady()) {
+            BrsGpuNoiseStats.recordUnavailable();
+            return null;
+        }
+        if (!NATIVE_NOISE_GATE.shouldAttempt(length)) {
+            BrsGpuNoiseStats.recordAdaptiveSkip();
             return null;
         }
         if (offset < 0 || length < 0 || offset + length > xCoords.length
                 || offset + length > yCoords.length || offset + length > zCoords.length) {
-            BrsGpuNoiseStats.recordFallback();
+            BrsGpuNoiseStats.recordInvalidInput();
             return null;
         }
+
+        BrsGpuNoiseStats.recordAttempt();
 
         float[] packed = new float[length * 3];
         packCoordinates(mode, xCoords, yCoords, zCoords, offset, length, xzScale, yScale, noiseKey, packed, 0);
@@ -104,7 +120,8 @@ public final class BrsGpuNoise {
             float[] features = VkGpuAccel.submitTerrainFeatureBatch(packed)
                     .get(Math.max(1L, BrsGpuNoiseConfig.TASK_TIMEOUT.toMillis()), TimeUnit.MILLISECONDS);
             if (features == null || features.length < length * 4) {
-                BrsGpuNoiseStats.recordFallback();
+                NATIVE_NOISE_GATE.recordFailure();
+                BrsGpuNoiseStats.recordNullResult();
                 return null;
             }
 
@@ -117,9 +134,12 @@ public final class BrsGpuNoise {
                 result[i] = clamp(primary + detail, -1.0d, 1.0d) * scale;
             }
             BrsGpuNoiseStats.recordNativeNoiseBatch(length);
+            NATIVE_NOISE_GATE.recordSuccess();
+            BrsGpuNoiseStats.recordSuccess();
             return result;
         } catch (Throwable throwable) {
-            BrsGpuNoiseStats.recordFallback();
+            NATIVE_NOISE_GATE.recordFailure();
+            BrsGpuNoiseStats.recordFailure();
             LOGGER.debug("BRS native GPU noise batch failed: {}", throwable.toString());
             return null;
         }
@@ -150,18 +170,24 @@ public final class BrsGpuNoise {
         }
         if (xzScales.length != leafCount || yScales.length != leafCount
                 || noiseKeys.length != leafCount || outputScales.length != leafCount) {
-            BrsGpuNoiseStats.recordFallback();
+            BrsGpuNoiseStats.recordInvalidInput();
             return null;
         }
-        if (!isReady() || length < BrsGpuNoiseConfig.MIN_BATCH_SIZE) {
-            BrsGpuNoiseStats.recordFallback();
+        if (!isReady()) {
+            BrsGpuNoiseStats.recordUnavailable();
+            return null;
+        }
+        if (!NATIVE_NOISE_GATE.shouldAttempt(length)) {
+            BrsGpuNoiseStats.recordAdaptiveSkip();
             return null;
         }
         if (offset < 0 || length < 0 || offset + length > xCoords.length
                 || offset + length > yCoords.length || offset + length > zCoords.length) {
-            BrsGpuNoiseStats.recordFallback();
+            BrsGpuNoiseStats.recordInvalidInput();
             return null;
         }
+
+        BrsGpuNoiseStats.recordAttempt();
 
         int packedSamples = leafCount * length;
         float[] packed = new float[packedSamples * 3];
@@ -174,7 +200,8 @@ public final class BrsGpuNoise {
             float[] features = VkGpuAccel.submitTerrainFeatureBatch(packed)
                     .get(Math.max(1L, BrsGpuNoiseConfig.TASK_TIMEOUT.toMillis()), TimeUnit.MILLISECONDS);
             if (features == null || features.length < packedSamples * 4) {
-                BrsGpuNoiseStats.recordFallback();
+                NATIVE_NOISE_GATE.recordFailure();
+                BrsGpuNoiseStats.recordNullResult();
                 return null;
             }
 
@@ -192,9 +219,12 @@ public final class BrsGpuNoise {
             }
 
             BrsGpuNoiseStats.recordNativeNoiseBatch(packedSamples);
+            NATIVE_NOISE_GATE.recordSuccess();
+            BrsGpuNoiseStats.recordSuccess();
             return result;
         } catch (Throwable throwable) {
-            BrsGpuNoiseStats.recordFallback();
+            NATIVE_NOISE_GATE.recordFailure();
+            BrsGpuNoiseStats.recordFailure();
             LOGGER.debug("BRS native GPU noise multi-leaf batch failed: {}", throwable.toString());
             return null;
         }

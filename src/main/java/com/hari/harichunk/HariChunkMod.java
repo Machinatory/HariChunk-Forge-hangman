@@ -72,7 +72,7 @@ public class HariChunkMod {
             }))
             .executes(context -> {
                 context.getSource().sendSuccess(() -> net.minecraft.network.chat.Component.literal(
-                    "HariChunk commands: /harichunk status"
+                    "HariChunk commands: /harichunk status, /harichunk gpu, /harichunk data"
                 ), false);
                 return 1;
             }));
@@ -102,10 +102,16 @@ public class HariChunkMod {
                 "DAG: " + safeDagStats()
         ), false);
         source.sendSuccess(() -> net.minecraft.network.chat.Component.literal(
-                "VK accel: " + invokeStaticString("org.admany.vkgpuaccel.VkGpuAccel", "statusString")
+            "GPU backend: " + invokeStaticString("com.hari.harichunk.opts.gpu_noise.common.GpuNoiseBackend", "getStatusString")
         ), false);
         source.sendSuccess(() -> net.minecraft.network.chat.Component.literal(
-                "BRS GPU noise: " + invokeStaticString("org.admany.brsgpunoise.BrsGpuNoise", "statusString")
+            "VK accel: " + invokeStaticString("org.admany.vkgpuaccel.VkGpuAccel", "debugString")
+        ), false);
+        source.sendSuccess(() -> net.minecraft.network.chat.Component.literal(
+            "BRS GPU noise: " + invokeStaticString("org.admany.brsgpunoise.BrsGpuNoise", "debugString")
+        ), false);
+        source.sendSuccess(() -> net.minecraft.network.chat.Component.literal(
+            "DFC GPU: " + invokeStaticString("com.hari.harichunk.opts.dfc.common.gen.GpuDensityFunction", "debugString")
         ), false);
     }
 

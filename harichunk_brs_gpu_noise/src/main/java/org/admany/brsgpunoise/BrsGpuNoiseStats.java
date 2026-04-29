@@ -16,7 +16,13 @@ public final class BrsGpuNoiseStats {
 
     private static final AtomicLong nativeNoiseSubmissions = new AtomicLong();
     private static final AtomicLong nativeNoiseSamples = new AtomicLong();
-    private static final AtomicLong fallbacks = new AtomicLong();
+    private static final AtomicLong attempts = new AtomicLong();
+    private static final AtomicLong successes = new AtomicLong();
+    private static final AtomicLong adaptiveSkips = new AtomicLong();
+    private static final AtomicLong unavailable = new AtomicLong();
+    private static final AtomicLong invalidInputs = new AtomicLong();
+    private static final AtomicLong nullResults = new AtomicLong();
+    private static final AtomicLong failures = new AtomicLong();
 
     private BrsGpuNoiseStats() {
     }
@@ -26,12 +32,42 @@ public final class BrsGpuNoiseStats {
         nativeNoiseSamples.addAndGet(samples);
     }
 
-    static void recordFallback() {
-        fallbacks.incrementAndGet();
+    static void recordAttempt() {
+        attempts.incrementAndGet();
+    }
+
+    static void recordSuccess() {
+        successes.incrementAndGet();
+    }
+
+    static void recordAdaptiveSkip() {
+        adaptiveSkips.incrementAndGet();
+    }
+
+    static void recordUnavailable() {
+        unavailable.incrementAndGet();
+    }
+
+    static void recordInvalidInput() {
+        invalidInputs.incrementAndGet();
+    }
+
+    static void recordNullResult() {
+        nullResults.incrementAndGet();
+    }
+
+    static void recordFailure() {
+        failures.incrementAndGet();
     }
 
     public static String summary() {
-        return "nativeNoise=" + nativeNoiseSubmissions.get() + "/" + nativeNoiseSamples.get()
-                + " fallback=" + fallbacks.get();
+        return "submitted=" + nativeNoiseSubmissions.get() + "/" + nativeNoiseSamples.get()
+                + " attempts=" + attempts.get()
+                + " success=" + successes.get()
+                + " skip=" + adaptiveSkips.get()
+                + " unavailable=" + unavailable.get()
+                + " invalid=" + invalidInputs.get()
+                + " null=" + nullResults.get()
+                + " failed=" + failures.get();
     }
 }

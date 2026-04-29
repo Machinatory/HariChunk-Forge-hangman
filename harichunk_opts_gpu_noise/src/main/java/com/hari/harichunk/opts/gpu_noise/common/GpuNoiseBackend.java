@@ -71,7 +71,7 @@ public final class GpuNoiseBackend {
         if (!initialized) {
             initialize();
         }
-        if (batchSize < Config.MIN_BATCH_SIZE) return false;
+        if (batchSize <= 0) return false;
 
         if (thermalManager.isThermallyLimited()) {
             return false;
