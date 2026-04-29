@@ -33,6 +33,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.chunk.storage.ChunkScanAccess;
 import net.minecraft.world.level.chunk.storage.ChunkSerializer;
 import net.minecraft.world.level.chunk.storage.ChunkStorage;
 import net.minecraft.world.level.chunk.storage.IOWorker;
@@ -46,6 +47,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -68,6 +70,11 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
 
     public MixinThreadedAnvilChunkStorage(Path path, DataFixer dataFixer, boolean bl) {
         super(path, dataFixer, bl);
+    }
+
+    @Unique
+    private ChunkScanAccess harichunk$getChunkScanner() {
+        return this.chunkScanner();
     }
 
     @Shadow(remap = false)
@@ -197,7 +204,7 @@ public abstract class MixinThreadedAnvilChunkStorage extends ChunkStorage implem
                     // blending
                     protoChunk = protoChunk != null ? protoChunk : (ProtoChunk) this.m_214961_(pos);
                     if (protoChunk.getBelowZeroRetrogen() != null || protoChunk.getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK) {
-                        final CompletionStage<List<BitSet>> blendingInfos = BlendingInfoUtil.getBlendingInfos((IOWorker) this.chunkScanner(), pos);
+                        final CompletionStage<List<BitSet>> blendingInfos = BlendingInfoUtil.getBlendingInfos((IOWorker) this.harichunk$getChunkScanner(), pos);
                         ProtoChunk finalProtoChunk = protoChunk;
                         ((ProtoChunkExtension) protoChunk).setBlendingComputeFuture(
                                 blendingInfos.thenAccept(bitSet -> ((ProtoChunkExtension) finalProtoChunk).setBlendingInfo(pos, bitSet)).toCompletableFuture()
