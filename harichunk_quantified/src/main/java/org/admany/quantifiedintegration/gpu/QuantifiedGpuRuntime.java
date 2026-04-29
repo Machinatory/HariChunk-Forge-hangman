@@ -29,7 +29,6 @@ public final class QuantifiedGpuRuntime {
     }
 
     public static void triggerGpuProbes(String reason) {
-        invokeVoid("org.admany.quantified.core.common.opencl.gpu.AsyncProbeScheduler", "triggerProbe", reason);
         if (hasVulkanBindings()) {
             invokeVoid("org.admany.quantified.core.common.gpu.backend.VulkanProbeScheduler", "triggerProbe", reason);
         }
