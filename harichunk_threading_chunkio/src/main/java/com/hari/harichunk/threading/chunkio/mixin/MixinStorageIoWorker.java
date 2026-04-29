@@ -61,8 +61,8 @@ public abstract class MixinStorageIoWorker implements IAsyncChunkStorage {
      * @author Hari
      * @reason use async instead of flooding worker thread
      */
-    @Overwrite
-    private CompletableFuture<BitSet> createOldDataForRegion(int chunkX, int chunkZ) {
+    @Overwrite(remap = false)
+    private CompletableFuture<BitSet> m_223489_(int chunkX, int chunkZ) {
         ChunkPos chunkPos = ChunkPos.minFromRegion(chunkX, chunkZ);
         ChunkPos chunkPos2 = ChunkPos.maxFromRegion(chunkX, chunkZ);
         BitSet bitSet = new BitSet();
