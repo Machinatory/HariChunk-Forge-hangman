@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 @Mixin(ConfiguredFeature.class)
@@ -22,6 +24,11 @@ public class MixinConfiguredFeature<FC extends FeatureConfiguration, F extends F
     @Shadow(remap = false) @Final public F f_65377_;  // feature
 
     @Shadow(remap = false) @Final public FC f_65378_;  // config
+
+    @Unique
+    private boolean harichunk$callPlace(F feature, FeaturePlaceContext<FC> context) {
+        return feature.place(context);
+    }
 
     /**
      * @author Hari
@@ -34,7 +41,7 @@ public class MixinConfiguredFeature<FC extends FeatureConfiguration, F extends F
         final PooledFeatureContext<FC> context = (PooledFeatureContext<FC>) pool.alloc();
         try {
             context.reInit(Optional.empty(), world, chunkGenerator, random, origin, this.f_65378_);
-            return this.f_65377_.place(context);
+            return this.harichunk$callPlace(this.f_65377_, context);
         } finally {
             context.reInit();
             pool.release(context);
