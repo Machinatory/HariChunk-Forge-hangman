@@ -2,7 +2,6 @@ package org.admany.quantifiedintegration;
 
 import net.minecraftforge.fml.common.Mod;
 import org.admany.quantifiedintegration.config.Config;
-import org.admany.quantifiedintegration.opencl.OpenCLSafetyInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +20,6 @@ public final class ModuleEntryPoint {
 
         if (QuantifiedIntegration.register()) {
             LOGGER.info("Quantified API integration ready");
-            OpenCLSafetyInterceptor.intercept(LOGGER);
         } else {
             LOGGER.warn("Quantified API integration could not register with Quantified API");
         }
