@@ -29,7 +29,7 @@ public class NativeLoader {
             loadFromResources(libName);
             loaded = true;
             LOGGER.info("Native library loaded, detecting ISA...");
-            int level = NativeBindings.getSystemISA(true);
+            int level = NativeBindings.getSystemISA(com.hari.harichunk.opts.natives_math.ModuleEntryPoint.allowAVX512);
             Class<? extends Enum<? extends ISATarget>> isaClass = ISATarget.getInstance();
             if (isaClass != null) {
                 Object[] constants = isaClass.getEnumConstants();

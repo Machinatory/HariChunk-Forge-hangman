@@ -88,15 +88,23 @@ public class NativeStructs {
     }
 
     public static long allocateAligned(long size, long alignment) {
-        long raw = UNSAFE.allocateMemory(size + alignment);
-        long aligned = (raw + alignment - 1) & ~(alignment - 1);
-        // store original pointer before aligned address for freeing
-        UNSAFE.putLong(aligned - 8, raw);
+        if (size < 0 || alignment <= 0 || (alignment & (alignment - 1)) != 0) {
+            throw new IllegalArgumentException("Invalid native allocation request: size=" + size + ", alignment=" + alignment);
+        }
+
+        // Reserve header space before the aligned payload. The previous code aligned
+        // raw directly and wrote the original pointer to aligned - 8. If raw was
+        // already aligned, that wrote before the allocated block and corrupted the
+        // Windows heap during worldgen noise/native sampler setup.
+        long raw = UNSAFE.allocateMemory(size + alignment + Long.BYTES);
+        long aligned = (raw + Long.BYTES + alignment - 1) & ~(alignment - 1);
+        UNSAFE.putLong(aligned - Long.BYTES, raw);
+        UNSAFE.setMemory(aligned, size, (byte) 0);
         return aligned;
     }
 
     public static void freeAligned(long aligned) {
-        long raw = UNSAFE.getLong(aligned - 8);
+        long raw = UNSAFE.getLong(aligned - Long.BYTES);
         UNSAFE.freeMemory(raw);
     }
 
