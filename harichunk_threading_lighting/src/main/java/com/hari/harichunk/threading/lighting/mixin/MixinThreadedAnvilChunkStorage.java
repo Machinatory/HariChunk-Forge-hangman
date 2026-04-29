@@ -21,9 +21,9 @@ import net.minecraft.util.thread.ProcessorMailbox;
 @Mixin(ChunkMap.class)
 public class MixinThreadedAnvilChunkStorage {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private ServerLevel level;
+    private ServerLevel f_140133_;
     private ExecutorService lightThread = null;
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/thread/ProcessorMailbox;create(Ljava/util/concurrent/Executor;Ljava/lang/String;)Lnet/minecraft/util/thread/ProcessorMailbox;"))
@@ -33,7 +33,7 @@ public class MixinThreadedAnvilChunkStorage {
                 1, 1,
                 0, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(),
-                new ThreadFactoryBuilder().setPriority(Thread.NORM_PRIORITY - 1).setDaemon(true).setNameFormat(String.format("%s - Light", level.dimension().location().toDebugFileName())).build()
+                new ThreadFactoryBuilder().setPriority(Thread.NORM_PRIORITY - 1).setDaemon(true).setNameFormat(String.format("%s - Light", f_140133_.dimension().location().toDebugFileName())).build()
         );
         return ProcessorMailbox.create(lightThread, name);
     }
