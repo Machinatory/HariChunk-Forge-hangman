@@ -10,6 +10,7 @@
  */
 package org.admany.brsgpunoise;
 
+import org.admany.vkgpuaccel.AdaptiveBatchGate;
 import org.admany.vkgpuaccel.VkGpuAccel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ public final class BrsGpuNoise {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("HariChunk BRS GPU Noise");
     private static final AtomicBoolean initialized = new AtomicBoolean(false);
-        private static final AdaptiveBatchGate NATIVE_NOISE_GATE =
+    private static final AdaptiveBatchGate NATIVE_NOISE_GATE =
             new AdaptiveBatchGate(BrsGpuNoiseConfig.MAX_ADAPTIVE_BATCH_THRESHOLD);
 
     private static volatile boolean ready;

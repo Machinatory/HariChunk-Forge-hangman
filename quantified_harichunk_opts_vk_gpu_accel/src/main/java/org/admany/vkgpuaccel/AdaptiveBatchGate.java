@@ -16,7 +16,7 @@ public final class AdaptiveBatchGate {
     }
 
     public void recordSuccess() {
-        currentThreshold.getAndUpdate(value -> value <= 1 ? 1 : Math.max(1, value / 2));
+        currentThreshold.getAndUpdate(value -> value <= 1 ? 1 : value - 1);
     }
 
     public void recordBackpressure() {

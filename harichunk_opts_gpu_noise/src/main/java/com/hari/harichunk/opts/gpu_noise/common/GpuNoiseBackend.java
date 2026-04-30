@@ -91,8 +91,13 @@ public final class GpuNoiseBackend {
 
     /**
      * Get the current active backend type.
+     * Re-evaluates VK availability in case Vulkan probes completed after init.
      */
     public static GpuBackendType getActiveBackend() {
+        if (!initialized) {
+            initialize();
+        }
+        refreshActiveBackend();
         return activeBackend;
     }
 
@@ -162,8 +167,24 @@ public final class GpuNoiseBackend {
         if (!initialized) {
             initialize();
         }
+        refreshActiveBackend();
         String thermal = thermalManager.isThermallyLimited() ? " [THERMAL LIMIT]" : "";
         return "Backend: " + activeBackend + thermal;
+    }
+
+    /**
+     * Re-evaluate activeBackend against current VK state.
+     * Handles the case where Vulkan probes complete after GpuNoiseBackend.initialize()
+     * cached CPU as the backend.
+     */
+    private static void refreshActiveBackend() {
+        if (customVulkanAccelDisablesLegacyOpenCl()) {
+            if (customVulkanAccelCanComputeDensity()) {
+                activeBackend = GpuBackendType.VULKAN;
+            } else {
+                activeBackend = GpuBackendType.CPU;
+            }
+        }
     }
 
     private static boolean customVulkanAccelDisablesLegacyOpenCl() {

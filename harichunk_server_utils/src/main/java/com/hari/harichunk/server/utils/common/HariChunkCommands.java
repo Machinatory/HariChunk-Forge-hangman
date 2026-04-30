@@ -102,14 +102,17 @@ public class HariChunkCommands {
         boolean dfcGpuAvailable = invokeStaticBoolean("com.hari.harichunk.opts.dfc.common.gen.GpuDensityFunction", "isGpuAvailable", false);
         sendLine(source, "DFC: modLoaded=" + dfcLoaded + " compilerEnabled=" + dfcEnabled + " gpuFlag=" + dfcGpuEnabled + " gpuAvailable=" + dfcGpuAvailable);
 
+        boolean gpuNoisePresent = classExists("com.hari.harichunk.opts.gpu_noise.common.GpuNoiseBackend");
+        boolean dfcPresent = classExists("com.hari.harichunk.opts.dfc.ModuleEntryPoint");
+
         List<String> missingMods = new ArrayList<>();
         if (!quantifiedLoaded) missingMods.add("quantified");
         if (!quantifiedBridgeLoaded) missingMods.add("harichunk_x_quantified_api");
         if (!dagLoaded) missingMods.add("quantified_admany_dag_scheduler");
         if (!vkAccelLoaded) missingMods.add("quantified_harichunk_opts_vk_gpu_accel");
         if (!brsLoaded) missingMods.add("harichunk_brs_gpu_noise");
-        if (!gpuNoiseLoaded) missingMods.add("harichunk_opts_gpu_noise");
-        if (!dfcLoaded) missingMods.add("harichunk_opts_dfc");
+        if (!gpuNoisePresent) missingMods.add("harichunk_opts_gpu_noise");
+        if (!dfcPresent) missingMods.add("harichunk_opts_dfc");
 
         if (missingMods.isEmpty()) {
             sendLine(source, "Missing runtime pieces: none");
@@ -120,7 +123,7 @@ public class HariChunkCommands {
         return 1;
     }
 
-        private static int gpuCommand(CommandContext<CommandSourceStack> ctx) {
+    private static int gpuCommand(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
 
         sendLine(source, "HariChunk GPU Runtime");
@@ -146,7 +149,7 @@ public class HariChunkCommands {
             "unavailable"));
 
         return 1;
-        }
+    }
 
     private static void sendLine(CommandSourceStack source, String line) {
         source.sendSuccess(() -> Component.nullToEmpty(line), false);
@@ -181,6 +184,15 @@ public class HariChunkCommands {
             return value == null ? fallback : value.toString();
         } catch (Throwable ignored) {
             return fallback;
+        }
+    }
+
+    private static boolean classExists(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (Throwable ignored) {
+            return false;
         }
     }
 
