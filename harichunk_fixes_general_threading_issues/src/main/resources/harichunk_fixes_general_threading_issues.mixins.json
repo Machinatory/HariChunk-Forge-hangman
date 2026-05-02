@@ -10,6 +10,7 @@
     "MixinThreadedAnvilChunkStorage",
     "asynccatchers.MixinMinecraftServer",
     "asynccatchers.MixinServerChunkManager",
-    "asynccatchers.MixinThreadedAnvilChunkStorage"
+    "asynccatchers.MixinThreadedAnvilChunkStorage",
+    "ConcurrentPatchesNaturalSpawnerMixin"
   ]
 }
