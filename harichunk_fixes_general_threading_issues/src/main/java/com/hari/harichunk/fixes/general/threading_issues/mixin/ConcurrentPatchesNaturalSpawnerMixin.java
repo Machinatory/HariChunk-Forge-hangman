@@ -1,4 +1,4 @@
-package org.endlessgreed.mammonspatches.mixin;
+package com.hari.harichunk.fixes.general.threading_issues;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.NaturalSpawner;
